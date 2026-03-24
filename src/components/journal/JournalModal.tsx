@@ -604,7 +604,7 @@ export default function JournalModal({ onClose }: JournalModalProps) {
                     />
                   </div>
                 </div>
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-2 shrink-0 mr-10">
                   {selected !== 'new' && selected && (
                     <button
                       onClick={() => handleDelete(selected)}
