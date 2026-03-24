@@ -137,7 +137,7 @@ export default function LoginPage() {
                       onChange={e => setDisplayName(e.target.value)}
                       placeholder="Danny"
                       className="tactical-input"
-                      style={{ paddingLeft: '2.5rem' }}
+                      style={{ paddingLeft: '2.5rem', background: '#f9fafb', color: '#111827' }}
                     />
                   </div>
                 </motion.div>
@@ -157,7 +157,7 @@ export default function LoginPage() {
                   placeholder="you@example.com"
                   required
                   className="tactical-input"
-                  style={{ paddingLeft: '2.5rem' }}
+                  style={{ paddingLeft: '2.5rem', background: '#f9fafb', color: '#111827' }}
                 />
               </div>
             </div>
@@ -175,7 +175,7 @@ export default function LoginPage() {
                   placeholder="••••••••"
                   required
                   className="tactical-input"
-                  style={{ paddingLeft: '2.5rem' }}
+                  style={{ paddingLeft: '2.5rem', background: '#f9fafb', color: '#111827' }}
                 />
               </div>
             </div>

@@ -39,6 +39,7 @@ export default function DashboardPage() {
   const [weeklyWorkouts, setWeeklyWorkouts] = useState(0)
   const [weeklyDateNights, setWeeklyDateNights] = useState(0)
   const [activePillar, setActivePillar] = useState<PillarKey>('overview')
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   useEffect(() => {
     if (!user) return
@@ -88,19 +89,30 @@ export default function DashboardPage() {
       className="h-screen flex flex-col overflow-hidden"
       style={{ background: 'var(--bg-primary)' }}
     >
-      <TopBar profile={profile} activePillar={activePillar} />
+      <TopBar profile={profile} activePillar={activePillar} onMenuToggle={() => setSidebarOpen(o => !o)} />
 
-      <div className="flex flex-1 min-h-0">
+      <div className="flex flex-1 min-h-0 relative">
+        {/* Mobile backdrop */}
+        {sidebarOpen && (
+          <div
+            className="fixed inset-0 z-20 md:hidden"
+            style={{ background: 'rgba(0,0,0,0.4)' }}
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+
         <Sidebar
           activePillar={activePillar}
           onSelect={setActivePillar}
           profile={profile}
           todayXP={log?.xp_earned || 0}
           onUpdateProfile={name => updateProfile({ display_name: name })}
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
         />
 
         {/* Main content */}
-        <main className="flex-1 overflow-y-auto p-5">
+        <main className="flex-1 overflow-y-auto p-3 sm:p-5">
           <div style={{ maxWidth: 1280 }} className="mx-auto">
 
           <AnimatePresence mode="wait">

@@ -19,6 +19,8 @@ interface SidebarProps {
   profile: Profile | null
   todayXP: number
   onUpdateProfile?: (name: string) => Promise<void>
+  isOpen?: boolean
+  onClose?: () => void
 }
 
 const NAV_ITEMS: { key: PillarKey; label: string; icon: React.ElementType }[] = [
@@ -31,7 +33,7 @@ const NAV_ITEMS: { key: PillarKey; label: string; icon: React.ElementType }[] = 
   { key: 'trips',         label: 'Trips',          icon: Plane      },
 ]
 
-export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUpdateProfile }: SidebarProps) {
+export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUpdateProfile, isOpen = false, onClose }: SidebarProps) {
   const { signOut } = useAuth()
   const navigate = useNavigate()
   const [showSettings, setShowSettings] = useState(false)
@@ -63,7 +65,10 @@ export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUp
 
   return (
     <aside
-      className="hidden md:flex flex-col w-56 lg:w-60 shrink-0 h-full"
+      className={`flex flex-col w-64 md:w-56 lg:w-60 shrink-0 h-full
+        fixed md:static inset-y-0 left-0 z-30
+        transition-transform duration-300 ease-in-out
+        ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}
       style={{ background: 'var(--bg-sidebar)', borderRight: '1px solid var(--border-default)' }}
     >
       {/* Logo */}
@@ -97,7 +102,7 @@ export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUp
           return (
             <button
               key={key}
-              onClick={() => onSelect(key)}
+              onClick={() => { onSelect(key); onClose?.() }}
               className="relative w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150 text-left group"
               style={{
                 background: isActive ? '#f0fdf4' : 'transparent',
