@@ -32,10 +32,20 @@ const DEMO_PROFILE: Profile = {
   created_at: new Date().toISOString(),
 }
 
+const PROFILE_CACHE_KEY = 'lockedin_profile_cache'
+
+function readProfileCache(): Profile | null {
+  try {
+    const raw = localStorage.getItem(PROFILE_CACHE_KEY)
+    return raw ? JSON.parse(raw) : null
+  } catch { return null }
+}
+
 export function useProfile() {
   const { user } = useAuth()
-  const [profile, setProfile] = useState<Profile | null>(null)
-  const [loading, setLoading] = useState(true)
+  const cached = readProfileCache()
+  const [profile, setProfile] = useState<Profile | null>(cached)
+  const [loading, setLoading] = useState(!cached)
 
   const fetchProfile = useCallback(async () => {
     if (!user) return
@@ -54,13 +64,17 @@ export function useProfile() {
 
     if (data) {
       setProfile(data)
+      localStorage.setItem(PROFILE_CACHE_KEY, JSON.stringify(data))
     } else {
       const { data: newProfile } = await supabase
         .from('profiles')
         .insert({ id: user.id, display_name: user.email?.split('@')[0]?.toUpperCase() || 'OPERATOR' })
         .select()
         .single()
-      setProfile(newProfile)
+      if (newProfile) {
+        setProfile(newProfile)
+        localStorage.setItem(PROFILE_CACHE_KEY, JSON.stringify(newProfile))
+      }
     }
     setLoading(false)
   }, [user])
@@ -75,7 +89,10 @@ export function useProfile() {
       .eq('id', user.id)
       .select()
       .single()
-    if (data) setProfile(data)
+    if (data) {
+      setProfile(data)
+      localStorage.setItem(PROFILE_CACHE_KEY, JSON.stringify(data))
+    }
   }
 
   return { profile, loading, refetch: fetchProfile, updateProfile }

@@ -35,14 +35,23 @@ const DEMO_LOG: DailyLog = {
   created_at: new Date().toISOString(),
 }
 
+const LOG_CACHE_KEY = () => `lockedin_daily_log_${todayISO()}`
+
+function readLogCache(): DailyLog | null {
+  try {
+    const raw = localStorage.getItem(LOG_CACHE_KEY())
+    return raw ? JSON.parse(raw) : null
+  } catch { return null }
+}
+
 export function useDailyLog() {
   const { user } = useAuth()
-  const [log, setLog] = useState<DailyLog | null>(null)
-  const [loading, setLoading] = useState(true)
+  const cached = readLogCache()
+  const [log, setLog] = useState<DailyLog | null>(cached)
+  const [loading, setLoading] = useState(!cached)
 
   const fetchLog = useCallback(async () => {
     if (!user) return
-    setLoading(true)
 
     if (!isSupabaseConfigured) {
       setLog(DEMO_LOG)
@@ -60,13 +69,17 @@ export function useDailyLog() {
 
     if (data) {
       setLog(data)
+      localStorage.setItem(LOG_CACHE_KEY(), JSON.stringify(data))
     } else {
       const { data: newLog } = await supabase
         .from('daily_logs')
         .insert({ user_id: user.id, log_date: today })
         .select()
         .single()
-      setLog(newLog)
+      if (newLog) {
+        setLog(newLog)
+        localStorage.setItem(LOG_CACHE_KEY(), JSON.stringify(newLog))
+      }
     }
     setLoading(false)
   }, [user])
@@ -87,7 +100,10 @@ export function useDailyLog() {
       .eq('id', log.id)
       .select()
       .single()
-    if (data) setLog(data)
+    if (data) {
+      setLog(data)
+      localStorage.setItem(LOG_CACHE_KEY(), JSON.stringify(data))
+    }
   }, [user, log])
 
   return { log, loading, updateLog, refetch: fetchLog }

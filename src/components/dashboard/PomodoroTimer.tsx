@@ -39,12 +39,58 @@ interface PomodoroTimerProps {
   compact?: boolean
 }
 
+const LS = {
+  mode:     'lockedin_timer_mode',
+  end:      'lockedin_timer_end',    // epoch ms when timer will finish (only when running)
+  left:     'lockedin_timer_left',   // seconds remaining (only when paused)
+  sessions: 'lockedin_timer_sessions',
+}
+
+function readInitialState(): { mode: Mode; secondsLeft: number; running: boolean; sessions: number } {
+  const savedMode = (localStorage.getItem(LS.mode) as Mode) || 'work'
+  const mode: Mode = MODES[savedMode] ? savedMode : 'work'
+  const sessions = Number(localStorage.getItem(LS.sessions) || 0)
+  const end = localStorage.getItem(LS.end)
+  const left = localStorage.getItem(LS.left)
+
+  if (end) {
+    const remaining = Math.ceil((Number(end) - Date.now()) / 1000)
+    if (remaining > 0) return { mode, secondsLeft: remaining, running: true, sessions }
+    // Timer finished while page was away
+    localStorage.removeItem(LS.end)
+    return { mode, secondsLeft: 0, running: false, sessions: mode === 'work' ? sessions + 1 : sessions }
+  }
+  return {
+    mode,
+    secondsLeft: left ? Number(left) : MODES[mode].minutes * 60,
+    running: false,
+    sessions,
+  }
+}
+
 export default function PomodoroTimer({ compact = false }: PomodoroTimerProps) {
-  const [mode, setMode] = useState<Mode>('work')
-  const [secondsLeft, setSecondsLeft] = useState(MODES.work.minutes * 60)
-  const [running, setRunning] = useState(false)
-  const [sessions, setSessions] = useState(0)
+  const init = useRef(readInitialState())
+  const [mode, setMode] = useState<Mode>(init.current.mode)
+  const [secondsLeft, setSecondsLeft] = useState(init.current.secondsLeft)
+  const [running, setRunning] = useState(init.current.running)
+  const [sessions, setSessions] = useState(init.current.sessions)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  // Persist mode + sessions
+  useEffect(() => { localStorage.setItem(LS.mode, mode) }, [mode])
+  useEffect(() => { localStorage.setItem(LS.sessions, String(sessions)) }, [sessions])
+
+  // Persist running state: store end timestamp when running, seconds when paused
+  useEffect(() => {
+    if (running) {
+      localStorage.setItem(LS.end, String(Date.now() + secondsLeft * 1000))
+      localStorage.removeItem(LS.left)
+    } else {
+      localStorage.setItem(LS.left, String(secondsLeft))
+      localStorage.removeItem(LS.end)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [running])
 
   const cfg = MODES[mode]
   const totalSeconds = cfg.minutes * 60
@@ -68,6 +114,8 @@ export default function PomodoroTimer({ compact = false }: PomodoroTimerProps) {
           beep()
           stop()
           if (mode === 'work') setSessions(n => n + 1)
+          localStorage.removeItem(LS.end)
+          localStorage.setItem(LS.left, '0')
           return 0
         }
         return s - 1
@@ -79,21 +127,36 @@ export default function PomodoroTimer({ compact = false }: PomodoroTimerProps) {
   function switchMode(m: Mode) {
     stop()
     setMode(m)
-    setSecondsLeft(MODES[m].minutes * 60)
+    const secs = MODES[m].minutes * 60
+    setSecondsLeft(secs)
+    localStorage.setItem(LS.mode, m)
+    localStorage.setItem(LS.left, String(secs))
+    localStorage.removeItem(LS.end)
   }
 
   function toggle() {
     if (secondsLeft === 0) {
-      setSecondsLeft(totalSeconds)
+      const secs = totalSeconds
+      setSecondsLeft(secs)
       setRunning(true)
+      localStorage.setItem(LS.end, String(Date.now() + secs * 1000))
+      localStorage.removeItem(LS.left)
+    } else if (running) {
+      setRunning(false)
+      localStorage.setItem(LS.left, String(secondsLeft))
+      localStorage.removeItem(LS.end)
     } else {
-      setRunning(v => !v)
+      setRunning(true)
+      localStorage.setItem(LS.end, String(Date.now() + secondsLeft * 1000))
+      localStorage.removeItem(LS.left)
     }
   }
 
   function reset() {
     stop()
     setSecondsLeft(totalSeconds)
+    localStorage.setItem(LS.left, String(totalSeconds))
+    localStorage.removeItem(LS.end)
   }
 
   // ── Compact sidebar version ──
