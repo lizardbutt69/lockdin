@@ -1,7 +1,6 @@
-import { MapPin, Plus, Clock, CheckCircle, Plane } from 'lucide-react'
+import { Plus, CheckCircle, Plane, ChevronDown, ChevronUp, Trash2, Check, MapPin, Calendar } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import TacticalCard from '../ui/TacticalCard'
 import PillarGoals from './PillarGoals'
 import PillarHabitTracker from './PillarHabitTracker'
 import { supabase, isSupabaseConfigured } from '../../lib/supabase'
@@ -10,17 +9,206 @@ import type { Database } from '../../types/database'
 
 type Trip = Database['public']['Tables']['trips']['Row']
 
+const DEFAULT_CHECKLIST = [
+  { id: 'flights',     label: 'Book flights' },
+  { id: 'hotel',       label: 'Book accommodation' },
+  { id: 'insurance',   label: 'Travel insurance' },
+  { id: 'passport',    label: 'Check passport / visa' },
+  { id: 'bank',        label: 'Notify bank' },
+  { id: 'currency',    label: 'Get local currency' },
+  { id: 'packing',     label: 'Pack bags' },
+  { id: 'itinerary',   label: 'Plan itinerary' },
+]
+
+const STATUS_CONFIG = {
+  planning:  { label: 'Planning', color: '#f59e0b', bg: 'rgba(245,158,11,0.1)',  border: 'rgba(245,158,11,0.3)'  },
+  booked:    { label: 'Booked',   color: '#3b82f6', bg: 'rgba(59,130,246,0.1)',  border: 'rgba(59,130,246,0.3)'  },
+  completed: { label: 'Done',     color: '#22c55e', bg: 'rgba(34,197,94,0.1)',   border: 'rgba(34,197,94,0.3)'   },
+}
+
 function daysUntil(dateStr: string | null): number | null {
   if (!dateStr) return null
   const diff = new Date(dateStr).getTime() - Date.now()
   return Math.ceil(diff / (1000 * 60 * 60 * 24))
 }
 
-const STATUS_COLORS: Record<string, string> = {
-  planning: '#ff9500',
-  booked: '#00b4d8',
-  completed: '#00ff41',
+function formatDate(d: string | null) {
+  if (!d) return null
+  return new Date(d + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 }
+
+function getChecked(tripId: string): string[] {
+  try { return JSON.parse(localStorage.getItem(`lockedin_trip_cl_${tripId}`) || '[]') }
+  catch { return [] }
+}
+
+function saveChecked(tripId: string, ids: string[]) {
+  localStorage.setItem(`lockedin_trip_cl_${tripId}`, JSON.stringify(ids))
+}
+
+// ─── Trip Card ────────────────────────────────────────────────────────────────
+
+function TripCard({ trip, onDelete }: { trip: Trip; onDelete: (id: string) => void }) {
+  const [expanded, setExpanded] = useState(false)
+  const [checked, setChecked] = useState<string[]>(() => getChecked(trip.id))
+
+  const s = STATUS_CONFIG[trip.status as keyof typeof STATUS_CONFIG] ?? STATUS_CONFIG.planning
+  const days = daysUntil(trip.start_date)
+  const done = checked.length
+  const total = DEFAULT_CHECKLIST.length
+  const pct = Math.round((done / total) * 100)
+
+  function toggle(id: string) {
+    const next = checked.includes(id) ? checked.filter(c => c !== id) : [...checked, id]
+    setChecked(next)
+    saveChecked(trip.id, next)
+  }
+
+  return (
+    <div className="card p-4 space-y-3">
+      {/* Header row */}
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <div
+            className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+            style={{ background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.2)' }}
+          >
+            <Plane className="w-4 h-4" style={{ color: '#3b82f6' }} />
+          </div>
+          <div className="min-w-0">
+            <div className="font-bold text-sm font-['Space_Grotesk'] truncate" style={{ color: 'var(--text-primary)' }}>
+              {trip.destination}
+            </div>
+            {(trip.start_date || trip.end_date) && (
+              <div className="flex items-center gap-1 text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>
+                <Calendar className="w-3 h-3 shrink-0" />
+                {formatDate(trip.start_date)}
+                {trip.end_date && <span>→ {formatDate(trip.end_date)}</span>}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="flex items-center gap-1.5 shrink-0">
+          <span
+            className="text-[11px] font-semibold px-2 py-0.5 rounded-full"
+            style={{ background: s.bg, border: `1px solid ${s.border}`, color: s.color }}
+          >
+            {s.label}
+          </span>
+          <button
+            onClick={() => onDelete(trip.id)}
+            className="w-6 h-6 rounded flex items-center justify-center transition-colors"
+            style={{ color: 'var(--text-muted)' }}
+            onMouseEnter={e => { e.currentTarget.style.color = '#ef4444'; e.currentTarget.style.background = '#fef2f2' }}
+            onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'transparent' }}
+          >
+            <Trash2 className="w-3 h-3" />
+          </button>
+        </div>
+      </div>
+
+      {/* Meta row: budget + countdown */}
+      <div className="flex items-center gap-3 flex-wrap">
+        {trip.budget && (
+          <span
+            className="text-xs font-medium px-2 py-0.5 rounded-md"
+            style={{ background: 'var(--bg-subtle)', color: 'var(--text-muted)' }}
+          >
+            ${Number(trip.budget).toLocaleString()} budget
+          </span>
+        )}
+        {days !== null && trip.status !== 'completed' && (
+          <span
+            className="text-xs font-semibold"
+            style={{ color: days <= 7 ? '#f59e0b' : '#3b82f6' }}
+          >
+            {days > 0 ? `${days} days away` : days === 0 ? '✈ Departing today!' : '✈ In progress'}
+          </span>
+        )}
+        {trip.status === 'completed' && (
+          <span className="flex items-center gap-1 text-xs font-medium" style={{ color: '#22c55e' }}>
+            <CheckCircle className="w-3 h-3" /> Trip complete
+          </span>
+        )}
+      </div>
+
+      {/* Checklist progress */}
+      <div>
+        <button
+          onClick={() => setExpanded(e => !e)}
+          className="w-full flex items-center justify-between mb-1.5"
+        >
+          <span className="text-xs font-medium" style={{ color: 'var(--text-secondary)' }}>
+            Pre-trip checklist
+          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-xs" style={{ color: done === total ? '#22c55e' : 'var(--text-muted)' }}>
+              {done}/{total}
+            </span>
+            {expanded
+              ? <ChevronUp className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
+              : <ChevronDown className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />}
+          </div>
+        </button>
+        <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--border-default)' }}>
+          <motion.div
+            className="h-full rounded-full"
+            animate={{ width: `${pct}%` }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            style={{ background: done === total ? '#22c55e' : '#3b82f6' }}
+          />
+        </div>
+      </div>
+
+      {/* Expanded checklist */}
+      <AnimatePresence>
+        {expanded && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="overflow-hidden"
+          >
+            <div className="space-y-1 pt-1">
+              {DEFAULT_CHECKLIST.map(item => {
+                const isDone = checked.includes(item.id)
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => toggle(item.id)}
+                    className="w-full flex items-center gap-2.5 py-1 text-left"
+                  >
+                    <div
+                      className="w-4 h-4 rounded flex items-center justify-center shrink-0 transition-all"
+                      style={{
+                        border: `1.5px solid ${isDone ? '#22c55e' : 'var(--border-default)'}`,
+                        background: isDone ? '#22c55e' : 'transparent',
+                      }}
+                    >
+                      {isDone && <Check className="w-2.5 h-2.5 text-white" />}
+                    </div>
+                    <span
+                      className="text-sm"
+                      style={{
+                        color: isDone ? 'var(--text-muted)' : 'var(--text-secondary)',
+                        textDecoration: isDone ? 'line-through' : 'none',
+                      }}
+                    >
+                      {item.label}
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
+
+// ─── Main component ───────────────────────────────────────────────────────────
 
 export default function TripsPillar() {
   const { user } = useAuth()
@@ -40,40 +228,31 @@ export default function TripsPillar() {
 
   const addTrip = async () => {
     if (!user || !form.destination.trim()) return
+    const payload = {
+      user_id: user.id,
+      destination: form.destination.trim().toUpperCase(),
+      start_date: form.start_date || null,
+      end_date: form.end_date || null,
+      budget: Number(form.budget) || null,
+      status: form.status,
+      notes: null,
+    }
     if (!isSupabaseConfigured) {
-      const demoTrip: Trip = {
-        id: crypto.randomUUID(),
-        user_id: user.id,
-        destination: form.destination.toUpperCase(),
-        start_date: form.start_date || null,
-        end_date: form.end_date || null,
-        budget: Number(form.budget) || null,
-        status: form.status,
-        notes: null,
-        created_at: new Date().toISOString(),
-      }
-      setTrips(t => [...t, demoTrip].sort((a, b) => (a.start_date || '').localeCompare(b.start_date || '')))
-      setForm({ destination: '', start_date: '', end_date: '', budget: '', status: 'planning' })
-      setShowAdd(false)
-      return
+      const demo: Trip = { ...payload, id: crypto.randomUUID(), created_at: new Date().toISOString() }
+      setTrips(t => [...t, demo].sort((a, b) => (a.start_date || '').localeCompare(b.start_date || '')))
+    } else {
+      const { data } = await supabase.from('trips').insert(payload).select().single()
+      if (data) setTrips(t => [...t, data].sort((a, b) => (a.start_date || '').localeCompare(b.start_date || '')))
     }
-    const { data } = await supabase
-      .from('trips')
-      .insert({
-        user_id: user.id,
-        destination: form.destination.toUpperCase(),
-        start_date: form.start_date || null,
-        end_date: form.end_date || null,
-        budget: Number(form.budget) || null,
-        status: form.status,
-      })
-      .select()
-      .single()
-    if (data) {
-      setTrips(t => [...t, data].sort((a, b) => (a.start_date || '').localeCompare(b.start_date || '')))
-      setForm({ destination: '', start_date: '', end_date: '', budget: '', status: 'planning' })
-      setShowAdd(false)
-    }
+    setForm({ destination: '', start_date: '', end_date: '', budget: '', status: 'planning' })
+    setShowAdd(false)
+  }
+
+  const deleteTrip = async (id: string) => {
+    if (!confirm('Remove this trip?')) return
+    setTrips(t => t.filter(x => x.id !== id))
+    if (isSupabaseConfigured) await supabase.from('trips').delete().eq('id', id)
+    localStorage.removeItem(`lockedin_trip_cl_${id}`)
   }
 
   const completed = trips.filter(t => t.status === 'completed').length
@@ -81,120 +260,129 @@ export default function TripsPillar() {
   const nextTrip = upcoming[0]
   const daysToNext = nextTrip ? daysUntil(nextTrip.start_date) : null
 
-  const status: 'green' | 'amber' | 'red' = completed > 0 ? 'green' : upcoming.length > 0 ? 'amber' : 'red'
-
   return (
     <div className="space-y-4">
-    <TacticalCard status={status}>
-      <div className="p-4">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
+      {/* Header card */}
+      <div className="card p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'rgba(59,130,246,0.1)' }}>
               <Plane className="w-3.5 h-3.5" style={{ color: '#3b82f6' }} />
             </div>
-            <span className="text-sm font-semibold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>Trips</span>
+            <div>
+              <span className="text-sm font-semibold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>Trips</span>
+              <span className="text-xs ml-2" style={{ color: 'var(--text-muted)' }}>
+                {completed} completed · {upcoming.length} upcoming
+              </span>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            {daysToNext !== null && (
+
+          <div className="flex items-center gap-3">
+            {daysToNext !== null && daysToNext >= 0 && (
               <div className="text-right">
-                <div className="font-['Inter'] text-xs text-[#00b4d8]">{daysToNext}d</div>
-                <div className="text-[#94a3b8] font-mono text-[9px]">NEXT MISSION</div>
+                <div className="text-xs font-semibold" style={{ color: '#3b82f6' }}>{daysToNext}d</div>
+                <div className="text-[10px]" style={{ color: 'var(--text-muted)' }}>next trip</div>
               </div>
             )}
             <button
-              onClick={() => setShowAdd(!showAdd)}
-              className="rounded-lg p-1.5 transition-all text-[#4a5568] hover:text-[#00ff41]" style={{ border: '1px solid rgba(255,255,255,0.08)' }}
+              onClick={() => setShowAdd(s => !s)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+              style={{
+                background: showAdd ? '#f0fdf4' : 'var(--bg-subtle)',
+                border: `1px solid ${showAdd ? '#bbf7d0' : 'var(--border-default)'}`,
+                color: showAdd ? '#15803d' : 'var(--text-secondary)',
+              }}
             >
-              <Plus className="w-3 h-3" />
+              <Plus className="w-3.5 h-3.5" />
+              Add trip
             </button>
           </div>
         </div>
 
+        {/* Add form */}
         <AnimatePresence>
           {showAdd && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="mb-3 space-y-1.5"
+              className="overflow-hidden"
             >
-              <input
-                type="text"
-                placeholder="DESTINATION"
-                value={form.destination}
-                onChange={e => setForm(f => ({ ...f, destination: e.target.value }))}
-                className="tactical-input w-full"
-              />
-              <div className="flex gap-1.5">
-                <input type="date" value={form.start_date} onChange={e => setForm(f => ({ ...f, start_date: e.target.value }))}
-                  className="tactical-input flex-1" />
-                <input type="date" value={form.end_date} onChange={e => setForm(f => ({ ...f, end_date: e.target.value }))}
-                  className="tactical-input flex-1" />
+              <div className="mt-4 pt-4 space-y-2.5" style={{ borderTop: '1px solid var(--border-default)' }}>
+                <input
+                  type="text"
+                  placeholder="Destination (e.g. Tokyo, Japan)"
+                  value={form.destination}
+                  onChange={e => setForm(f => ({ ...f, destination: e.target.value }))}
+                  className="tactical-input"
+                  onKeyDown={e => e.key === 'Enter' && addTrip()}
+                />
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-xs mb-1 block" style={{ color: 'var(--text-muted)' }}>Departure</label>
+                    <input type="date" value={form.start_date} onChange={e => setForm(f => ({ ...f, start_date: e.target.value }))} className="tactical-input" />
+                  </div>
+                  <div>
+                    <label className="text-xs mb-1 block" style={{ color: 'var(--text-muted)' }}>Return</label>
+                    <input type="date" value={form.end_date} onChange={e => setForm(f => ({ ...f, end_date: e.target.value }))} className="tactical-input" />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-xs mb-1 block" style={{ color: 'var(--text-muted)' }}>Budget ($)</label>
+                    <input type="number" placeholder="2500" value={form.budget} onChange={e => setForm(f => ({ ...f, budget: e.target.value }))} className="tactical-input" />
+                  </div>
+                  <div>
+                    <label className="text-xs mb-1 block" style={{ color: 'var(--text-muted)' }}>Status</label>
+                    <select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))} className="tactical-input">
+                      <option value="planning">Planning</option>
+                      <option value="booked">Booked</option>
+                      <option value="completed">Completed</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={addTrip}
+                    className="flex-1 py-2 rounded-lg text-sm font-medium text-white transition-all"
+                    style={{ background: '#3b82f6' }}
+                  >
+                    Add trip
+                  </button>
+                  <button
+                    onClick={() => setShowAdd(false)}
+                    className="px-4 py-2 rounded-lg text-sm transition-all"
+                    style={{ background: 'var(--bg-subtle)', color: 'var(--text-muted)' }}
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
-              <div className="flex gap-1.5">
-                <input type="number" placeholder="BUDGET $" value={form.budget} onChange={e => setForm(f => ({ ...f, budget: e.target.value }))}
-                  className="tactical-input flex-1" />
-                <select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}
-                  className="tactical-input flex-1">
-                  <option value="planning">PLANNING</option>
-                  <option value="booked">BOOKED</option>
-                  <option value="completed">COMPLETED</option>
-                </select>
-              </div>
-              <button onClick={addTrip} className="w-full rounded-lg bg-[#00ff41]/10 text-[#00ff41] font-mono text-xs py-2 hover:bg-[#00ff41]/18 transition-all" style={{ border: '1px solid rgba(0,255,65,0.3)' }}>
-                + ADD MISSION
-              </button>
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* Trip list */}
-        <div className="space-y-1">
-          {trips.slice(0, 3).map(trip => {
-            const days = daysUntil(trip.start_date)
-            return (
-              <div key={trip.id} className="flex items-center gap-2 py-1.5 last:pb-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                <div className="w-1.5 h-1.5 shrink-0" style={{ background: STATUS_COLORS[trip.status] || '#94a3b8' }} />
-                <div className="flex-1 min-w-0">
-                  <div className="font-['Inter'] text-xs text-[#e2e8f0] truncate flex items-center gap-1">
-                    <Plane className="w-2.5 h-2.5 shrink-0 text-[#94a3b8]" />
-                    {trip.destination}
-                  </div>
-                  {trip.start_date && (
-                    <div className="text-[#94a3b8] font-mono text-[9px]">
-                      {new Date(trip.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                    </div>
-                  )}
-                </div>
-                {days !== null && trip.status !== 'completed' && (
-                  <div className="text-[#00b4d8] font-['Inter'] text-[10px] shrink-0 flex items-center gap-0.5">
-                    <Clock className="w-2.5 h-2.5" />
-                    {days > 0 ? `${days}d` : 'NOW'}
-                  </div>
-                )}
-                {trip.status === 'completed' && (
-                  <CheckCircle className="w-3 h-3 text-[#00ff41] shrink-0" />
-                )}
-              </div>
-            )
-          })}
-          {trips.length === 0 && (
-            <div className="text-[#2a3441] font-mono text-xs text-center py-2">
-              NO MISSIONS PLANNED
-            </div>
-          )}
-        </div>
-
-        {/* Stats */}
-        <div className="flex items-center justify-between mt-3 pt-2" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-          <span className="text-[#94a3b8] font-mono text-[10px] flex items-center gap-1">
-            <MapPin className="w-3 h-3" /> {completed} COMPLETED / {trips.length} TOTAL
-          </span>
-        </div>
       </div>
-    </TacticalCard>
-    <PillarGoals category="Travel" accentColor="#0d9488" accentBg="#f0fdfa" accentBorder="#99f6e4" />
-    <PillarHabitTracker pillar="Travel" accentColor="#0d9488" accentMuted="rgba(13,148,136,0.15)" />
+
+      {/* Trip cards */}
+      {trips.length === 0 ? (
+        <div
+          className="card p-10 flex flex-col items-center justify-center text-center"
+          style={{ borderStyle: 'dashed' }}
+        >
+          <MapPin className="w-8 h-8 mb-3" style={{ color: 'var(--text-muted)' }} />
+          <p className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>No trips planned yet</p>
+          <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Add your first trip above</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {trips.map(trip => (
+            <TripCard key={trip.id} trip={trip} onDelete={deleteTrip} />
+          ))}
+        </div>
+      )}
+
+      <PillarHabitTracker pillar="Travel" accentColor="#3b82f6" accentMuted="rgba(59,130,246,0.15)" />
+      <PillarGoals category="Travel" accentColor="#3b82f6" accentBg="rgba(59,130,246,0.06)" accentBorder="rgba(59,130,246,0.2)" />
     </div>
   )
 }

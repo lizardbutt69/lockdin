@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  X, Plus, Trash2, Lock, Unlock, Settings, Sparkles, ChevronRight,
+  X, Plus, Trash2, Lock, Unlock, Settings, Sparkles, ChevronRight, ChevronLeft,
   AlertCircle, Loader2, Key
 } from 'lucide-react'
 import { useJournal, type JournalEntry } from '../../hooks/useJournal'
@@ -334,9 +334,10 @@ export default function JournalModal({ onClose }: JournalModalProps) {
   const [saving, setSaving] = useState(false)
   const [showPinSetup, setShowPinSetup] = useState(false)
   const [showAI, setShowAI] = useState(false)
+  const [mobileView, setMobileView] = useState<'list' | 'editor'>('list')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
-  // Default to today's entry or new
+  // Default to today's entry or new — on mobile stay on list view
   useEffect(() => {
     if (loading) return
     if (todayEntry) {
@@ -360,12 +361,14 @@ export default function JournalModal({ onClose }: JournalModalProps) {
     setSelected(entry)
     setDraft({ mood: entry.mood, title: entry.title || '', content: entry.content })
     setShowAI(false)
+    setMobileView('editor')
   }
 
   function newEntry() {
     setSelected('new')
     setDraft({ mood: 3, title: '', content: '' })
     setShowAI(false)
+    setMobileView('editor')
   }
 
   async function handleSave() {
@@ -429,22 +432,21 @@ export default function JournalModal({ onClose }: JournalModalProps) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex" style={{ background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(4px)' }}>
+    <div className="fixed inset-0 z-50 flex sm:items-center sm:justify-center sm:p-4" style={{ background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(4px)' }}>
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 16 }}
         transition={{ duration: 0.25 }}
-        className="m-auto w-full flex overflow-hidden relative"
+        className="relative flex flex-col sm:flex-row w-full h-full sm:h-auto overflow-hidden sm:rounded-2xl"
         style={{
           background: 'var(--bg-card)',
           maxWidth: 900,
-          maxHeight: '90vh',
-          borderRadius: 16,
+          maxHeight: '100%',
           boxShadow: '0 25px 60px rgba(0,0,0,0.2)',
         }}
       >
-        {/* Prominent close button — top-right of entire modal */}
+        {/* Close button — top-right, always visible */}
         <button
           onClick={onClose}
           className="absolute top-3 right-3 z-10 w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
@@ -455,9 +457,10 @@ export default function JournalModal({ onClose }: JournalModalProps) {
         >
           <X className="w-4 h-4" />
         </button>
+
         {/* ─ Left sidebar: entry list ─ */}
         <div
-          className="w-64 shrink-0 flex flex-col border-r"
+          className={`${mobileView === 'editor' ? 'hidden sm:flex' : 'flex'} w-full sm:w-64 shrink-0 flex-col border-b sm:border-b-0 sm:border-r`}
           style={{ borderColor: 'var(--border-default)', background: 'var(--bg-subtle)' }}
         >
           {/* Header */}
@@ -465,7 +468,7 @@ export default function JournalModal({ onClose }: JournalModalProps) {
             <h2 className="font-bold font-['Space_Grotesk'] text-base" style={{ color: 'var(--text-primary)' }}>Journal</h2>
             <div className="flex gap-1">
               <button
-                onClick={() => setShowAI(!showAI)}
+                onClick={() => { setShowAI(!showAI); if (!showAI) setMobileView('editor') }}
                 className="p-1.5 rounded-lg transition-colors"
                 title="AI Reflection"
                 style={{ background: showAI ? '#f5f3ff' : 'transparent', color: showAI ? '#7c3aed' : 'var(--text-muted)' }}
@@ -564,9 +567,9 @@ export default function JournalModal({ onClose }: JournalModalProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex-1 flex flex-col overflow-hidden"
+              className={`${mobileView === 'list' ? 'hidden sm:flex' : 'flex'} flex-1 flex-col overflow-hidden`}
             >
-              <AISummaryPanel entries={entries} onClose={() => setShowAI(false)} />
+              <AISummaryPanel entries={entries} onClose={() => { setShowAI(false); setMobileView('list') }} />
             </motion.div>
           ) : (
             <motion.div
@@ -574,22 +577,32 @@ export default function JournalModal({ onClose }: JournalModalProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex-1 flex flex-col overflow-hidden"
+              className={`${mobileView === 'list' ? 'hidden sm:flex' : 'flex'} flex-1 flex-col overflow-hidden`}
             >
               {/* Editor header */}
-              <div className="px-6 pt-5 pb-4 border-b flex items-center justify-between shrink-0" style={{ borderColor: 'var(--border-subtle)' }}>
-                <div>
-                  <p className="text-xs font-medium mb-0.5" style={{ color: 'var(--text-muted)' }}>
-                    {selected !== 'new' && selected ? formatDate(selected.entry_date) : formatDate(today)}
-                  </p>
-                  <input
-                    type="text"
-                    value={draft.title}
-                    onChange={e => setDraft(d => ({ ...d, title: e.target.value }))}
-                    placeholder="Title (optional)"
-                    className="text-lg font-bold bg-transparent outline-none w-full font-['Space_Grotesk']"
-                    style={{ color: 'var(--text-primary)' }}
-                  />
+              <div className="px-4 sm:px-6 pt-4 sm:pt-5 pb-3 sm:pb-4 border-b flex items-center justify-between shrink-0" style={{ borderColor: 'var(--border-subtle)' }}>
+                <div className="flex items-center gap-2 min-w-0 flex-1">
+                  {/* Back button — mobile only */}
+                  <button
+                    onClick={() => setMobileView('list')}
+                    className="sm:hidden w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
+                    style={{ color: 'var(--text-muted)', background: 'var(--bg-subtle)' }}
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <div className="min-w-0">
+                    <p className="text-xs font-medium mb-0.5" style={{ color: 'var(--text-muted)' }}>
+                      {selected !== 'new' && selected ? formatDate(selected.entry_date) : formatDate(today)}
+                    </p>
+                    <input
+                      type="text"
+                      value={draft.title}
+                      onChange={e => setDraft(d => ({ ...d, title: e.target.value }))}
+                      placeholder="Title (optional)"
+                      className="text-base sm:text-lg font-bold bg-transparent outline-none w-full font-['Space_Grotesk']"
+                      style={{ color: 'var(--text-primary)' }}
+                    />
+                  </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   {selected !== 'new' && selected && (
@@ -616,7 +629,7 @@ export default function JournalModal({ onClose }: JournalModalProps) {
               </div>
 
               {/* Mood selector */}
-              <div className="px-6 py-3 border-b flex items-center gap-3 shrink-0" style={{ borderColor: 'var(--border-subtle)' }}>
+              <div className="px-4 sm:px-6 py-3 border-b flex items-center gap-3 shrink-0" style={{ borderColor: 'var(--border-subtle)' }}>
                 <span className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>Mood</span>
                 <div className="flex gap-2">
                   {MOODS.map(m => (
@@ -638,7 +651,7 @@ export default function JournalModal({ onClose }: JournalModalProps) {
               </div>
 
               {/* Text area */}
-              <div className="flex-1 overflow-y-auto px-6 py-4">
+              <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4">
                 <textarea
                   ref={textareaRef}
                   value={draft.content}
@@ -647,7 +660,7 @@ export default function JournalModal({ onClose }: JournalModalProps) {
                   className="w-full bg-transparent outline-none resize-none text-sm leading-relaxed"
                   style={{
                     color: 'var(--text-secondary)',
-                    minHeight: 300,
+                    minHeight: 180,
                     fontFamily: 'Inter, sans-serif',
                     caretColor: '#22c55e',
                   }}
@@ -655,7 +668,7 @@ export default function JournalModal({ onClose }: JournalModalProps) {
               </div>
 
               {/* Footer word count */}
-              <div className="px-6 py-2 border-t shrink-0" style={{ borderColor: 'var(--border-subtle)' }}>
+              <div className="px-4 sm:px-6 py-2 border-t shrink-0" style={{ borderColor: 'var(--border-subtle)' }}>
                 <span className="text-xs" style={{ color: 'var(--text-muted)' }}>
                   {draft.content.trim().split(/\s+/).filter(Boolean).length} words
                 </span>
