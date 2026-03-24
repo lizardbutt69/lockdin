@@ -184,7 +184,10 @@ html, body, #root {
   color: var(--text-primary);
   font-family: var(--font-display);
   font-size: 13px;
-  padding: 7px 10px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-left: 10px;
+  padding-right: 10px;
   outline: none;
   transition: border-color 0.15s, box-shadow 0.15s;
   width: 100%;

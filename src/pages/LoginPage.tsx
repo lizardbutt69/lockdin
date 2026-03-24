@@ -9,7 +9,7 @@ type Mode = 'login' | 'signup'
 const PILLARS = [
   { label: 'God & Spirituality',      color: '#7c3aed' },
   { label: 'Finances',                color: '#0891b2' },
-  { label: 'Wife & Relationships',    color: '#e11d48' },
+  { label: 'Relationships',           color: '#e11d48' },
   { label: 'Diet & Health',           color: '#16a34a' },
   { label: 'Fitness',                 color: '#ea580c' },
   { label: 'Trips & Adventures',      color: '#2563eb' },
@@ -73,7 +73,7 @@ export default function LoginPage() {
             Your personal<br />command center.
           </h1>
           <p className="text-green-200 text-base leading-relaxed mb-10">
-            Track and level up across 6 life pillars. Built for men who are serious about becoming better.
+            Track and level up across important life pillars. Built for men who are serious about becoming better.
           </p>
 
           <div className="space-y-3">
