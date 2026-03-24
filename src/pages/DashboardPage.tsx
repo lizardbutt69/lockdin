@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import TopBar from '../components/dashboard/TopBar'
 import Sidebar, { type PillarKey } from '../components/dashboard/Sidebar'
@@ -15,7 +15,6 @@ import DietPillar from '../components/pillars/DietPillar'
 import FitnessPillar from '../components/pillars/FitnessPillar'
 import TripsPillar from '../components/pillars/TripsPillar'
 import JournalCard from '../components/journal/JournalCard'
-import { JournalLockProvider } from '../contexts/JournalLockContext'
 import { useDailyLog } from '../hooks/useDailyLog'
 import { useProfile } from '../hooks/useProfile'
 import { useAuth } from '../contexts/AuthContext'
@@ -75,7 +74,7 @@ export default function DashboardPage() {
     )
   }
 
-  const pillarMap: Record<Exclude<PillarKey, 'overview'>, JSX.Element> = {
+  const pillarMap: Record<Exclude<PillarKey, 'overview'>, React.ReactElement> = {
     god:           <GodPillar log={log} onUpdate={handleUpdate} />,
     finances:      <FinancesPillar log={log} onUpdate={handleUpdate} />,
     relationships: <RelationshipsPillar log={log} onUpdate={handleUpdate} weeklyDateNights={weeklyDateNights} />,

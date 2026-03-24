@@ -39,13 +39,14 @@ export function useNotes() {
       return
     }
 
-    const { data } = await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data } = await (supabase as any)
       .from('notes')
       .select('*')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
 
-    setNotes(data || [])
+    setNotes((data as unknown as Note[]) || [])
     setLoading(false)
   }, [user])
 
@@ -69,12 +70,13 @@ export function useNotes() {
       return
     }
 
-    const { data } = await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data } = await (supabase as any)
       .from('notes')
       .insert({ user_id: user.id, content: content.trim() })
       .select()
       .single()
-    if (data) setNotes(prev => [data, ...prev])
+    if (data) setNotes(prev => [data as unknown as Note, ...prev])
   }, [user])
 
   const updateNote = useCallback(async (id: string, updates: Partial<Pick<Note, 'content' | 'is_completed' | 'is_archived'>>) => {
@@ -84,8 +86,9 @@ export function useNotes() {
       setNotes(next)
       return
     }
-    const { data } = await supabase.from('notes').update(updates).eq('id', id).select().single()
-    if (data) setNotes(prev => prev.map(n => n.id === id ? data : n))
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data } = await (supabase as any).from('notes').update(updates).eq('id', id).select().single()
+    if (data) setNotes(prev => prev.map(n => n.id === id ? data as unknown as Note : n))
   }, [])
 
   const deleteNote = useCallback(async (id: string) => {
@@ -95,7 +98,8 @@ export function useNotes() {
       setNotes(next)
       return
     }
-    await supabase.from('notes').delete().eq('id', id)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await (supabase as any).from('notes').delete().eq('id', id)
     setNotes(prev => prev.filter(n => n.id !== id))
   }, [])
 

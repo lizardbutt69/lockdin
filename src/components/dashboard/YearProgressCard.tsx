@@ -64,7 +64,7 @@ export default function YearProgressCard({ name }: { name?: string }) {
     return () => clearInterval(id)
   }, [])
 
-  const { year, daysInYear, daysElapsed, daysRemaining, yearPct, monthName, dayOfMonth, daysInMonth, monthPct, monthDaysLeft, shortMonths, month, dayPct } = data
+  const { year, daysElapsed, daysRemaining, yearPct, monthName, dayOfMonth, daysInMonth, monthPct, monthDaysLeft, shortMonths, month, dayPct } = data
 
   const yearPctDisplay = Math.floor(yearPct * 100)
   const monthPctDisplay = Math.floor(monthPct * 100)

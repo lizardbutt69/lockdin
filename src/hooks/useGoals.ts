@@ -22,14 +22,15 @@ export function useGoals() {
   const fetchGoals = useCallback(async () => {
     if (!user || !isSupabaseConfigured) { setLoading(false); return }
     setLoading(true)
-    const { data } = await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data } = await (supabase as any)
       .from('yearly_goals')
       .select('*')
       .eq('user_id', user.id)
       .order('is_completed', { ascending: true })
       .order('sort_order', { ascending: true })
       .order('created_at', { ascending: true })
-    setGoals((data as YearlyGoal[]) || [])
+    setGoals((data as unknown as YearlyGoal[]) || [])
     setLoading(false)
   }, [user])
 
@@ -37,7 +38,8 @@ export function useGoals() {
 
   async function addGoal(title: string, category?: string) {
     if (!user) return
-    const { data, error } = await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data, error } = await (supabase as any)
       .from('yearly_goals')
       .insert({
         user_id: user.id,
@@ -48,14 +50,15 @@ export function useGoals() {
       })
       .select()
       .single()
-    if (!error && data) setGoals(prev => [...prev, data as YearlyGoal])
+    if (!error && data) setGoals(prev => [...prev, data as unknown as YearlyGoal])
   }
 
   async function toggleGoal(id: string) {
     const goal = goals.find(g => g.id === id)
     if (!goal) return
     const next = !goal.is_completed
-    const { error } = await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error } = await (supabase as any)
       .from('yearly_goals')
       .update({ is_completed: next, completed_at: next ? new Date().toISOString() : null })
       .eq('id', id)
@@ -65,7 +68,8 @@ export function useGoals() {
   }
 
   async function deleteGoal(id: string) {
-    const { error } = await supabase.from('yearly_goals').delete().eq('id', id)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error } = await (supabase as any).from('yearly_goals').delete().eq('id', id)
     if (!error) setGoals(prev => prev.filter(g => g.id !== id))
   }
 

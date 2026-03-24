@@ -35,7 +35,8 @@ export function useMissions() {
     if (!user || !isSupabaseConfigured) { setLoading(false); return }
     setLoading(true)
     // Show: all incomplete + completed today
-    const { data } = await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data } = await (supabase as any)
       .from('missions')
       .select('*')
       .eq('user_id', user.id)
@@ -43,7 +44,7 @@ export function useMissions() {
       .order('completed', { ascending: true })
       .order('priority', { ascending: true })
       .order('created_at', { ascending: true })
-    setMissions((data as Mission[]) || [])
+    setMissions((data as unknown as Mission[]) || [])
     setLoading(false)
   }, [user, today])
 
@@ -51,7 +52,8 @@ export function useMissions() {
 
   async function addMission(title: string, priority: Priority) {
     if (!user) return
-    const { data, error } = await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data, error } = await (supabase as any)
       .from('missions')
       .insert({
         user_id: user.id,
@@ -63,14 +65,15 @@ export function useMissions() {
       })
       .select()
       .single()
-    if (!error && data) setMissions(prev => [...prev, data as Mission])
+    if (!error && data) setMissions(prev => [...prev, data as unknown as Mission])
   }
 
   async function toggleMission(id: string) {
     const mission = missions.find(m => m.id === id)
     if (!mission) return
     const next = !mission.completed
-    const { error } = await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error } = await (supabase as any)
       .from('missions')
       .update({
         completed: next,
@@ -83,7 +86,8 @@ export function useMissions() {
   }
 
   async function deleteMission(id: string) {
-    const { error } = await supabase.from('missions').delete().eq('id', id)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error } = await (supabase as any).from('missions').delete().eq('id', id)
     if (!error) setMissions(prev => prev.filter(m => m.id !== id))
   }
 

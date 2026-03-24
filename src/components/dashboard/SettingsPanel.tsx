@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { X, Key, Eye, EyeOff, Check, Lock, User, Camera, Trash2 } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useJournalLock } from '../../contexts/JournalLockContext'
 
 const ANTHROPIC_KEY_STORAGE = 'lockedin_anthropic_key'
