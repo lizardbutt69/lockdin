@@ -186,17 +186,21 @@ export default function PillarHabitTracker({ pillar, accentColor = '#22c55e', ac
             {completedToday}/{habits.length}
           </span>
         </div>
-        {/* Day-of-week labels aligned with dots */}
-        <div className="flex items-center gap-0.5 mr-12">
-          {DOW.map((d, i) => (
-            <div
-              key={i}
-              className="w-3.5 text-center text-[10px] font-semibold"
-              style={{ color: weekDates[i] === today ? accentColor : 'var(--text-muted)' }}
-            >
-              {d}
-            </div>
-          ))}
+        {/* Right section mirrors row layout exactly */}
+        <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-0.5">
+            {DOW.map((d, i) => (
+              <div
+                key={i}
+                className="w-3.5 text-center text-[10px] font-semibold"
+                style={{ color: weekDates[i] === today ? accentColor : 'var(--text-muted)' }}
+              >
+                {d}
+              </div>
+            ))}
+          </div>
+          <div className="w-8" />{/* streak placeholder */}
+          <div className="w-4" />{/* delete placeholder */}
         </div>
       </div>
 

@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { Plus, Trash2, Zap, Trophy, AlertTriangle, ChevronDown, ChevronUp } from 'lucide-react'
+import { Plus, Trash2, Zap, Trophy, AlertTriangle, ChevronDown, ChevronUp, Maximize2 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useMissions, type Priority, MISSION_COMPLETE_BONUS } from '../../hooks/useMissions'
+import MissionsModal from './MissionsModal'
 
 const PRIORITY_CONFIG = {
   critical: { label: 'Critical', color: '#dc2626', bg: '#fef2f2', border: '#fca5a5', dot: '🔴', xp: 50 },
@@ -17,6 +18,7 @@ export default function MissionsCard() {
   const [priority, setPriority] = useState<Priority>('high')
   const [showAdd, setShowAdd] = useState(false)
   const [showCompleted, setShowCompleted] = useState(false)
+  const [showModal, setShowModal] = useState(false)
 
   async function handleAdd(e: React.FormEvent) {
     e.preventDefault()
@@ -29,6 +31,7 @@ export default function MissionsCard() {
   const xpEarned = completed.reduce((sum, m) => sum + m.xp_value, 0)
 
   return (
+    <>
     <div
       className="rounded-xl overflow-hidden flex flex-col"
       style={{
@@ -46,13 +49,23 @@ export default function MissionsCard() {
             {incomplete.length} remaining · +{xpEarned} XP earned
           </p>
         </div>
-        <button
-          onClick={() => setShowAdd(v => !v)}
-          className="w-7 h-7 rounded-lg flex items-center justify-center transition-colors"
-          style={{ background: showAdd ? '#f0fdf4' : 'var(--bg-input)', border: '1px solid var(--border-default)', color: 'var(--text-tertiary)' }}
-        >
-          <Plus className="w-3.5 h-3.5" />
-        </button>
+        <div className="flex items-center gap-1.5">
+          <button
+            onClick={() => setShowAdd(v => !v)}
+            className="w-7 h-7 rounded-lg flex items-center justify-center transition-colors"
+            style={{ background: showAdd ? '#f0fdf4' : 'var(--bg-input)', border: '1px solid var(--border-default)', color: 'var(--text-tertiary)' }}
+          >
+            <Plus className="w-3.5 h-3.5" />
+          </button>
+          <button
+            onClick={() => setShowModal(true)}
+            className="w-7 h-7 rounded-lg flex items-center justify-center transition-colors"
+            style={{ background: 'var(--bg-input)', border: '1px solid var(--border-default)', color: 'var(--text-tertiary)' }}
+            title="Expand"
+          >
+            <Maximize2 className="w-3 h-3" />
+          </button>
+        </div>
       </div>
 
       {/* All clear banner */}
@@ -234,6 +247,11 @@ export default function MissionsCard() {
         </div>
       )}
     </div>
+
+    <AnimatePresence>
+      {showModal && <MissionsModal onClose={() => setShowModal(false)} />}
+    </AnimatePresence>
+    </>
   )
 }
 

@@ -93,8 +93,31 @@ create table if not exists financial_snapshots (
   savings_actual numeric(10,2),
   investment_contributions numeric(10,2),
   side_income numeric(10,2),
+  debt numeric(12,2),
+  assets numeric(12,2),
   created_at timestamptz default now(),
   unique(user_id, month)
+);
+
+-- Financial custom fields (per user, not monthly)
+create table if not exists financial_custom_fields (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references profiles(id) on delete cascade,
+  label text not null,
+  value numeric(12,2) default 0,
+  sort_order integer default 0,
+  created_at timestamptz default now()
+);
+
+-- Savings goals
+create table if not exists savings_goals (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references profiles(id) on delete cascade,
+  name text not null,
+  emoji text default '🎯',
+  target numeric(12,2) not null,
+  current_amount numeric(12,2) default 0,
+  created_at timestamptz default now()
 );
 
 -- Relationship goals
@@ -127,6 +150,36 @@ create table if not exists journal_entries (
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
+
+-- Debts
+create table if not exists debts (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references profiles(id) on delete cascade,
+  name text not null,
+  type text default 'other',
+  current_balance numeric(12,2) not null default 0,
+  original_balance numeric(12,2) default 0,
+  interest_rate numeric(5,2) default 0,
+  minimum_payment numeric(10,2) default 0,
+  created_at timestamptz default now()
+);
+
+alter table debts enable row level security;
+create policy "Users can manage own debts" on debts
+  for all using (auth.uid() = user_id);
+
+-- Gratitude entries
+create table if not exists gratitude_entries (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references profiles(id) on delete cascade,
+  category text not null default 'grateful',
+  content text not null,
+  created_at timestamptz default now()
+);
+
+alter table gratitude_entries enable row level security;
+create policy "Users can manage own gratitude entries" on gratitude_entries
+  for all using (auth.uid() = user_id);
 
 -- Saved Bible verses
 create table if not exists saved_verses (
@@ -174,6 +227,16 @@ create policy "Users can manage own trips" on trips
 
 -- Financial snapshots
 create policy "Users can manage own financial snapshots" on financial_snapshots
+  for all using (auth.uid() = user_id);
+
+-- Financial custom fields
+alter table financial_custom_fields enable row level security;
+create policy "Users can manage own financial custom fields" on financial_custom_fields
+  for all using (auth.uid() = user_id);
+
+-- Savings goals
+alter table savings_goals enable row level security;
+create policy "Users can manage own savings goals" on savings_goals
   for all using (auth.uid() = user_id);
 
 -- Relationship goals

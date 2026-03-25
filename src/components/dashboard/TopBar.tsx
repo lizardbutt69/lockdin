@@ -23,6 +23,7 @@ const PAGE_TITLES: Record<PillarKey, string> = {
   diet:          'Diet & Health',
   fitness:       'Fitness',
   trips:         'Trips',
+  gratitude:     'Gratitude',
 }
 
 const AVATAR_PHOTO_KEY = 'lockedin_avatar_photo'

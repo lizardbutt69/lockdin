@@ -1,17 +1,16 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { LayoutGrid, BookOpen, DollarSign, Heart, Leaf, Dumbbell, Plane, LogOut, Flame, Zap, Target, Settings } from 'lucide-react'
+import { LayoutGrid, BookOpen, DollarSign, Heart, Leaf, Dumbbell, Plane, LogOut, Flame, Zap, Target, Settings, Sparkles } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '../../contexts/AuthContext'
 import { getRankInfo } from '../../hooks/useProfile'
 import SettingsPanel, { getAvatarColor } from './SettingsPanel'
 import PomodoroTimer from './PomodoroTimer'
-import SidebarNotes from './SidebarNotes'
 import type { Database } from '../../types/database'
 
 type Profile = Database['public']['Tables']['profiles']['Row']
 
-export type PillarKey = 'overview' | 'god' | 'finances' | 'relationships' | 'diet' | 'fitness' | 'trips'
+export type PillarKey = 'overview' | 'god' | 'finances' | 'relationships' | 'diet' | 'fitness' | 'trips' | 'gratitude'
 
 interface SidebarProps {
   activePillar: PillarKey
@@ -135,8 +134,32 @@ export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUp
         })}
       </nav>
 
-      {/* Notes */}
-      <SidebarNotes />
+      {/* Gratitude */}
+      <div className="px-3 py-2" style={{ borderTop: '1px solid var(--border-subtle)' }}>
+        <button
+          onClick={() => { onSelect('gratitude'); onClose?.() }}
+          className="relative w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150 text-left"
+          style={{
+            background: activePillar === 'gratitude' ? '#fefce8' : 'transparent',
+            color: activePillar === 'gratitude' ? '#b45309' : 'var(--text-secondary)',
+          }}
+          onMouseEnter={e => { if (activePillar !== 'gratitude') e.currentTarget.style.background = '#fefce8' }}
+          onMouseLeave={e => { if (activePillar !== 'gratitude') e.currentTarget.style.background = 'transparent' }}
+        >
+          {activePillar === 'gratitude' && (
+            <div className="absolute left-0 top-1/4 bottom-1/4 w-0.5 rounded-r" style={{ background: '#f59e0b' }} />
+          )}
+          <Sparkles className="w-4 h-4 shrink-0" style={{ color: activePillar === 'gratitude' ? '#f59e0b' : '#9ca3af' }} />
+          <span className="text-sm font-medium">Gratitude</span>
+          {activePillar === 'gratitude' && (
+            <motion.div
+              layoutId="sidebar-gratitude-bg"
+              className="absolute inset-0 rounded-lg pointer-events-none"
+              style={{ border: '1px solid #fde68a' }}
+            />
+          )}
+        </button>
+      </div>
 
       {/* Bottom */}
       <div

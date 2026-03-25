@@ -50,7 +50,7 @@ export function useMissions() {
 
   useEffect(() => { fetchMissions() }, [fetchMissions])
 
-  async function addMission(title: string, priority: Priority) {
+  async function addMission(title: string, priority: Priority, dueDate?: string | null) {
     if (!user) return
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data, error } = await (supabase as any)
@@ -60,7 +60,7 @@ export function useMissions() {
         title: title.trim(),
         priority,
         xp_value: XP_BY_PRIORITY[priority],
-        due_date: today,
+        due_date: dueDate !== undefined ? dueDate : today,
         completed: false,
       })
       .select()
@@ -85,6 +85,15 @@ export function useMissions() {
     }
   }
 
+  async function updateMission(id: string, updates: { title?: string; priority?: Priority; due_date?: string | null }) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error } = await (supabase as any).from('missions').update({
+      ...updates,
+      ...(updates.priority ? { xp_value: XP_BY_PRIORITY[updates.priority] } : {}),
+    }).eq('id', id)
+    if (!error) setMissions(prev => prev.map(m => m.id === id ? { ...m, ...updates, ...(updates.priority ? { xp_value: XP_BY_PRIORITY[updates.priority!] } : {}) } : m))
+  }
+
   async function deleteMission(id: string) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { error } = await (supabase as any).from('missions').delete().eq('id', id)
@@ -107,6 +116,7 @@ export function useMissions() {
     totalXPAvailable,
     addMission,
     toggleMission,
+    updateMission,
     deleteMission,
     refetch: fetchMissions,
   }

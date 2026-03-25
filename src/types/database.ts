@@ -330,6 +330,96 @@ export interface Database {
         }
         Relationships: []
       }
+      debts: {
+        Row: {
+          id: string
+          user_id: string
+          name: string
+          type: string
+          current_balance: number
+          original_balance: number
+          interest_rate: number
+          minimum_payment: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          name: string
+          type?: string
+          current_balance: number
+          original_balance?: number
+          interest_rate?: number
+          minimum_payment?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          name?: string
+          type?: string
+          current_balance?: number
+          original_balance?: number
+          interest_rate?: number
+          minimum_payment?: number
+          created_at?: string
+        }
+        Relationships: []
+      }
+      gratitude_entries: {
+        Row: {
+          id: string
+          user_id: string
+          category: string
+          content: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          category: string
+          content: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          category?: string
+          content?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
+      savings_goals: {
+        Row: {
+          id: string
+          user_id: string
+          name: string
+          emoji: string
+          target: number
+          current_amount: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          name: string
+          emoji?: string
+          target: number
+          current_amount?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          name?: string
+          emoji?: string
+          target?: number
+          current_amount?: number
+          created_at?: string
+        }
+        Relationships: []
+      }
       saved_verses: {
         Row: {
           id: string

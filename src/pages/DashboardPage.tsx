@@ -14,6 +14,8 @@ import RelationshipsPillar from '../components/pillars/RelationshipsPillar'
 import DietPillar from '../components/pillars/DietPillar'
 import FitnessPillar from '../components/pillars/FitnessPillar'
 import TripsPillar from '../components/pillars/TripsPillar'
+import GratitudePage from '../components/gratitude/GratitudePage'
+import GratitudeQuickAdd from '../components/gratitude/GratitudeQuickAdd'
 import JournalCard from '../components/journal/JournalCard'
 import { useDailyLog } from '../hooks/useDailyLog'
 import { useProfile } from '../hooks/useProfile'
@@ -82,6 +84,7 @@ export default function DashboardPage() {
     diet:          <DietPillar log={log} onUpdate={handleUpdate} />,
     fitness:       <FitnessPillar log={log} onUpdate={handleUpdate} weeklyWorkouts={weeklyWorkouts} />,
     trips:         <TripsPillar />,
+    gratitude:     <GratitudePage />,
   }
 
   return (
@@ -139,6 +142,7 @@ export default function DashboardPage() {
                   <div className="lg:col-span-1 space-y-4">
                     <MissionsCard />
                     <NotesCard />
+                    <GratitudeQuickAdd />
                   </div>
                 </div>
                 </div>

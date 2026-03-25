@@ -38,7 +38,7 @@ export default function QuoteCard() {
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.2 }}
           >
-            <p className="text-base leading-relaxed italic mb-1.5" style={{ color: 'var(--text-secondary)' }}>
+            <p className="text-sm leading-relaxed italic mb-1.5" style={{ color: 'var(--text-secondary)' }}>
               "{quote.text}"
             </p>
             <p className="text-xs font-semibold" style={{ color: '#7c3aed' }}>
