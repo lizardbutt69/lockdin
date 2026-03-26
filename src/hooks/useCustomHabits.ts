@@ -70,7 +70,25 @@ export const DEFAULT_HABITS: Record<string, HabitDef[]> = {
   ],
 }
 
-const CUSTOM_KEY = 'lockedin_hc_custom'
+const CUSTOM_KEY   = 'lockedin_hc_custom'
+const HIDDEN_KEY   = 'lockedin_hc_hidden'    // set of default habit IDs to hide
+const OVERRIDE_KEY = 'lockedin_hc_overrides' // map of id → { name, frequency }
+
+function getHidden(): Set<string> {
+  try { return new Set(JSON.parse(localStorage.getItem(HIDDEN_KEY) || '[]')) }
+  catch { return new Set() }
+}
+function saveHidden(s: Set<string>) {
+  localStorage.setItem(HIDDEN_KEY, JSON.stringify([...s]))
+}
+
+function getOverrides(): Record<string, { name: string; frequency: 'daily' | 'weekly' | 'monthly' }> {
+  try { return JSON.parse(localStorage.getItem(OVERRIDE_KEY) || '{}') }
+  catch { return {} }
+}
+function saveOverrides(o: Record<string, { name: string; frequency: 'daily' | 'weekly' | 'monthly' }>) {
+  localStorage.setItem(OVERRIDE_KEY, JSON.stringify(o))
+}
 
 function todayStr(): string {
   return new Date().toISOString().slice(0, 10)
@@ -169,9 +187,13 @@ export default function useCustomHabits(pillar: string) {
 
   const refresh = useCallback(() => forceUpdate(n => n + 1), [])
 
+  const hidden = getHidden()
+  const overrides = getOverrides()
   const allCustom = getCustomHabits()
   const pillarCustom = allCustom.filter(h => h.pillar === pillar)
-  const defaultHabits = DEFAULT_HABITS[pillar] || []
+  const defaultHabits = (DEFAULT_HABITS[pillar] || [])
+    .filter(h => !hidden.has(h.id))
+    .map(h => overrides[h.id] ? { ...h, ...overrides[h.id] } : h)
   const habits: HabitDef[] = [...defaultHabits, ...pillarCustom]
 
   const today = todayStr()
@@ -184,15 +206,55 @@ export default function useCustomHabits(pillar: string) {
   }, [today, pillar, forceUpdate]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const toggle = useCallback((id: string): void => {
-    const completions = getCompletions(today)
-    if (completions[id]) {
-      delete completions[id]
+    const allHabits = [...(DEFAULT_HABITS[pillar] || []), ...getCustomHabits().filter(h => h.pillar === pillar)]
+    const habit = allHabits.find(h => h.id === id)
+    if (!habit) return
+
+    if (habit.frequency === 'daily') {
+      const completions = getCompletions(today)
+      if (completions[id]) delete completions[id]
+      else completions[id] = true
+      setCompletions(today, completions)
+    } else if (habit.frequency === 'weekly') {
+      // Find which day this week it was done and remove it; otherwise mark today
+      const week = getWeekDates(today)
+      const doneDay = week.find(d => !!getCompletions(d)[id])
+      if (doneDay) {
+        const c = getCompletions(doneDay)
+        delete c[id]
+        setCompletions(doneDay, c)
+      } else {
+        const c = getCompletions(today)
+        c[id] = true
+        setCompletions(today, c)
+      }
     } else {
-      completions[id] = true
+      // Monthly: find the day this month it was done and remove it; otherwise mark today
+      const [year, month] = today.split('-')
+      const prefix = `lockedin_hc_${year}-${month}`
+      let doneKey: string | null = null
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i)
+        if (key?.startsWith(prefix)) {
+          try {
+            const data: Record<string, boolean> = JSON.parse(localStorage.getItem(key) || '{}')
+            if (data[id]) { doneKey = key; break }
+          } catch { /* ignore */ }
+        }
+      }
+      if (doneKey) {
+        const data: Record<string, boolean> = JSON.parse(localStorage.getItem(doneKey) || '{}')
+        delete data[id]
+        localStorage.setItem(doneKey, JSON.stringify(data))
+      } else {
+        const c = getCompletions(today)
+        c[id] = true
+        setCompletions(today, c)
+      }
     }
-    setCompletions(today, completions)
+
     refresh()
-  }, [today, refresh])
+  }, [today, pillar, refresh])
 
   const getHistory = useCallback((id: string): DayRecord[] => {
     const records: DayRecord[] = []
@@ -222,12 +284,32 @@ export default function useCustomHabits(pillar: string) {
   }, [pillar, refresh])
 
   const removeHabit = useCallback((id: string): void => {
-    const existing = getCustomHabits()
-    const habit = existing.find(h => h.id === id)
-    if (!habit || habit.isDefault) return
-    saveCustomHabits(existing.filter(h => h.id !== id))
+    const custom = getCustomHabits()
+    const isCustom = custom.some(h => h.id === id)
+    if (isCustom) {
+      saveCustomHabits(custom.filter(h => h.id !== id))
+    } else {
+      // Default habit — add to hidden set
+      const h = getHidden()
+      h.add(id)
+      saveHidden(h)
+    }
     refresh()
   }, [refresh])
 
-  return { habits, isToday, toggle, addHabit, removeHabit, getHistory }
+  const editHabit = useCallback((id: string, name: string, frequency: 'daily' | 'weekly' | 'monthly'): void => {
+    const custom = getCustomHabits()
+    const isCustom = custom.some(h => h.id === id)
+    if (isCustom) {
+      saveCustomHabits(custom.map(h => h.id === id ? { ...h, name, frequency } : h))
+    } else {
+      // Default habit — store override
+      const o = getOverrides()
+      o[id] = { name, frequency }
+      saveOverrides(o)
+    }
+    refresh()
+  }, [refresh])
+
+  return { habits, isToday, toggle, addHabit, removeHabit, editHabit, getHistory }
 }
