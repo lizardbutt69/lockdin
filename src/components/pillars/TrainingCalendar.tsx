@@ -439,18 +439,17 @@ export default function TrainingCalendar({ accentColor = '#ea580c' }: { accentCo
         </div>
       </div>
 
-      {/* Day of week headers */}
-      <div className="grid grid-cols-7 border-b" style={{ borderColor: 'var(--border-default)' }}>
-        {DOW.map((d, i) => {
-          const isToday = view === 'week' && toISO(weekDates[i]) === todayStr
-          return (
+      {/* Day of week headers — month view only (week view has its own inside scroll container) */}
+      {view === 'month' && (
+        <div className="grid grid-cols-7 border-b" style={{ borderColor: 'var(--border-default)' }}>
+          {DOW.map((d, i) => (
             <div key={i} className="py-2 text-center text-[10px] font-bold uppercase tracking-wider"
-              style={{ color: isToday ? accentColor : 'var(--text-muted)' }}>
+              style={{ color: 'var(--text-muted)' }}>
               {d}
             </div>
-          )
-        })}
-      </div>
+          ))}
+        </div>
+      )}
 
       {/* ── MONTH VIEW ── */}
       {view === 'month' && (
@@ -498,7 +497,20 @@ export default function TrainingCalendar({ accentColor = '#ea580c' }: { accentCo
       {/* ── WEEK VIEW ── */}
       {view === 'week' && (
         <div className="overflow-x-auto">
-        <div className="grid grid-cols-7 divide-x" style={{ borderColor: 'var(--border-subtle)', minWidth: 560 }}>
+        <div style={{ minWidth: 560 }}>
+        {/* DOW headers inside scroll so they move with content */}
+        <div className="grid grid-cols-7 border-b" style={{ borderColor: 'var(--border-default)' }}>
+          {DOW.map((d, i) => {
+            const isToday = toISO(weekDates[i]) === todayStr
+            return (
+              <div key={i} className="py-2 text-center text-[10px] font-bold uppercase tracking-wider"
+                style={{ color: isToday ? accentColor : 'var(--text-muted)' }}>
+                {d}
+              </div>
+            )
+          })}
+        </div>
+        <div className="grid grid-cols-7 divide-x" style={{ borderColor: 'var(--border-subtle)' }}>
           {weekDates.map((day, i) => {
             const ds = toISO(day)
             const isToday = ds === todayStr
@@ -548,6 +560,7 @@ export default function TrainingCalendar({ accentColor = '#ea580c' }: { accentCo
               </div>
             )
           })}
+        </div>
         </div>
         </div>
       )}
