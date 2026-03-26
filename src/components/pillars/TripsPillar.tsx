@@ -381,8 +381,10 @@ export default function TripsPillar() {
         </div>
       )}
 
-      <PillarHabitTracker pillar="Travel" accentColor="#3b82f6" accentMuted="rgba(59,130,246,0.15)" />
-      <PillarGoals category="Travel" accentColor="#3b82f6" accentBg="rgba(59,130,246,0.06)" accentBorder="rgba(59,130,246,0.2)" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <PillarHabitTracker pillar="Travel" accentColor="#3b82f6" accentMuted="rgba(59,130,246,0.15)" />
+        <PillarGoals category="Travel" accentColor="#3b82f6" accentBg="rgba(59,130,246,0.06)" accentBorder="rgba(59,130,246,0.2)" />
+      </div>
     </div>
   )
 }

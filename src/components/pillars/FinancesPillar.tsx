@@ -208,8 +208,10 @@ export default function FinancesPillar({ log }: FinancesPillarProps) {
 
       <SavingsGoals hidden={false} />
       <DebtTracker />
-      <PillarHabitTracker pillar="Finances" accentColor="#16a34a" accentMuted="rgba(22,163,74,0.15)" />
-      <PillarGoals category="Finances" accentColor="#16a34a" accentBg="rgba(22,163,74,0.06)" accentBorder="rgba(22,163,74,0.2)" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <PillarHabitTracker pillar="Finances" accentColor="#16a34a" accentMuted="rgba(22,163,74,0.15)" />
+        <PillarGoals category="Finances" accentColor="#16a34a" accentBg="rgba(22,163,74,0.06)" accentBorder="rgba(22,163,74,0.2)" />
+      </div>
     </div>
   )
 }

@@ -20,8 +20,10 @@ export default function FitnessPillar({ log }: FitnessPillarProps) {
   return (
     <div className="space-y-4">
       <TrainingCalendar accentColor={ACCENT} />
-      <PillarGoals category="Fitness" accentColor={ACCENT} accentBg="rgba(234,88,12,0.06)" accentBorder="rgba(234,88,12,0.2)" />
-      <PillarHabitTracker pillar="Fitness" accentColor={ACCENT} accentMuted="rgba(234,88,12,0.15)" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <PillarGoals category="Fitness" accentColor={ACCENT} accentBg="rgba(234,88,12,0.06)" accentBorder="rgba(234,88,12,0.2)" />
+        <PillarHabitTracker pillar="Fitness" accentColor={ACCENT} accentMuted="rgba(234,88,12,0.15)" />
+      </div>
     </div>
   )
 }

@@ -129,8 +129,10 @@ export default function DietPillar({ log, onUpdate }: DietPillarProps) {
         </div>
       </div>
     </TacticalCard>
-    <PillarGoals category="Health" accentColor="#16a34a" accentBg="#f0fdf4" accentBorder="#bbf7d0" />
-    <PillarHabitTracker pillar="Health" accentColor="#16a34a" accentMuted="rgba(22,163,74,0.15)" />
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <PillarGoals category="Health" accentColor="#16a34a" accentBg="#f0fdf4" accentBorder="#bbf7d0" />
+      <PillarHabitTracker pillar="Health" accentColor="#16a34a" accentMuted="rgba(22,163,74,0.15)" />
+    </div>
     </div>
   )
 }

@@ -234,8 +234,10 @@ export default function GodPillar({ log, onUpdate: _onUpdate }: GodPillarProps) 
       {/* Right — Prayer column */}
       <PrayerColumn />
     </div>
-    <PillarHabitTracker pillar="God" accentColor="#7c3aed" accentMuted="rgba(124,58,237,0.15)" />
-    <PillarGoals category="God" accentColor="#7c3aed" accentBg="#faf5ff" accentBorder="#e9d5ff" />
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <PillarHabitTracker pillar="God" accentColor="#7c3aed" accentMuted="rgba(124,58,237,0.15)" />
+      <PillarGoals category="God" accentColor="#7c3aed" accentBg="#faf5ff" accentBorder="#e9d5ff" />
+    </div>
     </div>
   )
 }

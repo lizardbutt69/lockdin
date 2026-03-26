@@ -199,8 +199,8 @@ function HabitRow({ habit, done, history, accentColor, muted, today, weekDates, 
         )}
       </div>
 
-      {/* Weekly dots */}
-      <div className="flex items-center gap-1 shrink-0">
+      {/* Weekly dots — hidden on mobile */}
+      <div className="hidden sm:flex items-center gap-1 shrink-0">
         {weekDates.map((date) => {
           const isT = date === today
           const isFuture = date > today
@@ -299,8 +299,8 @@ export default function PillarHabitTracker({ pillar, accentColor = '#22c55e', ac
             {completedToday}/{habits.length}
           </span>
         </div>
-        {/* Day labels — must match dot column exactly */}
-        <div className="flex items-center gap-2 shrink-0">
+        {/* Day labels — hidden on mobile */}
+        <div className="hidden sm:flex items-center gap-2 shrink-0">
           <div className="flex items-center gap-1">
             {DOW.map((d, i) => (
               <div

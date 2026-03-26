@@ -85,8 +85,10 @@ export default function RelationshipsPillar({ log, onUpdate, weeklyDateNights }:
         </div>
       </div>
     </TacticalCard>
-    <PillarGoals category="Relationships" accentColor="#db2777" accentBg="#fdf2f8" accentBorder="#f9a8d4" />
-    <PillarHabitTracker pillar="Relationships" accentColor="#db2777" accentMuted="rgba(219,39,119,0.15)" />
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <PillarGoals category="Relationships" accentColor="#db2777" accentBg="#fdf2f8" accentBorder="#f9a8d4" />
+      <PillarHabitTracker pillar="Relationships" accentColor="#db2777" accentMuted="rgba(219,39,119,0.15)" />
+    </div>
     </div>
   )
 }

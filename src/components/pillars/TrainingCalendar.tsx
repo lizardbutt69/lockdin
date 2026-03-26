@@ -440,7 +440,7 @@ export default function TrainingCalendar({ accentColor = '#ea580c' }: { accentCo
       </div>
 
       {/* Day of week headers */}
-      <div className="grid grid-cols-7 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
+      <div className="grid grid-cols-7 border-b" style={{ borderColor: 'var(--border-default)' }}>
         {DOW.map((d, i) => {
           const isToday = view === 'week' && toISO(weekDates[i]) === todayStr
           return (
@@ -456,7 +456,7 @@ export default function TrainingCalendar({ accentColor = '#ea580c' }: { accentCo
       {view === 'month' && (
         <div className="grid grid-cols-7">
           {grid.map((day, i) => {
-            if (!day) return <div key={`empty-${i}`} className="h-20 border-b border-r" style={{ borderColor: 'var(--border-subtle)', opacity: 0.2 }} />
+            if (!day) return <div key={`empty-${i}`} className="h-20" style={{ borderBottom: `1px solid var(--border-default)`, borderRight: `1px solid var(--border-default)` }} />
             const ds = toISO(day)
             const isToday = ds === todayStr
             const isPast = ds < todayStr
@@ -466,10 +466,10 @@ export default function TrainingCalendar({ accentColor = '#ea580c' }: { accentCo
             return (
               <div key={ds}
                 className="h-20 p-1.5 flex flex-col gap-1 cursor-pointer transition-colors"
-                style={{ borderBottom: isLastRow ? 'none' : `1px solid var(--border-subtle)`, borderRight: isRightEdge ? 'none' : `1px solid var(--border-subtle)`, background: isToday ? `${accentColor}08` : 'transparent' }}
+                style={{ borderBottom: isLastRow ? 'none' : `1px solid var(--border-default)`, borderRight: isRightEdge ? 'none' : `1px solid var(--border-default)`, background: isToday ? `${accentColor}12` : 'rgba(255,255,255,0.02)' }}
                 onClick={() => setSelectedDay(day)}
-                onMouseEnter={e => { e.currentTarget.style.background = `${accentColor}10` }}
-                onMouseLeave={e => { e.currentTarget.style.background = isToday ? `${accentColor}08` : 'transparent' }}
+                onMouseEnter={e => { e.currentTarget.style.background = `${accentColor}18` }}
+                onMouseLeave={e => { e.currentTarget.style.background = isToday ? `${accentColor}12` : 'rgba(255,255,255,0.02)' }}
               >
                 <span className="text-xs font-semibold w-5 h-5 flex items-center justify-center rounded-full shrink-0"
                   style={{ color: isToday ? '#fff' : isPast ? 'var(--text-muted)' : 'var(--text-secondary)', background: isToday ? accentColor : 'transparent', boxShadow: isToday ? `0 0 8px ${accentColor}60` : 'none' }}>
@@ -497,7 +497,8 @@ export default function TrainingCalendar({ accentColor = '#ea580c' }: { accentCo
 
       {/* ── WEEK VIEW ── */}
       {view === 'week' && (
-        <div className="grid grid-cols-7 divide-x" style={{ borderColor: 'var(--border-subtle)' }}>
+        <div className="overflow-x-auto">
+        <div className="grid grid-cols-7 divide-x" style={{ borderColor: 'var(--border-subtle)', minWidth: 560 }}>
           {weekDates.map((day, i) => {
             const ds = toISO(day)
             const isToday = ds === todayStr
@@ -506,10 +507,10 @@ export default function TrainingCalendar({ accentColor = '#ea580c' }: { accentCo
             return (
               <div key={ds}
                 className="min-h-64 p-2 flex flex-col gap-2 cursor-pointer transition-colors"
-                style={{ background: isToday ? `${accentColor}08` : 'transparent', borderRight: i < 6 ? `1px solid var(--border-subtle)` : 'none' }}
+                style={{ background: isToday ? `${accentColor}12` : 'rgba(255,255,255,0.02)', borderRight: i < 6 ? `1px solid var(--border-default)` : 'none' }}
                 onClick={() => setSelectedDay(day)}
-                onMouseEnter={e => { e.currentTarget.style.background = `${accentColor}10` }}
-                onMouseLeave={e => { e.currentTarget.style.background = isToday ? `${accentColor}08` : 'transparent' }}
+                onMouseEnter={e => { e.currentTarget.style.background = `${accentColor}18` }}
+                onMouseLeave={e => { e.currentTarget.style.background = isToday ? `${accentColor}12` : 'rgba(255,255,255,0.02)' }}
               >
                 {/* Date badge */}
                 <div className="flex flex-col items-center gap-0.5">
@@ -534,7 +535,7 @@ export default function TrainingCalendar({ accentColor = '#ea580c' }: { accentCo
                         <div className="text-[11px] font-bold" style={{ color: c.color }}>{s.workout_type}</div>
                         {s.title && <div className="text-[11px] font-medium leading-tight" style={{ color: 'var(--text-primary)' }}>{s.title}</div>}
                         {s.duration_min && <div className="text-[10px]" style={{ color: 'var(--text-muted)' }}>{s.duration_min} min</div>}
-                        {s.notes && <div className="text-[10px] leading-snug mt-0.5" style={{ color: 'var(--text-muted)' }}>{s.notes}</div>}
+                        {s.notes && <div className="hidden sm:block text-[10px] leading-snug mt-0.5" style={{ color: 'var(--text-muted)' }}>{s.notes}</div>}
                       </button>
                     )
                   })}
@@ -548,10 +549,11 @@ export default function TrainingCalendar({ accentColor = '#ea580c' }: { accentCo
             )
           })}
         </div>
+        </div>
       )}
 
       {/* Legend */}
-      <div className="px-4 py-2.5 border-t flex flex-wrap gap-x-3 gap-y-1" style={{ borderColor: 'var(--border-subtle)' }}>
+      <div className="px-4 py-2.5 border-t flex flex-wrap gap-x-3 gap-y-1" style={{ borderColor: 'var(--border-default)' }}>
         {WORKOUT_TYPES.filter(t => sessions.some(s => s.workout_type === t)).map(t => {
           const c = TYPE_CONFIG[t]
           return (
