@@ -18,6 +18,14 @@ const MOODS = [
 
 const ANTHROPIC_KEY_STORAGE = 'lockedin_anthropic_key'
 
+function getWeekKey(range: 7 | 30) {
+  const now = new Date()
+  const year = now.getFullYear()
+  const startOfYear = new Date(year, 0, 1)
+  const week = Math.ceil(((now.getTime() - startOfYear.getTime()) / 86400000 + startOfYear.getDay() + 1) / 7)
+  return `lockedin_journal_summary_${year}_w${week}_r${range}`
+}
+
 // ─── PIN screen ───────────────────────────────────────────────────────────────
 
 function PinScreen({ onUnlock, onClose }: { onUnlock: () => void; onClose: () => void }) {
@@ -166,7 +174,13 @@ function PinSetup({ onDone, onCancel }: { onDone: () => void; onCancel: () => vo
 function AISummaryPanel({ entries, onClose }: { entries: JournalEntry[]; onClose: () => void }) {
   const [apiKey, setApiKey] = useState(() => localStorage.getItem(ANTHROPIC_KEY_STORAGE) || '')
   const [range, setRange] = useState<7 | 30>(7)
-  const [summary, setSummary] = useState('')
+
+  function switchRange(r: 7 | 30) {
+    setRange(r)
+    setSummary(localStorage.getItem(getWeekKey(r)) || '')
+    setError('')
+  }
+  const [summary, setSummary] = useState(() => localStorage.getItem(getWeekKey(7)) || '')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [showKeyInput, setShowKeyInput] = useState(!localStorage.getItem(ANTHROPIC_KEY_STORAGE))
@@ -202,7 +216,9 @@ function AISummaryPanel({ entries, onClose }: { entries: JournalEntry[]; onClose
           content: `You are a thoughtful therapist and life coach helping a man reflect on his recent journal entries. Provide a warm, honest, and encouraging summary of the last ${range} days of his life based on these journal entries. Focus on:\n1. Emotional patterns and mood trends\n2. Recurring themes or concerns\n3. Wins and positive moments to celebrate\n4. One or two gentle areas of growth to consider\n\nBe direct but compassionate. Use plain, readable language — no bullet-point overload. Write 3-4 paragraphs.\n\nJournal entries:\n\n${entriesText}`,
         }],
       })
-      setSummary((response.content[0] as { type: string; text: string }).text)
+      const text = (response.content[0] as { type: string; text: string }).text
+      setSummary(text)
+      localStorage.setItem(getWeekKey(range), text)
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Something went wrong'
       if (msg.includes('CORS') || msg.includes('fetch')) {
@@ -267,7 +283,7 @@ function AISummaryPanel({ entries, onClose }: { entries: JournalEntry[]; onClose
           {([7, 30] as const).map(r => (
             <button
               key={r}
-              onClick={() => setRange(r)}
+              onClick={() => switchRange(r)}
               className="flex-1 py-2 rounded-lg text-sm font-medium transition-all"
               style={{
                 background: range === r ? '#f5f3ff' : 'var(--bg-input)',
