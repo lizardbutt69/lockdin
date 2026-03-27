@@ -62,6 +62,16 @@ export const DEFAULT_HABITS: Record<string, HabitDef[]> = {
     { id: 'fit_7', pillar: 'Fitness', name: 'Hit a PR or progression', frequency: 'weekly', isDefault: true },
     { id: 'fit_8', pillar: 'Fitness', name: 'HYROX training session', frequency: 'weekly', isDefault: true },
   ],
+  Career: [
+    { id: 'career_1', pillar: 'Career', name: 'Learned something new', frequency: 'daily', isDefault: true },
+    { id: 'career_2', pillar: 'Career', name: 'Worked on a side project', frequency: 'daily', isDefault: true },
+    { id: 'career_3', pillar: 'Career', name: 'Read industry news', frequency: 'daily', isDefault: true },
+    { id: 'career_4', pillar: 'Career', name: 'Logged a win', frequency: 'weekly', isDefault: true },
+    { id: 'career_5', pillar: 'Career', name: 'Applied to a job / networked', frequency: 'weekly', isDefault: true },
+    { id: 'career_6', pillar: 'Career', name: 'Completed a course lesson', frequency: 'daily', isDefault: true },
+    { id: 'career_7', pillar: 'Career', name: 'Connected with someone', frequency: 'weekly', isDefault: true },
+    { id: 'career_8', pillar: 'Career', name: 'Updated resume or LinkedIn', frequency: 'monthly', isDefault: true },
+  ],
   Travel: [
     { id: 'trip_1', pillar: 'Travel', name: 'Researched a destination', frequency: 'weekly', isDefault: true },
     { id: 'trip_2', pillar: 'Travel', name: 'Saved toward trip fund', frequency: 'weekly', isDefault: true },

@@ -255,6 +255,35 @@ create policy "Users can manage own journal entries" on journal_entries
 create policy "Users can manage own saved verses" on saved_verses
   for all using (auth.uid() = user_id);
 
+-- Career snapshots (one row per user)
+create table if not exists career_snapshots (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) on delete cascade not null unique,
+  role text,
+  company text,
+  start_date date,
+  target_role text,
+  salary numeric,
+  created_at timestamptz default now()
+);
+alter table career_snapshots enable row level security;
+create policy "Users can manage own career snapshots" on career_snapshots
+  for all using (auth.uid() = user_id);
+
+-- Win log
+create table if not exists win_log (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) on delete cascade not null,
+  title text not null,
+  description text,
+  category text not null default 'OTHER',
+  win_date date not null default current_date,
+  created_at timestamptz default now()
+);
+alter table win_log enable row level security;
+create policy "Users can manage own win log" on win_log
+  for all using (auth.uid() = user_id);
+
 -- ============================================================
 -- Auto-create profile on signup trigger
 -- ============================================================

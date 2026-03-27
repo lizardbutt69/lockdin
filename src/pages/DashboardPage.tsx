@@ -15,6 +15,7 @@ import DietPillar from '../components/pillars/DietPillar'
 import FitnessPillar from '../components/pillars/FitnessPillar'
 import TripsPillar from '../components/pillars/TripsPillar'
 import GratitudePage from '../components/gratitude/GratitudePage'
+import CareerPillar from '../components/pillars/CareerPillar'
 import GratitudeQuickAdd from '../components/gratitude/GratitudeQuickAdd'
 import JournalCard from '../components/journal/JournalCard'
 import { useDailyLog } from '../hooks/useDailyLog'
@@ -85,6 +86,7 @@ export default function DashboardPage() {
     fitness:       <FitnessPillar log={log} onUpdate={handleUpdate} weeklyWorkouts={weeklyWorkouts} />,
     trips:         <TripsPillar />,
     gratitude:     <GratitudePage />,
+    career:        <CareerPillar />,
   }
 
   return (

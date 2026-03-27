@@ -420,6 +420,69 @@ export interface Database {
         }
         Relationships: []
       }
+      career_snapshots: {
+        Row: {
+          id: string
+          user_id: string
+          role: string | null
+          company: string | null
+          start_date: string | null
+          target_role: string | null
+          salary: number | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          role?: string | null
+          company?: string | null
+          start_date?: string | null
+          target_role?: string | null
+          salary?: number | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          role?: string | null
+          company?: string | null
+          start_date?: string | null
+          target_role?: string | null
+          salary?: number | null
+          created_at?: string
+        }
+        Relationships: []
+      }
+      win_log: {
+        Row: {
+          id: string
+          user_id: string
+          title: string
+          description: string | null
+          category: string
+          win_date: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          title: string
+          description?: string | null
+          category?: string
+          win_date?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          title?: string
+          description?: string | null
+          category?: string
+          win_date?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
       saved_verses: {
         Row: {
           id: string

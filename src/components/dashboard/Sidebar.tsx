@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { LayoutGrid, BookOpen, DollarSign, Heart, Leaf, Dumbbell, Plane, LogOut, Flame, Zap, Target, Settings, Sparkles } from 'lucide-react'
+import { LayoutGrid, BookOpen, DollarSign, Heart, Leaf, Dumbbell, Plane, LogOut, Flame, Zap, Target, Settings, Sparkles, Briefcase } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '../../contexts/AuthContext'
 import { getRankInfo } from '../../hooks/useProfile'
@@ -10,7 +10,7 @@ import type { Database } from '../../types/database'
 
 type Profile = Database['public']['Tables']['profiles']['Row']
 
-export type PillarKey = 'overview' | 'god' | 'finances' | 'relationships' | 'diet' | 'fitness' | 'trips' | 'gratitude'
+export type PillarKey = 'overview' | 'god' | 'finances' | 'relationships' | 'diet' | 'fitness' | 'trips' | 'gratitude' | 'career'
 
 interface SidebarProps {
   activePillar: PillarKey
@@ -30,6 +30,7 @@ const NAV_ITEMS: { key: PillarKey; label: string; icon: React.ElementType }[] = 
   { key: 'diet',          label: 'Diet & Health',  icon: Leaf       },
   { key: 'fitness',       label: 'Fitness',        icon: Dumbbell   },
   { key: 'trips',         label: 'Trips',          icon: Plane      },
+  { key: 'career',        label: 'Career',         icon: Briefcase  },
 ]
 
 export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUpdateProfile, isOpen = false, onClose }: SidebarProps) {
