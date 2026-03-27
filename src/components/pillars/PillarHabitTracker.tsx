@@ -7,11 +7,12 @@ interface PillarHabitTrackerProps {
   pillar: string
   accentColor?: string
   accentMuted?: string
+  compact?: boolean
 }
 
 const DOW = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
-const DOT_SIZE = 'w-5 h-5' // bigger dots
-const DOT_W = 'w-5'        // header column width matches
+const DOT_SIZE = 'w-3.5 h-3.5'
+const DOT_W = 'w-3.5'
 
 function getWeekDates(): string[] {
   const today = new Date()
@@ -67,12 +68,13 @@ interface HabitRowProps {
   muted: string
   today: string
   weekDates: string[]
+  compact: boolean
   onToggle: (id: string) => void
   onRemove: (id: string) => void
   onEdit: (id: string, name: string, frequency: 'daily' | 'weekly' | 'monthly') => void
 }
 
-function HabitRow({ habit, done, history, accentColor, muted, today, weekDates, onToggle, onRemove, onEdit }: HabitRowProps) {
+function HabitRow({ habit, done, history, accentColor, muted, today, weekDates, compact, onToggle, onRemove, onEdit }: HabitRowProps) {
   const streak = calcStreak(history, today)
   const total = calcTotal(history, today)
   const rank = getRank(total)
@@ -143,7 +145,7 @@ function HabitRow({ habit, done, history, accentColor, muted, today, weekDates, 
   }
 
   return (
-    <motion.div layout className="flex items-center gap-2 group py-1.5">
+    <motion.div layout className="flex items-center gap-1.5 group py-1.5 overflow-hidden">
 
       {/* Checkbox with XP pop */}
       <div className="relative shrink-0">
@@ -199,8 +201,8 @@ function HabitRow({ habit, done, history, accentColor, muted, today, weekDates, 
         )}
       </div>
 
-      {/* Weekly dots — hidden on mobile */}
-      <div className="hidden sm:flex items-center gap-1 shrink-0">
+      {/* Weekly dots — hidden on mobile and in compact mode */}
+      <div className={`${compact ? 'hidden' : 'hidden sm:flex'} items-center gap-0.5 shrink-0`}>
         {weekDates.map((date) => {
           const isT = date === today
           const isFuture = date > today
@@ -220,15 +222,13 @@ function HabitRow({ habit, done, history, accentColor, muted, today, weekDates, 
         })}
       </div>
 
-      {/* Streak */}
-      <div className="flex items-center gap-0.5 shrink-0 w-9">
-        {streak > 0 && flame && (
-          <>
-            <Flame className={`${flame.size} shrink-0`} style={{ color: flame.color }} />
-            <span className="text-xs font-bold tabular-nums" style={{ color: flame.color }}>{streak}</span>
-          </>
-        )}
-      </div>
+      {/* Streak — only takes space when active */}
+      {streak > 0 && flame && (
+        <div className="flex items-center gap-0.5 shrink-0">
+          <Flame className={`${flame.size} shrink-0`} style={{ color: flame.color }} />
+          <span className="text-xs font-bold tabular-nums" style={{ color: flame.color }}>{streak}</span>
+        </div>
+      )}
 
       {/* Edit + Delete — visible on hover for all habits */}
       <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
@@ -257,7 +257,7 @@ function HabitRow({ habit, done, history, accentColor, muted, today, weekDates, 
 
 // ─── Main ────────────────────────────────────────────────────────────────────
 
-export default function PillarHabitTracker({ pillar, accentColor = '#22c55e', accentMuted }: PillarHabitTrackerProps) {
+export default function PillarHabitTracker({ pillar, accentColor = '#22c55e', accentMuted, compact = false }: PillarHabitTrackerProps) {
   const muted = accentMuted ?? `${accentColor}25`
   const { habits, isToday, toggle, addHabit, removeHabit, editHabit, getHistory } = useCustomHabits(pillar)
   const [showForm, setShowForm] = useState(false)
@@ -289,7 +289,7 @@ export default function PillarHabitTracker({ pillar, accentColor = '#22c55e', ac
       {/* Header */}
       <div className="px-4 py-3 border-b flex items-center justify-between" style={{ borderColor: 'var(--border-subtle)' }}>
         <div className="flex items-center gap-2">
-          <h3 className="text-sm font-semibold font-['Space_Grotesk'] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>
+          <h3 className="text-sm font-semibold font-['Plus_Jakarta_Sans'] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>
             Habits
           </h3>
           <span
@@ -299,9 +299,9 @@ export default function PillarHabitTracker({ pillar, accentColor = '#22c55e', ac
             {completedToday}/{habits.length}
           </span>
         </div>
-        {/* Day labels — hidden on mobile */}
-        <div className="hidden sm:flex items-center gap-2 shrink-0">
-          <div className="flex items-center gap-1">
+        {/* Day labels — hidden on mobile and in compact mode */}
+        <div className={`${compact ? 'hidden' : 'hidden sm:flex'} items-center gap-2 shrink-0`}>
+          <div className="flex items-center gap-0.5">
             {DOW.map((d, i) => (
               <div
                 key={i}
@@ -312,8 +312,6 @@ export default function PillarHabitTracker({ pillar, accentColor = '#22c55e', ac
               </div>
             ))}
           </div>
-          <div className="w-9" />{/* streak placeholder */}
-          <div className="w-4" />{/* delete placeholder */}
         </div>
       </div>
 
@@ -360,6 +358,7 @@ export default function PillarHabitTracker({ pillar, accentColor = '#22c55e', ac
               muted={muted}
               today={today}
               weekDates={weekDates}
+              compact={compact}
               onToggle={toggle}
               onRemove={removeHabit}
               onEdit={editHabit}

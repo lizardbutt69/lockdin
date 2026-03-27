@@ -115,13 +115,22 @@ export default function FinancesPillar({ log }: FinancesPillarProps) {
 
   return (
     <div className="space-y-4">
+    <div className="flex items-center gap-2 px-1">
+      <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'rgba(22,163,74,0.1)', border: '1px solid rgba(22,163,74,0.2)' }}>
+        <DollarSign className="w-3.5 h-3.5" style={{ color: '#16a34a' }} />
+      </div>
+      <span className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>Finances</span>
+    </div>
+    <div className="grid grid-cols-3 gap-4 items-start">
+      {/* LEFT 2/3 */}
+      <div className="col-span-2 space-y-4">
       <div className="card p-4 space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'rgba(22,163,74,0.1)' }}>
               <DollarSign className="w-3.5 h-3.5" style={{ color: '#16a34a' }} />
             </div>
-            <span className="text-sm font-semibold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>Finances</span>
+            <span className="text-sm font-semibold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>Finances</span>
           </div>
           <div className="flex items-center gap-2">
             <button type="button" onClick={togglePrivacy}
@@ -140,7 +149,7 @@ export default function FinancesPillar({ log }: FinancesPillarProps) {
         {!editing && (
           <div>
             <p className="text-xs font-medium mb-1" style={{ color: 'var(--text-muted)' }}>Net Worth</p>
-            <p className="text-3xl font-bold font-['Space_Grotesk']" style={{ color: '#16a34a' }}>{fmt(snapshot?.net_worth, hidden)}</p>
+            <p className="text-3xl font-bold font-['Plus_Jakarta_Sans']" style={{ color: '#16a34a' }}>{fmt(snapshot?.net_worth, hidden)}</p>
           </div>
         )}
 
@@ -149,13 +158,13 @@ export default function FinancesPillar({ log }: FinancesPillarProps) {
             {METRICS.map(({ key, label, val, color }) => (
               <div key={key} className="rounded-xl p-3" style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border-default)' }}>
                 <p className="text-[10px] font-medium uppercase tracking-wide mb-1" style={{ color: 'var(--text-muted)' }}>{label}</p>
-                <p className="text-sm font-bold font-['Space_Grotesk']" style={{ color }}>{fmt(val, hidden)}</p>
+                <p className="text-sm font-bold font-['Plus_Jakarta_Sans']" style={{ color }}>{fmt(val, hidden)}</p>
               </div>
             ))}
             {customFields.map(f => (
               <div key={f.id} className="rounded-xl p-3" style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border-default)' }}>
                 <p className="text-[10px] font-medium uppercase tracking-wide mb-1 truncate" style={{ color: 'var(--text-muted)' }}>{f.label}</p>
-                <p className="text-sm font-bold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>{fmt(f.value, hidden)}</p>
+                <p className="text-sm font-bold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>{fmt(f.value, hidden)}</p>
               </div>
             ))}
           </div>
@@ -208,10 +217,14 @@ export default function FinancesPillar({ log }: FinancesPillarProps) {
 
       <SavingsGoals hidden={false} />
       <DebtTracker />
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <PillarHabitTracker pillar="Finances" accentColor="#16a34a" accentMuted="rgba(22,163,74,0.15)" />
+      </div>{/* end col-span-2 */}
+
+      {/* RIGHT 1/3 */}
+      <div className="col-span-1 space-y-4">
+        <PillarHabitTracker pillar="Finances" accentColor="#16a34a" accentMuted="rgba(22,163,74,0.15)" compact />
         <PillarGoals category="Finances" accentColor="#16a34a" accentBg="rgba(22,163,74,0.06)" accentBorder="rgba(22,163,74,0.2)" />
       </div>
+    </div>
     </div>
   )
 }

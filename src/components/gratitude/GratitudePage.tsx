@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Sparkles, Trash2, Plus } from 'lucide-react'
+import { Sparkles, Trash2, Plus, Trophy } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase, isSupabaseConfigured } from '../../lib/supabase'
 import { useAuth } from '../../contexts/AuthContext'
@@ -7,7 +7,25 @@ import type { Database } from '../../types/database'
 
 type GratitudeEntry = Database['public']['Tables']['gratitude_entries']['Row']
 
-type Category = 'grateful' | 'win' | 'smile'
+interface CareerWin {
+  id: string
+  title: string
+  description: string | null
+  category: string
+  win_date: string
+}
+
+const WIN_CATS: Record<string, { label: string; color: string; bg: string }> = {
+  SHIPPED:     { label: 'Shipped',     color: '#3b82f6', bg: 'rgba(59,130,246,0.12)'  },
+  RECOGNITION: { label: 'Recognition',color: '#8b5cf6', bg: 'rgba(139,92,246,0.12)'  },
+  SKILL:       { label: 'Skill',       color: '#22c55e', bg: 'rgba(34,197,94,0.12)'   },
+  REVENUE:     { label: 'Revenue',     color: '#16a34a', bg: 'rgba(22,163,74,0.12)'   },
+  LEADERSHIP:  { label: 'Leadership',  color: '#f97316', bg: 'rgba(249,115,22,0.12)'  },
+  PROMOTED:    { label: 'Promoted',    color: '#f59e0b', bg: 'rgba(245,158,11,0.12)'  },
+  OTHER:       { label: 'Other',       color: '#64748b', bg: 'rgba(100,116,139,0.1)'  },
+}
+
+type Category = 'grateful' | 'win' | 'smile' | 'moment'
 
 const CATEGORIES: { key: Category; label: string; emoji: string; color: string; bg: string; border: string; placeholder: string }[] = [
   {
@@ -36,6 +54,15 @@ const CATEGORIES: { key: Category; label: string; emoji: string; color: string; 
     bg: 'rgba(14,165,233,0.08)',
     border: 'rgba(14,165,233,0.2)',
     placeholder: "What made you smile today?",
+  },
+  {
+    key: 'moment',
+    label: 'Meaningful Moment',
+    emoji: '🤝',
+    color: '#ec4899',
+    bg: 'rgba(236,72,153,0.08)',
+    border: 'rgba(236,72,153,0.2)',
+    placeholder: "A meaningful moment with someone you care about.",
   },
 ]
 
@@ -104,6 +131,7 @@ function EntryCard({ entry, onDelete }: { entry: GratitudeEntry; onDelete: (id: 
 export default function GratitudePage() {
   const { user } = useAuth()
   const [entries, setEntries] = useState<GratitudeEntry[]>([])
+  const [careerWins, setCareerWins] = useState<CareerWin[]>([])
   const [activeCategory, setActiveCategory] = useState<Category>('grateful')
   const [filterCategory, setFilterCategory] = useState<Category | 'all'>('all')
   const [content, setContent] = useState('')
@@ -117,7 +145,13 @@ export default function GratitudePage() {
       .select('*')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
-      .then(({ data }) => { if (data) setEntries(data) })
+      .then(({ data }) => { if (data) setEntries(data) });
+    (supabase as any)
+      .from('win_log')
+      .select('id, title, description, category, win_date')
+      .eq('user_id', user.id)
+      .order('win_date', { ascending: false })
+      .then(({ data }: { data: CareerWin[] | null }) => { if (data) setCareerWins(data) })
   }, [user])
 
   const cat = getCategoryConfig(activeCategory)
@@ -170,7 +204,7 @@ export default function GratitudePage() {
               <Sparkles className="w-5 h-5" style={{ color: '#f59e0b' }} />
             </div>
             <div>
-              <h1 className="text-lg font-bold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>
+              <h1 className="text-lg font-bold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>
                 Gratitude
               </h1>
               <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>
@@ -183,7 +217,7 @@ export default function GratitudePage() {
           <div className="flex items-center gap-4">
             {CATEGORIES.map(c => (
               <div key={c.key} className="text-center">
-                <div className="text-lg font-bold font-['Space_Grotesk']" style={{ color: c.color }}>
+                <div className="text-lg font-bold font-['Plus_Jakarta_Sans']" style={{ color: c.color }}>
                   {totalByCategory(c.key)}
                 </div>
                 <div className="text-[10px] font-medium" style={{ color: 'var(--text-muted)' }}>
@@ -318,6 +352,44 @@ export default function GratitudePage() {
             ))}
           </AnimatePresence>
         </motion.div>
+      )}
+
+      {/* ── Career Wins ── */}
+      {careerWins.length > 0 && (
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <Trophy className="w-4 h-4" style={{ color: '#f59e0b' }} />
+            <h2 className="text-sm font-semibold font-['Plus_Jakarta_Sans'] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>
+              Career Wins · {careerWins.length}
+            </h2>
+          </div>
+          <motion.div layout className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
+            <AnimatePresence mode="popLayout">
+              {careerWins.map(win => {
+                const cfg = WIN_CATS[win.category] ?? WIN_CATS.OTHER
+                return (
+                  <div key={win.id} className="break-inside-avoid mb-4">
+                    <div className="rounded-2xl p-4 flex flex-col gap-2" style={{ background: cfg.bg, border: `1px solid ${cfg.color}20` }}>
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full"
+                          style={{ background: 'var(--bg-card)', color: cfg.color, border: `1px solid ${cfg.color}30` }}>
+                          🏆 {cfg.label}
+                        </span>
+                        <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>
+                          {new Date(win.win_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        </span>
+                      </div>
+                      <p className="text-sm font-medium leading-snug" style={{ color: 'var(--text-primary)' }}>{win.title}</p>
+                      {win.description && (
+                        <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{win.description}</p>
+                      )}
+                    </div>
+                  </div>
+                )
+              })}
+            </AnimatePresence>
+          </motion.div>
+        </div>
       )}
     </div>
   )

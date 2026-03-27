@@ -10,10 +10,11 @@ import QuoteCard from '../components/dashboard/QuoteCard'
 import GoalsCard from '../components/dashboard/GoalsCard'
 import GodPillar from '../components/pillars/GodPillar'
 import FinancesPillar from '../components/pillars/FinancesPillar'
-import RelationshipsPillar from '../components/pillars/RelationshipsPillar'
+import BondsPillar from '../components/bonds/BondsPillar'
 import FitnessPillar from '../components/pillars/FitnessPillar'
 import TripsPillar from '../components/pillars/TripsPillar'
 import GratitudePage from '../components/gratitude/GratitudePage'
+import GoalsPage from '../components/goals/GoalsPage'
 import CareerPillar from '../components/pillars/CareerPillar'
 import GratitudeQuickAdd from '../components/gratitude/GratitudeQuickAdd'
 import JournalCard from '../components/journal/JournalCard'
@@ -66,7 +67,7 @@ export default function DashboardPage() {
     return (
       <div className="h-screen flex items-center justify-center" style={{ background: 'var(--bg-primary)' }}>
         <div className="text-center space-y-2">
-          <div className="font-['Space_Grotesk'] text-lg font-bold" style={{ color: 'var(--text-primary)' }}>
+          <div className="font-['Plus_Jakarta_Sans'] text-lg font-bold" style={{ color: 'var(--text-primary)' }}>
             LOCKD IN
           </div>
           <div className="text-sm" style={{ color: 'var(--text-muted)' }}>
@@ -80,11 +81,12 @@ export default function DashboardPage() {
   const pillarMap: Record<Exclude<PillarKey, 'overview'>, React.ReactElement> = {
     god:           <GodPillar log={log} onUpdate={handleUpdate} />,
     finances:      <FinancesPillar log={log} onUpdate={handleUpdate} />,
-    relationships: <RelationshipsPillar log={log} onUpdate={handleUpdate} weeklyDateNights={weeklyDateNights} />,
+    relationships: <BondsPillar />,
     fitness:       <FitnessPillar log={log} onUpdate={handleUpdate} weeklyWorkouts={weeklyWorkouts} />,
     trips:         <TripsPillar />,
     gratitude:     <GratitudePage />,
     career:        <CareerPillar />,
+    goals:         <GoalsPage />,
   }
 
   return (
@@ -132,15 +134,15 @@ export default function DashboardPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
                   {/* ── Left column (2/3) ── */}
                   <div className="lg:col-span-2 space-y-4">
+                    <MissionsCard />
                     <JournalCard />
-                    <BibleVerseCard />
-                    <QuoteCard />
                     <GoalsCard />
                   </div>
 
                   {/* ── Right column (1/3) ── */}
                   <div className="lg:col-span-1 space-y-4">
-                    <MissionsCard />
+                    <BibleVerseCard />
+                    <QuoteCard />
                     <NotesCard />
                     <GratitudeQuickAdd />
                   </div>

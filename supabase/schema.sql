@@ -301,3 +301,116 @@ drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();
+
+-- ============================================================
+-- Goals: notes + sub-goals (run once to migrate)
+-- ============================================================
+alter table yearly_goals add column if not exists notes text;
+alter table yearly_goals add column if not exists sub_goals jsonb default '[]'::jsonb;
+
+-- ============================================================
+-- BONDS PILLAR (renamed from Relationships)
+-- ============================================================
+
+create table if not exists bonds_people (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) on delete cascade not null,
+  name text not null,
+  relationship_type text not null default 'Friend',
+  last_contacted date,
+  avatar_color text default '#6b7280',
+  notes text,
+  created_at timestamptz default now()
+);
+alter table bonds_people enable row level security;
+create policy "bonds_people_owner" on bonds_people for all using (auth.uid() = user_id);
+
+create table if not exists bonds_moments (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) on delete cascade not null,
+  person_id uuid references bonds_people(id) on delete set null,
+  title text not null,
+  description text,
+  moment_date date not null default current_date,
+  created_at timestamptz default now()
+);
+alter table bonds_moments enable row level security;
+create policy "bonds_moments_owner" on bonds_moments for all using (auth.uid() = user_id);
+
+create table if not exists bonds_check_ins (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) on delete cascade not null,
+  check_date date not null default current_date,
+  energy integer check (energy between 1 and 5),
+  mood integer check (mood between 1 and 5),
+  mindset integer check (mindset between 1 and 5),
+  reflection text,
+  showing_up_text text,
+  created_at timestamptz default now(),
+  unique(user_id, check_date)
+);
+alter table bonds_check_ins enable row level security;
+create policy "bonds_check_ins_owner" on bonds_check_ins for all using (auth.uid() = user_id);
+
+create table if not exists bonds_relationship_pulse (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) on delete cascade not null,
+  week_of date not null,
+  quality_time integer check (quality_time between 1 and 5),
+  communication integer check (communication between 1 and 5),
+  intentionality integer check (intentionality between 1 and 5),
+  notes text,
+  created_at timestamptz default now(),
+  unique(user_id, week_of)
+);
+alter table bonds_relationship_pulse enable row level security;
+create policy "bonds_pulse_owner" on bonds_relationship_pulse for all using (auth.uid() = user_id);
+
+create table if not exists bonds_bucket_list (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) on delete cascade not null,
+  title text not null,
+  is_completed boolean default false,
+  completed_at timestamptz,
+  created_at timestamptz default now()
+);
+alter table bonds_bucket_list enable row level security;
+create policy "bonds_bucket_owner" on bonds_bucket_list for all using (auth.uid() = user_id);
+
+create table if not exists bonds_important_dates (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) on delete cascade not null,
+  person_name text not null,
+  date_type text not null default 'Birthday',
+  month integer not null check (month between 1 and 12),
+  day integer not null check (day between 1 and 31),
+  year integer,
+  notes text,
+  created_at timestamptz default now()
+);
+alter table bonds_important_dates enable row level security;
+create policy "bonds_dates_owner" on bonds_important_dates for all using (auth.uid() = user_id);
+
+create table if not exists bonds_groups (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) on delete cascade not null,
+  name text not null,
+  group_type text not null default 'Community',
+  is_active boolean default true,
+  notes text,
+  created_at timestamptz default now()
+);
+alter table bonds_groups enable row level security;
+create policy "bonds_groups_owner" on bonds_groups for all using (auth.uid() = user_id);
+
+create table if not exists bonds_giving (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) on delete cascade not null,
+  title text not null,
+  given_date date not null default current_date,
+  giving_type text not null default 'Time',
+  notes text,
+  created_at timestamptz default now()
+);
+alter table bonds_giving enable row level security;
+create policy "bonds_giving_owner" on bonds_giving for all using (auth.uid() = user_id);

@@ -103,7 +103,7 @@ Be direct. Speak to men who want substance, not sentimentality.`
       <div className="flex items-center justify-between px-3 py-2.5">
         <div className="flex items-center gap-2">
           <Sparkles className="w-3.5 h-3.5" style={{ color: '#7c3aed' }} />
-          <span className="text-xs font-semibold font-['Space_Grotesk']" style={{ color: '#7c3aed' }}>
+          <span className="text-xs font-semibold font-['Plus_Jakarta_Sans']" style={{ color: '#7c3aed' }}>
             Today's Devotional
           </span>
         </div>
@@ -183,60 +183,65 @@ export default function GodPillar({ log, onUpdate: _onUpdate }: GodPillarProps) 
 
   return (
     <div className="space-y-4">
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      {/* Left — Verse + Devotional */}
-      <GlassCard status="green" active={false}>
-        <div className="p-4 space-y-4">
-          {/* Header */}
-          <div className="flex items-center justify-between">
+    <div className="flex items-center gap-2 px-1">
+      <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.2)' }}>
+        <BookOpen className="w-3.5 h-3.5" style={{ color: '#7c3aed' }} />
+      </div>
+      <span className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>God</span>
+    </div>
+    <div className="grid grid-cols-3 gap-4 items-start">
+      {/* LEFT 2/3 — Verse + Devotional + Prayer */}
+      <div className="col-span-2 space-y-4">
+        <GlassCard status="green" active={false}>
+          <div className="p-4 space-y-4">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'rgba(124,58,237,0.1)' }}>
                 <BookOpen className="w-3.5 h-3.5" style={{ color: '#7c3aed' }} />
               </div>
-              <span className="text-sm font-semibold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>God</span>
+              <span className="text-sm font-semibold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>Today's Devotional</span>
             </div>
-          </div>
 
-          {/* Daily Bible verse */}
-          <div className="rounded-lg p-3 space-y-1.5" style={{ background: 'rgba(124,58,237,0.06)', border: '1px solid rgba(124,58,237,0.2)' }}>
-            {verseLoading ? (
-              <p className="text-xs animate-pulse" style={{ color: 'var(--text-muted)' }}>Loading verse...</p>
-            ) : verseError ? (
-              <div className="flex items-center justify-between">
-                <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Could not load verse</p>
-                <button onClick={refetch} className="p-1 rounded transition-colors hover:bg-purple-100">
-                  <RefreshCw className="w-3 h-3" style={{ color: '#7c3aed' }} />
-                </button>
-              </div>
-            ) : verse ? (
-              <>
-                <p className="text-sm leading-relaxed italic" style={{ color: 'var(--text-secondary)' }}>
-                  "{verse.text}"
-                </p>
+            {/* Daily Bible verse */}
+            <div className="rounded-lg p-3 space-y-1.5" style={{ background: 'rgba(124,58,237,0.06)', border: '1px solid rgba(124,58,237,0.2)' }}>
+              {verseLoading ? (
+                <p className="text-xs animate-pulse" style={{ color: 'var(--text-muted)' }}>Loading verse...</p>
+              ) : verseError ? (
                 <div className="flex items-center justify-between">
-                  <p className="text-xs font-semibold" style={{ color: '#7c3aed' }}>{verse.reference}</p>
-                  <button onClick={refetch} className="p-1 rounded transition-colors hover:bg-purple-100" title="New verse">
+                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Could not load verse</p>
+                  <button onClick={refetch} className="p-1 rounded transition-colors hover:bg-purple-100">
                     <RefreshCw className="w-3 h-3" style={{ color: '#7c3aed' }} />
                   </button>
                 </div>
-              </>
-            ) : null}
+              ) : verse ? (
+                <>
+                  <p className="text-sm leading-relaxed italic" style={{ color: 'var(--text-secondary)' }}>
+                    "{verse.text}"
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-semibold" style={{ color: '#7c3aed' }}>{verse.reference}</p>
+                    <button onClick={refetch} className="p-1 rounded transition-colors hover:bg-purple-100" title="New verse">
+                      <RefreshCw className="w-3 h-3" style={{ color: '#7c3aed' }} />
+                    </button>
+                  </div>
+                </>
+              ) : null}
+            </div>
+
+            {/* AI Devotional */}
+            {verse && !verseLoading && !verseError && (
+              <DevotionalSection verseRef={verse.reference} verseText={verse.text} />
+            )}
           </div>
+        </GlassCard>
 
-          {/* AI Devotional */}
-          {verse && !verseLoading && !verseError && (
-            <DevotionalSection verseRef={verse.reference} verseText={verse.text} />
-          )}
+        <PrayerColumn />
+      </div>
 
-        </div>
-      </GlassCard>
-
-      {/* Right — Prayer column */}
-      <PrayerColumn />
-    </div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <PillarHabitTracker pillar="God" accentColor="#7c3aed" accentMuted="rgba(124,58,237,0.15)" />
-      <PillarGoals category="God" accentColor="#7c3aed" accentBg="#faf5ff" accentBorder="#e9d5ff" />
+      {/* RIGHT 1/3 — Habits + Goals */}
+      <div className="col-span-1 space-y-4">
+        <PillarHabitTracker pillar="God" accentColor="#7c3aed" accentMuted="rgba(124,58,237,0.15)" compact />
+        <PillarGoals category="God" accentColor="#7c3aed" accentBg="#faf5ff" accentBorder="#e9d5ff" />
+      </div>
     </div>
     </div>
   )

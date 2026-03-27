@@ -97,6 +97,15 @@ export default function CareerPillar() {
 
   return (
     <div className="space-y-4">
+    <div className="flex items-center gap-2 px-1">
+      <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: `${ACCENT}18`, border: `1px solid ${ACCENT}30` }}>
+        <Briefcase className="w-3.5 h-3.5" style={{ color: ACCENT }} />
+      </div>
+      <span className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>Career</span>
+    </div>
+    <div className="grid grid-cols-3 gap-4 items-start">
+      {/* LEFT 2/3 */}
+      <div className="col-span-2 space-y-4">
       {/* Role Snapshot */}
       <div className="card p-4 space-y-4">
         <div className="flex items-center justify-between">
@@ -104,7 +113,7 @@ export default function CareerPillar() {
             <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: `${ACCENT}18` }}>
               <Briefcase className="w-3.5 h-3.5" style={{ color: ACCENT }} />
             </div>
-            <span className="text-sm font-semibold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>Career</span>
+            <span className="text-sm font-semibold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>Current Role</span>
           </div>
           <div className="flex items-center gap-2">
             <button type="button" onClick={togglePrivacy}
@@ -126,7 +135,7 @@ export default function CareerPillar() {
               {/* Current role */}
               <div>
                 <p className="text-xs font-medium mb-0.5" style={{ color: 'var(--text-muted)' }}>Current Role</p>
-                <p className="text-xl font-bold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>
+                <p className="text-xl font-bold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>
                   {snapshot?.role || '—'}
                 </p>
                 {snapshot?.company && (
@@ -146,12 +155,12 @@ export default function CareerPillar() {
                 {snapshot?.target_role && (
                   <div className="rounded-xl p-3" style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border-default)' }}>
                     <p className="text-[10px] font-medium uppercase tracking-wide mb-1" style={{ color: 'var(--text-muted)' }}>Target</p>
-                    <p className="text-sm font-bold font-['Space_Grotesk']" style={{ color: ACCENT }}>{snapshot.target_role}</p>
+                    <p className="text-sm font-bold font-['Plus_Jakarta_Sans']" style={{ color: ACCENT }}>{snapshot.target_role}</p>
                   </div>
                 )}
                 <div className="rounded-xl p-3" style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border-default)' }}>
                   <p className="text-[10px] font-medium uppercase tracking-wide mb-1" style={{ color: 'var(--text-muted)' }}>Salary</p>
-                  <p className="text-sm font-bold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>{fmt(snapshot?.salary, hidden)}</p>
+                  <p className="text-sm font-bold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>{fmt(snapshot?.salary, hidden)}</p>
                 </div>
               </div>
             </div>
@@ -192,13 +201,18 @@ export default function CareerPillar() {
         )}
       </div>
 
-      <WinLog />
-      <SkillsTracker />
-
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <PillarGoals category="Career" accentColor={ACCENT} accentBg={`${ACCENT}08`} accentBorder={`${ACCENT}30`} />
-        <PillarHabitTracker pillar="Career" accentColor={ACCENT} accentMuted={`${ACCENT}20`} />
+        <WinLog />
+        <SkillsTracker />
       </div>
+      </div>{/* end col-span-2 */}
+
+      {/* RIGHT 1/3 */}
+      <div className="col-span-1 space-y-4">
+        <PillarGoals category="Career" accentColor={ACCENT} accentBg={`${ACCENT}08`} accentBorder={`${ACCENT}30`} />
+        <PillarHabitTracker pillar="Career" accentColor={ACCENT} accentMuted={`${ACCENT}20`} compact />
+      </div>
+    </div>
     </div>
   )
 }
