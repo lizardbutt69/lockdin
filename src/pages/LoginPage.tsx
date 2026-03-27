@@ -2,17 +2,17 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '../contexts/AuthContext'
-import { AlertCircle, Mail, Lock, User, Target, CheckCircle } from 'lucide-react'
+import { AlertCircle, Mail, Lock, User, Target } from 'lucide-react'
 
 type Mode = 'login' | 'signup'
 
 const PILLARS = [
-  { label: 'God & Spirituality',      color: '#7c3aed' },
-  { label: 'Finances',                color: '#0891b2' },
-  { label: 'Relationships',           color: '#e11d48' },
-  { label: 'Diet & Health',           color: '#16a34a' },
-  { label: 'Fitness',                 color: '#ea580c' },
-  { label: 'Trips & Adventures',      color: '#2563eb' },
+  { label: 'God',           color: '#7c3aed', bg: 'rgba(124,58,237,0.15)' },
+  { label: 'Finances',      color: '#16a34a', bg: 'rgba(22,163,74,0.15)'  },
+  { label: 'Career',        color: '#2563eb', bg: 'rgba(37,99,235,0.15)'  },
+  { label: 'Relationships', color: '#dc2626', bg: 'rgba(220,38,38,0.15)'  },
+  { label: 'Fitness',       color: '#ea580c', bg: 'rgba(234,88,12,0.15)'  },
+  { label: 'Trips',         color: '#0284c7', bg: 'rgba(2,132,199,0.15)'  },
 ]
 
 export default function LoginPage() {
@@ -54,45 +54,119 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex" style={{ background: '#f4f6f9' }}>
-      {/* Left branding panel */}
+
+      {/* ── Left branding panel ── */}
       <div
-        className="hidden lg:flex lg:w-5/12 xl:w-2/5 flex-col justify-between p-10"
-        style={{ background: 'linear-gradient(135deg, #15803d 0%, #166534 60%, #14532d 100%)' }}
+        className="hidden lg:flex lg:w-5/12 xl:w-1/2 flex-col justify-between p-12"
+        style={{ background: '#0d1117', position: 'relative', overflow: 'hidden' }}
       >
+        {/* Subtle background glow */}
+        <div
+          className="absolute"
+          style={{
+            width: 480,
+            height: 480,
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(22,163,74,0.12) 0%, transparent 70%)',
+            top: '10%',
+            left: '-10%',
+            pointerEvents: 'none',
+          }}
+        />
+        <div
+          className="absolute"
+          style={{
+            width: 320,
+            height: 320,
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 70%)',
+            bottom: '15%',
+            right: '-5%',
+            pointerEvents: 'none',
+          }}
+        />
+
         {/* Logo */}
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
-            <Target className="w-5 h-5 text-white" />
+        <div className="flex items-center gap-3 relative z-10">
+          <div
+            className="w-9 h-9 rounded-xl flex items-center justify-center"
+            style={{ background: 'rgba(22,163,74,0.2)', border: '1px solid rgba(22,163,74,0.35)' }}
+          >
+            <Target className="w-5 h-5" style={{ color: '#4ade80' }} />
           </div>
-          <span className="text-white text-lg font-bold font-['Plus_Jakarta_Sans'] tracking-wide">LOCKD IN</span>
+          <span
+            className="text-lg font-bold tracking-widest font-['Plus_Jakarta_Sans']"
+            style={{ color: '#f9fafb', letterSpacing: '0.15em' }}
+          >
+            LOCKD IN
+          </span>
         </div>
 
         {/* Center content */}
-        <div>
-          <h1 className="text-white text-4xl font-bold font-['Plus_Jakarta_Sans'] leading-tight mb-4">
-            Your personal<br />command center.
-          </h1>
-          <p className="text-green-200 text-base leading-relaxed mb-10">
-            Track and level up across important life pillars. Built for men who are serious about becoming better.
+        <div className="space-y-8 relative z-10">
+          {/* Eyebrow */}
+          <p
+            className="text-xs font-bold tracking-widest uppercase"
+            style={{ color: '#4ade80', letterSpacing: '0.2em' }}
+          >
+            Personal Command Center
           </p>
 
-          <div className="space-y-3">
-            {PILLARS.map(p => (
-              <div key={p.label} className="flex items-center gap-3">
-                <CheckCircle className="w-4 h-4 text-green-300 shrink-0" />
-                <span className="text-green-100 text-sm font-medium">{p.label}</span>
-              </div>
+          {/* Headline */}
+          <div className="space-y-2">
+            <h1
+              className="font-bold font-['Plus_Jakarta_Sans'] leading-[1.1]"
+              style={{ color: '#f9fafb', fontSize: 'clamp(2rem, 3.5vw, 2.75rem)' }}
+            >
+              Build the man.<br />
+              <span style={{ color: '#4ade80' }}>Track the mission.</span>
+            </h1>
+          </div>
+
+          {/* Subheadline */}
+          <p
+            className="text-base leading-relaxed max-w-sm"
+            style={{ color: '#9ca3af' }}
+          >
+            Most men know what they should be doing. Few hold themselves to it.
+            LOCKD IN is the system that closes the gap — one dashboard, six pillars, zero drift.
+          </p>
+
+          {/* Pillar grid */}
+          <div className="flex flex-wrap gap-2">
+            {PILLARS.map((p, i) => (
+              <motion.div
+                key={p.label}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + i * 0.07, duration: 0.3 }}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold"
+                style={{ background: p.bg, border: `1px solid ${p.color}30`, color: p.color }}
+              >
+                <div className="w-1.5 h-1.5 rounded-full" style={{ background: p.color }} />
+                {p.label}
+              </motion.div>
             ))}
           </div>
         </div>
 
-        <p className="text-green-300 text-sm">
-          Iron sharpens iron — Proverbs 27:17
-        </p>
+        {/* Proverb */}
+        <div className="relative z-10 space-y-1">
+          <div className="w-8 h-px" style={{ background: 'rgba(74,222,128,0.4)' }} />
+          <p
+            className="text-sm italic"
+            style={{ color: '#6b7280' }}
+          >
+            "Iron sharpens iron, and one man sharpens another."
+          </p>
+          <p className="text-xs font-semibold tracking-wider uppercase" style={{ color: '#4ade80', opacity: 0.7 }}>
+            Proverbs 27:17
+          </p>
+        </div>
       </div>
 
-      {/* Right form panel */}
-      <div className="flex-1 flex items-center justify-center p-6 lg:p-12 bg-white">
+      {/* ── Right form panel ── */}
+      <div className="flex-1 flex items-center justify-center p-6 lg:p-16 bg-white">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -101,20 +175,39 @@ export default function LoginPage() {
         >
           {/* Mobile logo */}
           <div className="flex items-center gap-2 mb-8 lg:hidden">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
+            <div
+              className="w-8 h-8 rounded-lg flex items-center justify-center"
+              style={{ background: '#f0fdf4', border: '1px solid #bbf7d0' }}
+            >
               <Target className="w-4 h-4" style={{ color: '#16a34a' }} />
             </div>
-            <span className="font-['Plus_Jakarta_Sans'] text-lg font-bold" style={{ color: '#111827' }}>LOCKD IN</span>
+            <span className="font-['Plus_Jakarta_Sans'] text-lg font-bold" style={{ color: '#111827' }}>
+              LOCKD IN
+            </span>
           </div>
 
-          <h2 className="text-2xl font-bold font-['Plus_Jakarta_Sans'] mb-1" style={{ color: '#111827' }}>
-            {mode === 'login' ? 'Welcome back' : 'Create account'}
-          </h2>
-          <p className="text-sm mb-8" style={{ color: '#6b7280' }}>
-            {mode === 'login'
-              ? 'Sign in to your command center.'
-              : 'Start tracking your 6 life pillars.'}
-          </p>
+          {/* Form heading */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={mode}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.2 }}
+            >
+              <h2
+                className="text-2xl font-bold font-['Plus_Jakarta_Sans'] mb-1.5"
+                style={{ color: '#111827' }}
+              >
+                {mode === 'login' ? 'Welcome back.' : 'Set up your command center.'}
+              </h2>
+              <p className="text-sm mb-8" style={{ color: '#6b7280' }}>
+                {mode === 'login'
+                  ? 'Sign in and get back to work.'
+                  : 'Start owning every area of your life.'}
+              </p>
+            </motion.div>
+          </AnimatePresence>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <AnimatePresence mode="wait">
@@ -125,6 +218,7 @@ export default function LoginPage() {
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.2 }}
+                  className="overflow-hidden"
                 >
                   <label className="block text-sm font-medium mb-1.5" style={{ color: '#374151' }}>
                     Your name
@@ -203,9 +297,7 @@ export default function LoginPage() {
               onMouseEnter={e => { if (!loading) e.currentTarget.style.background = '#15803d' }}
               onMouseLeave={e => { if (!loading) e.currentTarget.style.background = '#16a34a' }}
             >
-              {loading
-                ? 'Please wait...'
-                : mode === 'login' ? 'Sign in' : 'Create account'}
+              {loading ? 'Please wait...' : mode === 'login' ? 'Sign in' : 'Create account'}
             </button>
           </form>
 
