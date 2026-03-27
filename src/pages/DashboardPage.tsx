@@ -11,7 +11,6 @@ import GoalsCard from '../components/dashboard/GoalsCard'
 import GodPillar from '../components/pillars/GodPillar'
 import FinancesPillar from '../components/pillars/FinancesPillar'
 import RelationshipsPillar from '../components/pillars/RelationshipsPillar'
-import DietPillar from '../components/pillars/DietPillar'
 import FitnessPillar from '../components/pillars/FitnessPillar'
 import TripsPillar from '../components/pillars/TripsPillar'
 import GratitudePage from '../components/gratitude/GratitudePage'
@@ -82,7 +81,6 @@ export default function DashboardPage() {
     god:           <GodPillar log={log} onUpdate={handleUpdate} />,
     finances:      <FinancesPillar log={log} onUpdate={handleUpdate} />,
     relationships: <RelationshipsPillar log={log} onUpdate={handleUpdate} weeklyDateNights={weeklyDateNights} />,
-    diet:          <DietPillar log={log} onUpdate={handleUpdate} />,
     fitness:       <FitnessPillar log={log} onUpdate={handleUpdate} weeklyWorkouts={weeklyWorkouts} />,
     trips:         <TripsPillar />,
     gratitude:     <GratitudePage />,

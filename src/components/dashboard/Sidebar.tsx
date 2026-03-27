@@ -10,7 +10,7 @@ import type { Database } from '../../types/database'
 
 type Profile = Database['public']['Tables']['profiles']['Row']
 
-export type PillarKey = 'overview' | 'god' | 'finances' | 'relationships' | 'diet' | 'fitness' | 'trips' | 'gratitude' | 'career'
+export type PillarKey = 'overview' | 'god' | 'finances' | 'relationships' | 'fitness' | 'trips' | 'gratitude' | 'career'
 
 interface SidebarProps {
   activePillar: PillarKey
@@ -27,8 +27,7 @@ const NAV_ITEMS: { key: PillarKey; label: string; icon: React.ElementType }[] = 
   { key: 'god',           label: 'God',            icon: BookOpen   },
   { key: 'finances',      label: 'Finances',       icon: DollarSign },
   { key: 'relationships', label: 'Relationships',  icon: Heart      },
-  { key: 'diet',          label: 'Diet & Health',  icon: Leaf       },
-  { key: 'fitness',       label: 'Fitness',        icon: Dumbbell   },
+  { key: 'fitness',       label: 'Health & Fitness', icon: Dumbbell   },
   { key: 'trips',         label: 'Trips',          icon: Plane      },
   { key: 'career',        label: 'Career',         icon: Briefcase  },
 ]
