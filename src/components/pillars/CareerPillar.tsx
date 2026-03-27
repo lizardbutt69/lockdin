@@ -103,9 +103,9 @@ export default function CareerPillar() {
       </div>
       <span className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>Career</span>
     </div>
-    <div className="grid grid-cols-3 gap-4 items-start">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
       {/* LEFT 2/3 */}
-      <div className="col-span-2 space-y-4">
+      <div className="col-span-1 lg:col-span-2 space-y-4">
       {/* Role Snapshot */}
       <div className="card p-4 space-y-4">
         <div className="flex items-center justify-between">
@@ -208,7 +208,7 @@ export default function CareerPillar() {
       </div>{/* end col-span-2 */}
 
       {/* RIGHT 1/3 */}
-      <div className="col-span-1 space-y-4">
+      <div className="col-span-1 lg:col-span-1 space-y-4">
         <PillarGoals category="Career" accentColor={ACCENT} accentBg={`${ACCENT}08`} accentBorder={`${ACCENT}30`} />
         <PillarHabitTracker pillar="Career" accentColor={ACCENT} accentMuted={`${ACCENT}20`} compact />
       </div>

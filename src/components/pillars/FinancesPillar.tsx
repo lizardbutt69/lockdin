@@ -121,9 +121,9 @@ export default function FinancesPillar({ log }: FinancesPillarProps) {
       </div>
       <span className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>Finances</span>
     </div>
-    <div className="grid grid-cols-3 gap-4 items-start">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
       {/* LEFT 2/3 */}
-      <div className="col-span-2 space-y-4">
+      <div className="col-span-1 lg:col-span-2 space-y-4">
       <div className="card p-4 space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -220,7 +220,7 @@ export default function FinancesPillar({ log }: FinancesPillarProps) {
       </div>{/* end col-span-2 */}
 
       {/* RIGHT 1/3 */}
-      <div className="col-span-1 space-y-4">
+      <div className="col-span-1 lg:col-span-1 space-y-4">
         <PillarHabitTracker pillar="Finances" accentColor="#16a34a" accentMuted="rgba(22,163,74,0.15)" compact />
         <PillarGoals category="Finances" accentColor="#16a34a" accentBg="rgba(22,163,74,0.06)" accentBorder="rgba(22,163,74,0.2)" />
       </div>

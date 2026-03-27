@@ -33,10 +33,10 @@ export default function BondsPillar() {
       </div>
 
       {/* 2/3 + 1/3 layout */}
-      <div className="grid grid-cols-3 gap-4 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
 
         {/* LEFT 2/3 — Self check-in + Partner/Circle/Community tabs */}
-        <div className="col-span-2 space-y-4">
+        <div className="col-span-1 lg:col-span-2 space-y-4">
           <BondsSelfTab
             checkIn={bonds.checkIn}
             onSaveCheckIn={bonds.saveCheckIn}
@@ -99,7 +99,7 @@ export default function BondsPillar() {
         </div>
 
         {/* RIGHT 1/3 — Goals + Important Dates + Habits */}
-        <div className="col-span-1 space-y-4">
+        <div className="col-span-1 lg:col-span-1 space-y-4">
           <PillarGoals category="Relationships" accentColor="#dc2626" accentBg="rgba(220,38,38,0.06)" accentBorder="rgba(220,38,38,0.2)" />
           <BondsImportantDates
             dates={bonds.importantDates}

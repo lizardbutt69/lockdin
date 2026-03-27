@@ -268,7 +268,7 @@ export default function TripsPillar() {
       </div>
       <span className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>Trips</span>
     </div>
-    <div className="grid grid-cols-3 gap-4 items-start">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
       {/* LEFT 2/3 — one big trips box */}
       <div className="col-span-2">
         <div className="card p-4 space-y-4">
@@ -381,7 +381,7 @@ export default function TripsPillar() {
       </div>
 
       {/* RIGHT 1/3 — Goals + Habits */}
-      <div className="col-span-1 space-y-4">
+      <div className="col-span-1 lg:col-span-1 space-y-4">
         <PillarGoals category="Travel" accentColor="#3b82f6" accentBg="rgba(59,130,246,0.06)" accentBorder="rgba(59,130,246,0.2)" />
         <PillarHabitTracker pillar="Travel" accentColor="#3b82f6" accentMuted="rgba(59,130,246,0.15)" compact />
       </div>

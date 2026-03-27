@@ -189,9 +189,9 @@ export default function GodPillar({ log, onUpdate: _onUpdate }: GodPillarProps) 
       </div>
       <span className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>God</span>
     </div>
-    <div className="grid grid-cols-3 gap-4 items-start">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
       {/* LEFT 2/3 — Verse + Devotional + Prayer */}
-      <div className="col-span-2 space-y-4">
+      <div className="col-span-1 lg:col-span-2 space-y-4">
         <GlassCard status="green" active={false}>
           <div className="p-4 space-y-4">
             <div className="flex items-center gap-2">
@@ -238,7 +238,7 @@ export default function GodPillar({ log, onUpdate: _onUpdate }: GodPillarProps) 
       </div>
 
       {/* RIGHT 1/3 — Habits + Goals */}
-      <div className="col-span-1 space-y-4">
+      <div className="col-span-1 lg:col-span-1 space-y-4">
         <PillarHabitTracker pillar="God" accentColor="#7c3aed" accentMuted="rgba(124,58,237,0.15)" compact />
         <PillarGoals category="God" accentColor="#7c3aed" accentBg="#faf5ff" accentBorder="#e9d5ff" />
       </div>
