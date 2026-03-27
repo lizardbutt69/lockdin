@@ -36,7 +36,7 @@ export default function NotesCard() {
             <StickyNote className="w-4 h-4" style={{ color: '#d97706' }} />
           </div>
           <div>
-            <h3 className="text-sm font-semibold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>
+            <h3 className="text-sm font-semibold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>
               Notes
             </h3>
             <p className="text-xs mt-0.5" style={{ color: 'var(--text-tertiary)' }}>

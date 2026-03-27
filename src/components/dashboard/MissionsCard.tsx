@@ -44,7 +44,7 @@ export default function MissionsCard() {
       {/* Header */}
       <div className="px-4 py-3.5 border-b flex items-center justify-between shrink-0" style={{ borderColor: 'var(--border-subtle)' }}>
         <div>
-          <h3 className="font-semibold text-sm font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>Today's Missions</h3>
+          <h3 className="font-semibold text-sm font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>Today's Missions</h3>
           <p className="text-[11px] mt-0.5" style={{ color: 'var(--text-muted)' }}>
             {incomplete.length} remaining · +{xpEarned} XP earned
           </p>

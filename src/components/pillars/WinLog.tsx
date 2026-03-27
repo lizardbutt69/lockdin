@@ -33,7 +33,7 @@ function formatDate(d: string) {
 export default function WinLog() {
   const { user } = useAuth()
   const [wins, setWins] = useState<Win[]>([])
-  const [showAdd, setShowAdd] = useState(false)
+  const [showAdd, setShowAdd] = useState(true)
   const [form, setForm] = useState({ title: '', description: '', category: 'SHIPPED', date: new Date().toISOString().slice(0, 10) })
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
@@ -74,7 +74,7 @@ export default function WinLog() {
           <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'rgba(245,158,11,0.12)' }}>
             <Trophy className="w-3.5 h-3.5" style={{ color: '#f59e0b' }} />
           </div>
-          <h3 className="text-sm font-semibold font-['Space_Grotesk'] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Win Log</h3>
+          <h3 className="text-sm font-semibold font-['Plus_Jakarta_Sans'] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Win Log</h3>
           {wins.length > 0 && (
             <span className="text-xs font-bold tabular-nums" style={{ color: '#f59e0b' }}>{wins.length}</span>
           )}
@@ -126,22 +126,21 @@ export default function WinLog() {
                   >{cfg.label}</button>
                 ))}
               </div>
+              {error && <span className="text-xs text-red-500">{error}</span>}
               <div className="flex items-center gap-2">
                 <input
                   type="date"
                   value={form.date}
                   onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
-                  className="tactical-input text-sm w-36"
+                  className="tactical-input text-sm"
+                  style={{ width: 140 }}
                 />
-                <div className="flex gap-2 flex-1 justify-end">
-                  {error && <span className="text-xs text-red-500 self-center">{error}</span>}
-                  <button type="button" onClick={handleAdd} disabled={saving}
-                    className="px-3 py-1.5 rounded-lg text-sm font-semibold text-white flex items-center gap-1.5"
-                    style={{ background: ACCENT, opacity: saving ? 0.7 : 1 }}>
-                    <Check className="w-3.5 h-3.5" />
-                    {saving ? 'Saving...' : 'Log Win'}
-                  </button>
-                </div>
+                <button type="button" onClick={handleAdd} disabled={saving}
+                  className="flex-1 py-1.5 rounded-lg text-sm font-semibold text-white flex items-center justify-center gap-1.5"
+                  style={{ background: ACCENT, opacity: saving ? 0.7 : 1 }}>
+                  <Check className="w-3.5 h-3.5" />
+                  {saving ? 'Saving...' : 'Log Win'}
+                </button>
               </div>
             </div>
           </motion.div>

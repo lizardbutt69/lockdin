@@ -44,7 +44,7 @@ function SkillDots({ level, onChange }: { level: number; onChange?: (l: number) 
 
 export default function SkillsTracker() {
   const [skills, setSkills] = useState<Skill[]>(loadSkills)
-  const [showAdd, setShowAdd] = useState(false)
+  const [showAdd, setShowAdd] = useState(true)
   const [form, setForm] = useState({ name: '', category: 'TECHNICAL', level: 1 })
   const [editId, setEditId] = useState<string | null>(null)
   const [editForm, setEditForm] = useState({ name: '', category: 'TECHNICAL', level: 1 })
@@ -95,7 +95,7 @@ export default function SkillsTracker() {
           <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: `${ACCENT}18` }}>
             <Zap className="w-3.5 h-3.5" style={{ color: ACCENT }} />
           </div>
-          <h3 className="text-sm font-semibold font-['Space_Grotesk'] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Skills</h3>
+          <h3 className="text-sm font-semibold font-['Plus_Jakarta_Sans'] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Skills</h3>
           {skills.length > 0 && (
             <span className="text-xs font-bold tabular-nums" style={{ color: ACCENT }}>{skills.length}</span>
           )}

@@ -256,7 +256,7 @@ export default function MissionsModal({ onClose }: { onClose: () => void }) {
         {/* Header */}
         <div className="px-5 py-4 flex items-center justify-between shrink-0" style={{ borderBottom: '1px solid var(--border-default)' }}>
           <div>
-            <h2 className="font-bold text-base font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>
+            <h2 className="font-bold text-base font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>
               Today's Missions
             </h2>
             <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>

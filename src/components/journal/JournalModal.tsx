@@ -58,7 +58,7 @@ function PinScreen({ onUnlock, onClose }: { onUnlock: () => void; onClose: () =>
           style={{ background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
           <Lock className="w-6 h-6" style={{ color: '#16a34a' }} />
         </div>
-        <h3 className="text-xl font-bold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>Journal locked</h3>
+        <h3 className="text-xl font-bold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>Journal locked</h3>
         <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>Enter your 4-digit PIN to continue</p>
       </div>
 
@@ -133,7 +133,7 @@ function PinSetup({ onDone, onCancel }: { onDone: () => void; onCancel: () => vo
           style={{ background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
           <Lock className="w-6 h-6" style={{ color: '#16a34a' }} />
         </div>
-        <h3 className="text-xl font-bold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>
+        <h3 className="text-xl font-bold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>
           {step === 'create' ? 'Create a PIN' : 'Confirm your PIN'}
         </h3>
         <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>
@@ -220,7 +220,7 @@ function AISummaryPanel({ entries, onClose }: { entries: JournalEntry[]; onClose
       <div className="flex items-center justify-between p-4 border-b" style={{ borderColor: 'var(--border-default)' }}>
         <div className="flex items-center gap-2">
           <Sparkles className="w-4 h-4" style={{ color: '#7c3aed' }} />
-          <span className="font-semibold text-sm font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>AI Reflection</span>
+          <span className="font-semibold text-sm font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>AI Reflection</span>
         </div>
         <button onClick={onClose} className="p-1.5 rounded-lg transition-colors" style={{ color: 'var(--text-muted)' }}
           onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
@@ -465,7 +465,7 @@ export default function JournalModal({ onClose }: JournalModalProps) {
         >
           {/* Header */}
           <div className="p-4 border-b flex items-center justify-between" style={{ borderColor: 'var(--border-default)' }}>
-            <h2 className="font-bold font-['Space_Grotesk'] text-base" style={{ color: 'var(--text-primary)' }}>Journal</h2>
+            <h2 className="font-bold font-['Plus_Jakarta_Sans'] text-base" style={{ color: 'var(--text-primary)' }}>Journal</h2>
             <div className="flex gap-1">
               <button
                 onClick={() => { setShowAI(!showAI); if (!showAI) setMobileView('editor') }}
@@ -599,7 +599,7 @@ export default function JournalModal({ onClose }: JournalModalProps) {
                       value={draft.title}
                       onChange={e => setDraft(d => ({ ...d, title: e.target.value }))}
                       placeholder="Title (optional)"
-                      className="text-base sm:text-lg font-bold bg-transparent outline-none w-full font-['Space_Grotesk']"
+                      className="text-base sm:text-lg font-bold bg-transparent outline-none w-full font-['Plus_Jakarta_Sans']"
                       style={{ color: 'var(--text-primary)' }}
                     />
                   </div>

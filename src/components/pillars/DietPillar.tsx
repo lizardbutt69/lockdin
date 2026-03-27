@@ -36,7 +36,7 @@ export default function DietPillar({ log, onUpdate }: DietPillarProps) {
             <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'rgba(245,158,11,0.1)' }}>
               <Apple className="w-3.5 h-3.5" style={{ color: '#f59e0b' }} />
             </div>
-            <span className="text-sm font-semibold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>Diet & Health</span>
+            <span className="text-sm font-semibold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>Diet & Health</span>
           </div>
           <span className={`font-['Inter'] text-lg font-bold ${status === 'green' ? 'text-[#00ff41] glow-green' : status === 'amber' ? 'text-[#ff9500]' : 'text-[#ff2d2d]'}`}>
             {pct}%

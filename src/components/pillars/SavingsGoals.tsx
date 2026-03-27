@@ -58,7 +58,7 @@ function GoalCard({
       {/* Header */}
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2 min-w-0">
-          <span className="font-semibold text-sm truncate font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>
+          <span className="font-semibold text-sm truncate font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>
             {goal.name}
           </span>
         </div>
@@ -89,7 +89,7 @@ function GoalCard({
         <>
           <div>
             <div className="flex justify-between text-xs mb-1.5">
-              <span className="font-semibold font-['Space_Grotesk']" style={{ color: done ? '#16a34a' : 'var(--text-secondary)' }}>
+              <span className="font-semibold font-['Plus_Jakarta_Sans']" style={{ color: done ? '#16a34a' : 'var(--text-secondary)' }}>
                 {fmt(goal.current_amount, hidden)}
               </span>
               <span style={{ color: 'var(--text-muted)' }}>
@@ -250,7 +250,7 @@ export default function SavingsGoals({ hidden }: SavingsGoalsProps) {
             <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'rgba(22,163,74,0.1)' }}>
               <Target className="w-3.5 h-3.5" style={{ color: '#16a34a' }} />
             </div>
-            <span className="text-sm font-semibold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>
+            <span className="text-sm font-semibold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>
               Saving For
             </span>
             {goals.length > 0 && (

@@ -139,7 +139,7 @@ export default function SettingsPanel({ onClose, displayName, onSaveName }: Sett
       >
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b shrink-0" style={{ borderColor: 'var(--border-subtle)' }}>
-          <h2 className="font-semibold font-['Space_Grotesk'] text-base" style={{ color: 'var(--text-primary)' }}>Settings</h2>
+          <h2 className="font-semibold font-['Plus_Jakarta_Sans'] text-base" style={{ color: 'var(--text-primary)' }}>Settings</h2>
           <button
             onClick={onClose}
             className="p-1.5 rounded-lg transition-colors"
@@ -157,14 +157,14 @@ export default function SettingsPanel({ onClose, displayName, onSaveName }: Sett
           <section>
             <div className="flex items-center gap-2 mb-4">
               <User className="w-4 h-4" style={{ color: '#2563eb' }} />
-              <h3 className="text-sm font-semibold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>Profile</h3>
+              <h3 className="text-sm font-semibold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>Profile</h3>
             </div>
 
             {/* Avatar preview + color picker */}
             <div className="flex items-center gap-4 mb-4">
               <div className="relative">
                 <div
-                  className="w-14 h-14 rounded-full flex items-center justify-center text-lg font-bold font-['Space_Grotesk'] shrink-0 overflow-hidden cursor-pointer"
+                  className="w-14 h-14 rounded-full flex items-center justify-center text-lg font-bold font-['Plus_Jakarta_Sans'] shrink-0 overflow-hidden cursor-pointer"
                   style={{ background: avatarColor.bg, border: `2px solid ${avatarColor.border}`, color: avatarColor.text }}
                   onClick={() => fileInputRef.current?.click()}
                   title="Upload photo"
@@ -248,7 +248,7 @@ export default function SettingsPanel({ onClose, displayName, onSaveName }: Sett
           <section>
             <div className="flex items-center gap-2 mb-3">
               <Key className="w-4 h-4" style={{ color: '#7c3aed' }} />
-              <h3 className="text-sm font-semibold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>Anthropic API Key</h3>
+              <h3 className="text-sm font-semibold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>Anthropic API Key</h3>
             </div>
             <p className="text-xs mb-3" style={{ color: 'var(--text-muted)' }}>
               Used for AI devotionals and journal summaries. Stored locally only.
@@ -292,7 +292,7 @@ export default function SettingsPanel({ onClose, displayName, onSaveName }: Sett
           <section>
             <div className="flex items-center gap-2 mb-3">
               <Lock className="w-4 h-4" style={{ color: '#16a34a' }} />
-              <h3 className="text-sm font-semibold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>Journal PIN</h3>
+              <h3 className="text-sm font-semibold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>Journal PIN</h3>
               {hasPIN && (
                 <span className="text-[10px] font-medium px-1.5 py-0.5 rounded" style={{ background: '#f0fdf4', color: '#16a34a', border: '1px solid #bbf7d0' }}>
                   Active

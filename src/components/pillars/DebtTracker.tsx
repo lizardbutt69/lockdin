@@ -104,7 +104,7 @@ function DebtCard({
           >
             {debt.type}
           </span>
-          <span className="font-semibold text-sm truncate font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>
+          <span className="font-semibold text-sm truncate font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>
             {debt.name}
           </span>
         </div>
@@ -131,7 +131,7 @@ function DebtCard({
           <div className="flex items-end justify-between">
             <div>
               <p className="text-[10px] font-medium uppercase tracking-wide mb-0.5" style={{ color: 'var(--text-muted)' }}>Balance</p>
-              <p className="text-xl font-bold font-['Space_Grotesk']" style={{ color: '#ef4444' }}>
+              <p className="text-xl font-bold font-['Plus_Jakarta_Sans']" style={{ color: '#ef4444' }}>
                 ${debt.current_balance.toLocaleString()}
               </p>
             </div>
@@ -296,9 +296,9 @@ export default function DebtTracker() {
               <CreditCard className="w-3.5 h-3.5" style={{ color: '#ef4444' }} />
             </div>
             <div>
-              <span className="text-sm font-semibold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>Debt Tracker</span>
+              <span className="text-sm font-semibold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>Debt Tracker</span>
               {totalDebt > 0 && (
-                <span className="text-xs ml-2 font-bold font-['Space_Grotesk']" style={{ color: '#ef4444' }}>
+                <span className="text-xs ml-2 font-bold font-['Plus_Jakarta_Sans']" style={{ color: '#ef4444' }}>
                   ${totalDebt.toLocaleString()} total
                 </span>
               )}

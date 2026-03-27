@@ -42,7 +42,7 @@ export default function RelationshipsPillar({ log, onUpdate, weeklyDateNights }:
             <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'rgba(236,72,153,0.1)' }}>
               <Heart className="w-3.5 h-3.5" style={{ color: '#ec4899' }} />
             </div>
-            <span className="text-sm font-semibold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>Relationships</span>
+            <span className="text-sm font-semibold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>Relationships</span>
           </div>
           <div className="text-right">
             <div className={`font-['Inter'] text-lg font-bold ${status === 'green' ? 'text-[#00ff41] glow-green' : status === 'amber' ? 'text-[#ff9500]' : 'text-[#ff2d2d]'}`}>

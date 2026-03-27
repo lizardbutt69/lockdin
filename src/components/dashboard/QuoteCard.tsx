@@ -17,19 +17,34 @@ export default function QuoteCard() {
 
   return (
     <div
-      className="rounded-xl p-4 flex items-start gap-3"
+      className="rounded-xl overflow-hidden"
       style={{
         background: 'var(--bg-card)',
         border: '1px solid var(--border-default)',
         boxShadow: 'var(--shadow-card)',
       }}
     >
-      <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
-        style={{ background: '#faf5ff', border: '1px solid #e9d5ff' }}>
-        <Quote className="w-3.5 h-3.5" style={{ color: '#7c3aed' }} />
+      {/* Title bar */}
+      <div className="px-3 py-2 flex items-center justify-between" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+        <div className="flex items-center gap-2">
+          <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{ background: '#faf5ff', border: '1px solid #e9d5ff' }}>
+            <Quote className="w-3 h-3" style={{ color: '#7c3aed' }} />
+          </div>
+          <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Quote of the Day</span>
+        </div>
+        <button
+          onClick={nextQuote}
+          className="p-1 rounded-lg transition-colors"
+          title="Next quote"
+          style={{ color: 'var(--text-muted)' }}
+          onMouseEnter={e => e.currentTarget.style.color = '#7c3aed'}
+          onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}
+        >
+          <RefreshCw className="w-3 h-3" />
+        </button>
       </div>
 
-      <div className="flex-1 min-w-0">
+      <div className="px-3 py-2.5">
         <AnimatePresence mode="wait">
           <motion.div
             key={animKey}
@@ -38,26 +53,15 @@ export default function QuoteCard() {
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.2 }}
           >
-            <p className="text-sm leading-relaxed italic mb-1.5" style={{ color: 'var(--text-secondary)' }}>
+            <p className="text-xs leading-relaxed italic mb-1" style={{ color: 'var(--text-secondary)' }}>
               "{quote.text}"
             </p>
-            <p className="text-xs font-semibold" style={{ color: '#7c3aed' }}>
+            <p className="text-[11px] font-semibold" style={{ color: '#7c3aed' }}>
               — {quote.author}{quote.source ? `, ${quote.source}` : ''}
             </p>
           </motion.div>
         </AnimatePresence>
       </div>
-
-      <button
-        onClick={nextQuote}
-        className="p-1.5 rounded-lg shrink-0 transition-colors mt-0.5"
-        title="Next quote"
-        style={{ color: 'var(--text-muted)' }}
-        onMouseEnter={e => e.currentTarget.style.background = '#f5f3ff'}
-        onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-      >
-        <RefreshCw className="w-3.5 h-3.5" />
-      </button>
     </div>
   )
 }

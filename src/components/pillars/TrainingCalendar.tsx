@@ -34,7 +34,10 @@ const TYPE_CONFIG: Record<string, { color: string; bg: string; label: string }> 
 const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
 function toISO(d: Date) {
-  return d.toISOString().slice(0, 10)
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${y}-${m}-${day}`
 }
 
 function getMondayOfWeek(d: Date): Date {
@@ -133,7 +136,7 @@ function SessionDetail({
             {/* View mode */}
             <div className="rounded-xl p-4 space-y-2" style={{ background: cfg.bg, border: `1px solid ${cfg.color}30` }}>
               <div className="flex items-center gap-2">
-                <span className="text-lg font-bold font-['Space_Grotesk']" style={{ color: cfg.color }}>{session.workout_type}</span>
+                <span className="text-lg font-bold font-['Plus_Jakarta_Sans']" style={{ color: cfg.color }}>{session.workout_type}</span>
                 <div className="ml-auto flex items-center gap-2">
                   {session.start_time && (
                     <span className="text-sm" style={{ color: cfg.color }}>{session.start_time}</span>
@@ -408,7 +411,7 @@ export default function TrainingCalendar({ accentColor = '#ea580c' }: { accentCo
       {/* Header */}
       <div className="px-4 py-3 border-b flex items-center justify-between gap-2" style={{ borderColor: 'var(--border-subtle)' }}>
         <div className="flex items-center gap-2 min-w-0">
-          <h3 className="text-sm font-semibold font-['Space_Grotesk'] uppercase tracking-wider shrink-0" style={{ color: 'var(--text-muted)' }}>
+          <h3 className="text-sm font-semibold font-['Plus_Jakarta_Sans'] uppercase tracking-wider shrink-0" style={{ color: 'var(--text-primary)' }}>
             Training Plan
           </h3>
           {totalSessions > 0 && (
@@ -438,7 +441,7 @@ export default function TrainingCalendar({ accentColor = '#ea580c' }: { accentCo
           <button onClick={prevPeriod} className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'var(--bg-subtle)', color: 'var(--text-muted)' }}>
             <ChevronLeft className="w-4 h-4" />
           </button>
-          <span className="text-xs font-semibold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)', minWidth: 110, textAlign: 'center' }}>
+          <span className="text-xs font-semibold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)', minWidth: 110, textAlign: 'center' }}>
             {periodLabel}
           </span>
           <button onClick={nextPeriod} className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'var(--bg-subtle)', color: 'var(--text-muted)' }}>

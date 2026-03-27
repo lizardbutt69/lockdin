@@ -64,12 +64,12 @@ export default function LoginPage() {
           <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
             <Target className="w-5 h-5 text-white" />
           </div>
-          <span className="text-white text-lg font-bold font-['Space_Grotesk'] tracking-wide">LOCKD IN</span>
+          <span className="text-white text-lg font-bold font-['Plus_Jakarta_Sans'] tracking-wide">LOCKD IN</span>
         </div>
 
         {/* Center content */}
         <div>
-          <h1 className="text-white text-4xl font-bold font-['Space_Grotesk'] leading-tight mb-4">
+          <h1 className="text-white text-4xl font-bold font-['Plus_Jakarta_Sans'] leading-tight mb-4">
             Your personal<br />command center.
           </h1>
           <p className="text-green-200 text-base leading-relaxed mb-10">
@@ -104,10 +104,10 @@ export default function LoginPage() {
             <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
               <Target className="w-4 h-4" style={{ color: '#16a34a' }} />
             </div>
-            <span className="font-['Space_Grotesk'] text-lg font-bold" style={{ color: '#111827' }}>LOCKD IN</span>
+            <span className="font-['Plus_Jakarta_Sans'] text-lg font-bold" style={{ color: '#111827' }}>LOCKD IN</span>
           </div>
 
-          <h2 className="text-2xl font-bold font-['Space_Grotesk'] mb-1" style={{ color: '#111827' }}>
+          <h2 className="text-2xl font-bold font-['Plus_Jakarta_Sans'] mb-1" style={{ color: '#111827' }}>
             {mode === 'login' ? 'Welcome back' : 'Create account'}
           </h2>
           <p className="text-sm mb-8" style={{ color: '#6b7280' }}>

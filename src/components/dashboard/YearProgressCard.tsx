@@ -83,7 +83,7 @@ export default function YearProgressCard({ name }: { name?: string }) {
         {/* ── Greeting ─────────────────────────────────────────── */}
         {name && (
           <div className="mb-4">
-            <p className="font-['Space_Grotesk'] font-bold tracking-tight leading-none" style={{ color: '#ffffff', fontSize: 22 }}>
+            <p className="font-bold tracking-tight leading-none" style={{ color: '#ffffff', fontSize: 22 }}>
               Time to lock in, {name}.
             </p>
           </div>
@@ -96,7 +96,7 @@ export default function YearProgressCard({ name }: { name?: string }) {
           <div className="relative shrink-0">
             <ArcRing pct={yearPct} size={112} strokeWidth={7} color="#818cf8" trackColor="rgba(255,255,255,0.08)" />
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-xl font-bold font-['Space_Grotesk'] leading-none" style={{ color: '#e0e7ff' }}>
+              <span className="text-xl font-bold font-['Plus_Jakarta_Sans'] leading-none" style={{ color: '#e0e7ff' }}>
                 {yearPctDisplay}%
               </span>
               <span className="text-[9px] tracking-widest uppercase mt-0.5" style={{ color: '#6366f1' }}>elapsed</span>
@@ -106,7 +106,7 @@ export default function YearProgressCard({ name }: { name?: string }) {
           {/* Year stats */}
           <div className="flex-1 min-w-0">
             <div className="flex items-baseline gap-2 mb-1">
-              <span className="font-['Space_Grotesk'] text-[11px] font-semibold tracking-widest uppercase" style={{ color: '#6366f1' }}>
+              <span className="font-['Plus_Jakarta_Sans'] text-[11px] font-semibold tracking-widest uppercase" style={{ color: '#6366f1' }}>
                 {year}
               </span>
             </div>
@@ -116,7 +116,7 @@ export default function YearProgressCard({ name }: { name?: string }) {
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 }}
-                  className="font-['Space_Grotesk'] font-bold leading-none"
+                  className="font-['Plus_Jakarta_Sans'] font-bold leading-none"
                   style={{ color: '#ffffff', fontSize: 42, letterSpacing: '-0.02em' }}
                 >
                   {daysRemaining}
@@ -124,7 +124,7 @@ export default function YearProgressCard({ name }: { name?: string }) {
                 <p className="text-xs mt-0.5 font-medium" style={{ color: '#94a3b8' }}>days remaining</p>
               </div>
               <div className="pb-1">
-                <span className="font-['Space_Grotesk'] text-xl font-semibold" style={{ color: '#475569' }}>{daysElapsed}</span>
+                <span className="font-['Plus_Jakarta_Sans'] text-xl font-semibold" style={{ color: '#475569' }}>{daysElapsed}</span>
                 <p className="text-[11px]" style={{ color: '#475569' }}>elapsed</p>
               </div>
             </div>
@@ -162,7 +162,7 @@ export default function YearProgressCard({ name }: { name?: string }) {
           {/* Month */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-semibold font-['Space_Grotesk'] tracking-wider uppercase" style={{ color: '#38bdf8' }}>
+              <span className="text-xs font-semibold font-['Plus_Jakarta_Sans'] tracking-wider uppercase" style={{ color: '#38bdf8' }}>
                 {monthName}
               </span>
               <span className="text-xs font-bold" style={{ color: '#38bdf8' }}>{monthPctDisplay}%</span>
@@ -185,7 +185,7 @@ export default function YearProgressCard({ name }: { name?: string }) {
           {/* Today */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-semibold font-['Space_Grotesk'] tracking-wider uppercase" style={{ color: '#34d399' }}>
+              <span className="text-xs font-semibold font-['Plus_Jakarta_Sans'] tracking-wider uppercase" style={{ color: '#34d399' }}>
                 Today
               </span>
               <span className="text-xs font-bold" style={{ color: '#34d399' }}>{dayPctDisplay}%</span>

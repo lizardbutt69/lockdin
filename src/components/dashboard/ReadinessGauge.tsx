@@ -89,7 +89,7 @@ export default function ReadinessGauge({ score }: ReadinessGaugeProps) {
         </svg>
       </div>
       <div
-        className="font-['Space_Grotesk'] text-xs tracking-widest font-bold mt-1"
+        className="font-['Plus_Jakarta_Sans'] text-xs tracking-widest font-bold mt-1"
         style={{ color }}
       >
         {label}

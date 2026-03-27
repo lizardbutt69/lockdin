@@ -169,7 +169,7 @@ export default function PomodoroTimer({ compact = false }: PomodoroTimerProps) {
           <div className="w-5 h-5 rounded flex items-center justify-center shrink-0" style={{ background: cfg.bg, border: `1px solid ${cfg.border}` }}>
             {mode === 'work' ? <Brain className="w-2.5 h-2.5" style={{ color: cfg.color }} /> : <Coffee className="w-2.5 h-2.5" style={{ color: cfg.color }} />}
           </div>
-          <span className="text-xs font-semibold tabular-nums flex-1 font-['Space_Grotesk']" style={{ color: cfg.color }}>
+          <span className="text-xs font-semibold tabular-nums flex-1 font-['Plus_Jakarta_Sans']" style={{ color: cfg.color }}>
             {mins}:{secs}
           </span>
           {sessions > 0 && (
@@ -237,7 +237,7 @@ export default function PomodoroTimer({ compact = false }: PomodoroTimerProps) {
           <div className="w-6 h-6 rounded-md flex items-center justify-center" style={{ background: cfg.bg, border: `1px solid ${cfg.border}` }}>
             {mode === 'work' ? <Brain className="w-3 h-3" style={{ color: cfg.color }} /> : <Coffee className="w-3 h-3" style={{ color: cfg.color }} />}
           </div>
-          <span className="text-sm font-semibold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>Pomodoro</span>
+          <span className="text-sm font-semibold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>Pomodoro</span>
         </div>
         {sessions > 0 && (
           <span className="text-[11px] font-medium" style={{ color: 'var(--text-muted)' }}>
@@ -291,7 +291,7 @@ export default function PomodoroTimer({ compact = false }: PomodoroTimerProps) {
                   key={`${mins}:${secs}`}
                   initial={{ opacity: 0.6 }}
                   animate={{ opacity: 1 }}
-                  className="text-xl font-bold font-['Space_Grotesk'] tabular-nums"
+                  className="text-xl font-bold font-['Plus_Jakarta_Sans'] tabular-nums"
                   style={{ color: cfg.color, lineHeight: 1 }}
                 >
                   {mins}:{secs}

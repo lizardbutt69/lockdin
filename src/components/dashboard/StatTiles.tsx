@@ -153,7 +153,7 @@ export default function StatTiles({ log, weeklyWorkouts, activePillar, onSelect 
 
             {/* Metric */}
             <div>
-              <div className="text-lg font-bold leading-none font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>
+              <div className="text-lg font-bold leading-none font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>
                 {tile.value}
               </div>
               <div className="text-[10px] font-medium mt-0.5" style={{ color: 'var(--text-muted)' }}>

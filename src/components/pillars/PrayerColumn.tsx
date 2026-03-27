@@ -120,7 +120,7 @@ export default function PrayerColumn() {
       {/* Header */}
       <div className="px-4 py-3.5 border-b shrink-0" style={{ borderColor: 'var(--border-subtle)' }}>
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>Prayer</h3>
+          <h3 className="text-sm font-semibold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>Prayer</h3>
           <span className="text-xs font-medium" style={{ color: checkedCount === allItems.length && allItems.length > 0 ? '#16a34a' : 'var(--text-muted)' }}>
             {checkedCount}/{allItems.length}
           </span>

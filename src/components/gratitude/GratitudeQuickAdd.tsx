@@ -67,7 +67,7 @@ export default function GratitudeQuickAdd() {
         >
           <Sparkles className="w-3.5 h-3.5" style={{ color: '#f59e0b' }} />
         </div>
-        <span className="text-sm font-semibold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>
+        <span className="text-sm font-semibold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>
           Gratitude
         </span>
       </div>

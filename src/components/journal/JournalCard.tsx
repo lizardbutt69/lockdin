@@ -111,7 +111,7 @@ export default function JournalCard() {
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <h3 className="text-sm font-semibold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>
+                        <h3 className="text-sm font-semibold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>
                           Today's Journal
                         </h3>
                         {hasPIN && <Lock className="w-3 h-3" style={{ color: 'var(--text-muted)' }} />}

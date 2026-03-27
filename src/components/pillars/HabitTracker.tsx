@@ -38,7 +38,7 @@ export default function HabitTracker({ records, habits, loading }: HabitTrackerP
     >
       <div className="px-4 py-3">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-xs font-semibold font-['Space_Grotesk'] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>
+          <h3 className="text-xs font-semibold font-['Plus_Jakarta_Sans'] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>
             Habit Tracker
           </h3>
           <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>28 days</span>

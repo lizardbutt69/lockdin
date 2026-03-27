@@ -78,7 +78,7 @@ export default function TopBar({ profile, activePillar = 'overview', onMenuToggl
         >
           <Menu className="w-4 h-4" />
         </button>
-        <h1 className="text-lg sm:text-xl font-semibold font-['Space_Grotesk']" style={{ color: 'var(--text-primary)' }}>
+        <h1 className="text-lg sm:text-xl font-semibold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>
           {PAGE_TITLES[activePillar]}
         </h1>
       </div>
