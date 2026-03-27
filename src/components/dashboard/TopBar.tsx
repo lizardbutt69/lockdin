@@ -20,10 +20,11 @@ const PAGE_TITLES: Record<PillarKey, string> = {
   god:           'God',
   finances:      'Finances',
   relationships: 'Relationships',
-  diet:          'Diet & Health',
-  fitness:       'Fitness',
+  fitness:       'Health & Fitness',
   trips:         'Trips',
   gratitude:     'Gratitude',
+  career:        'Career',
+  goals:         'Goals',
 }
 
 const AVATAR_PHOTO_KEY = 'lockedin_avatar_photo'

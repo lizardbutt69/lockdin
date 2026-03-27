@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Target, Plus, CheckCircle2, Circle, ChevronDown, Trash2, X, Check, AlertCircle } from 'lucide-react'
+import { Target, Plus, CheckCircle2, Circle, ChevronDown, Trash2, X, AlertCircle } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGoals, type SubGoal } from '../../hooks/useGoals'
 
@@ -501,7 +501,6 @@ export default function GoalsPage() {
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [showAddModal, setShowAddModal] = useState(false)
 
-  const today = new Date().toISOString().slice(0, 10)
   const active = goals.filter(g => !g.is_completed)
   const done = goals.filter(g => g.is_completed)
   const overdue = active.filter(g => isOverdue(g.target_date))

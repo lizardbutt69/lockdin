@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { LayoutGrid, BookOpen, DollarSign, Heart, Leaf, Dumbbell, Plane, LogOut, Flame, Zap, Target, Settings, Sparkles, Briefcase } from 'lucide-react'
+import { LayoutGrid, BookOpen, DollarSign, Heart, Dumbbell, Plane, LogOut, Flame, Zap, Target, Settings, Sparkles, Briefcase } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '../../contexts/AuthContext'
 import { getRankInfo } from '../../hooks/useProfile'

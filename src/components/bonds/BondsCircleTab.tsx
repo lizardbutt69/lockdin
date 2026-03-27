@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Users, Plus, Trash2, X, Pencil, Check } from 'lucide-react'
+import { Users, Plus, Trash2, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { BondsPerson, BondsMoment } from '../../hooks/useBonds'
 
@@ -7,7 +7,6 @@ const ACCENT = '#ec4899'
 
 const AVATAR_COLORS = ['#ec4899','#8b5cf6','#3b82f6','#22c55e','#f59e0b','#ef4444','#06b6d4','#14b8a6']
 const REL_TYPES = ['Brother','Friend','Mentor','Accountability','Family','Other']
-const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 
 function daysSince(date: string | null): number | null {
   if (!date) return null
@@ -43,7 +42,6 @@ export default function BondsCircleTab({ people, moments, onAddPerson, onDeleteP
   const [personForm, setPersonForm] = useState({ name: '', relationship_type: 'Friend', avatar_color: AVATAR_COLORS[0], notes: '' })
   const [showAddMoment, setShowAddMoment] = useState(false)
   const [momentForm, setMomentForm] = useState({ title: '', description: '', person_id: '', moment_date: '' })
-  const [editPersonId, setEditPersonId] = useState<string | null>(null)
 
   // Sort by most overdue first
   const sortedPeople = [...people].sort((a, b) => {

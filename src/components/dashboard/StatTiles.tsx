@@ -1,4 +1,4 @@
-import { BookOpen, DollarSign, Heart, Leaf, Dumbbell, Plane, TrendingUp, TrendingDown, Minus } from 'lucide-react'
+import { BookOpen, DollarSign, Heart, Dumbbell, Plane, TrendingUp, TrendingDown, Minus } from 'lucide-react'
 import { motion } from 'framer-motion'
 import type { PillarKey } from './Sidebar'
 import type { Database } from '../../types/database'
@@ -65,9 +65,9 @@ function getTiles(log: DailyLog | null, weeklyWorkouts: number): TileData[] {
       borderColor: '#fecdd3',
     },
     {
-      key: 'diet',
-      label: 'Diet & Health',
-      icon: Leaf,
+      key: 'fitness',
+      label: 'Hydration',
+      icon: Dumbbell,
       value: `${water}/8`,
       sub: `${sleep || 0}h sleep`,
       trend: water >= 6 ? 'up' : water >= 4 ? 'neutral' : 'down',

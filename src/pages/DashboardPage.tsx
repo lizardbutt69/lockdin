@@ -40,7 +40,6 @@ export default function DashboardPage() {
   const { log, loading: logLoading, updateLog } = useDailyLog()
   const { profile, loading: profileLoading, updateProfile } = useProfile()
   const [weeklyWorkouts, setWeeklyWorkouts] = useState(0)
-  const [weeklyDateNights, setWeeklyDateNights] = useState(0)
   const [activePillar, setActivePillar] = useState<PillarKey>('overview')
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
@@ -55,7 +54,6 @@ export default function DashboardPage() {
       .then(({ data }) => {
         if (data) {
           setWeeklyWorkouts(data.filter(d => d.worked_out).length)
-          setWeeklyDateNights(data.filter(d => d.date_night).length)
         }
       })
   }, [user, log])
