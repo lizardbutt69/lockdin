@@ -3,7 +3,7 @@ import { Heart, Plus, Trash2, CheckCircle2, Circle } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { BondsPulse, BondsBucketItem } from '../../hooks/useBonds'
 
-const ACCENT = '#ec4899'
+const ACCENT = '#dc2626'
 const PULSE_FIELDS: { key: keyof Pick<BondsPulse,'quality_time'|'communication'|'intentionality'>; label: string; emoji: string }[] = [
   { key: 'quality_time',   label: 'Quality Time',   emoji: '⏱️' },
   { key: 'communication',  label: 'Communication',  emoji: '💬' },

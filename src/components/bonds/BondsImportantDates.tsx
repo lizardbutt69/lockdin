@@ -3,7 +3,7 @@ import { CalendarHeart, Plus, Trash2, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { BondsImportantDate } from '../../hooks/useBonds'
 
-const ACCENT = '#ec4899'
+const ACCENT = '#dc2626'
 const DATE_TYPES = ['Birthday', 'Anniversary', 'Other']
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 

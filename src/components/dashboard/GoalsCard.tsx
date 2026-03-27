@@ -6,10 +6,10 @@ import { useGoals, type SubGoal } from '../../hooks/useGoals'
 export const CATEGORY_CONFIG: Record<string, { color: string; bg: string; border: string }> = {
   God:           { color: '#7c3aed', bg: '#faf5ff', border: '#e9d5ff' },
   Finances:      { color: '#0891b2', bg: '#ecfeff', border: '#a5f3fc' },
-  Relationships: { color: '#db2777', bg: '#fdf2f8', border: '#f9a8d4' },
+  Relationships: { color: '#dc2626', bg: 'rgba(220,38,38,0.06)', border: 'rgba(220,38,38,0.2)' },
   Health:        { color: '#16a34a', bg: '#f0fdf4', border: '#bbf7d0' },
   Fitness:       { color: '#ea580c', bg: '#fff7ed', border: '#fed7aa' },
-  Family:        { color: '#db2777', bg: '#fdf2f8', border: '#f9a8d4' },
+  Family:        { color: '#dc2626', bg: 'rgba(220,38,38,0.06)', border: 'rgba(220,38,38,0.2)' },
   Travel:        { color: '#0d9488', bg: '#f0fdfa', border: '#99f6e4' },
   Career:        { color: '#2563eb', bg: '#eff6ff', border: '#bfdbfe' },
   Personal:      { color: '#6b7280', bg: '#f9fafb', border: '#e5e7eb' },

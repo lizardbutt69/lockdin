@@ -9,7 +9,7 @@ import BondsCommunityTab from './BondsCommunityTab'
 import PillarGoals from '../pillars/PillarGoals'
 import PillarHabitTracker from '../pillars/PillarHabitTracker'
 
-const ACCENT = '#ec4899'
+const ACCENT = '#dc2626'
 
 type Tab = 'partner' | 'circle' | 'community'
 const TABS: { key: Tab; label: string; emoji: string }[] = [
@@ -100,13 +100,13 @@ export default function BondsPillar() {
 
         {/* RIGHT 1/3 — Goals + Important Dates + Habits */}
         <div className="col-span-1 space-y-4">
-          <PillarGoals category="Relationships" accentColor="#db2777" accentBg="#fdf2f8" accentBorder="#f9a8d4" />
+          <PillarGoals category="Relationships" accentColor="#dc2626" accentBg="rgba(220,38,38,0.06)" accentBorder="rgba(220,38,38,0.2)" />
           <BondsImportantDates
             dates={bonds.importantDates}
             onAdd={bonds.addImportantDate}
             onDelete={bonds.deleteImportantDate}
           />
-          <PillarHabitTracker pillar="Relationships" accentColor="#db2777" accentMuted="rgba(219,39,119,0.15)" compact />
+          <PillarHabitTracker pillar="Relationships" accentColor="#dc2626" accentMuted="rgba(220,38,38,0.15)" compact />
         </div>
       </div>
     </div>

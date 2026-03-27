@@ -3,9 +3,9 @@ import { Users, Plus, Trash2, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { BondsPerson, BondsMoment } from '../../hooks/useBonds'
 
-const ACCENT = '#ec4899'
+const ACCENT = '#dc2626'
 
-const AVATAR_COLORS = ['#ec4899','#8b5cf6','#3b82f6','#22c55e','#f59e0b','#ef4444','#06b6d4','#14b8a6']
+const AVATAR_COLORS = ['#dc2626','#8b5cf6','#3b82f6','#22c55e','#f59e0b','#ef4444','#06b6d4','#14b8a6']
 const REL_TYPES = ['Brother','Friend','Mentor','Accountability','Family','Other']
 
 function daysSince(date: string | null): number | null {

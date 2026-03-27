@@ -3,7 +3,7 @@ import { Globe, Plus, Trash2, X, ToggleLeft, ToggleRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { BondsGroup, BondsGiving } from '../../hooks/useBonds'
 
-const ACCENT = '#ec4899'
+const ACCENT = '#dc2626'
 const GROUP_TYPES = ['Church', 'Sports', 'Volunteer', 'Club', 'Work', 'Social', 'Other']
 const GIVING_TYPES = ['Time', 'Money', 'Skills', 'Other']
 

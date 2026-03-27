@@ -3,7 +3,7 @@ import { Brain, Plus, Trash2, Sparkles } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { BondsCheckIn } from '../../hooks/useBonds'
 
-const ACCENT = '#ec4899'
+const ACCENT = '#dc2626'
 const STORAGE_KEY = 'lockedin_bonds_affirmations'
 
 const SLIDER_FIELDS: { key: keyof Pick<BondsCheckIn, 'energy'|'mood'|'mindset'>; label: string; emoji: string; color: string }[] = [

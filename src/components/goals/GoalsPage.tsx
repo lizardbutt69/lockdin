@@ -9,7 +9,7 @@ const PILLARS = [
   { key: 'God',           color: '#7c3aed', bg: 'rgba(124,58,237,0.12)', border: 'rgba(124,58,237,0.3)' },
   { key: 'Finances',      color: '#16a34a', bg: 'rgba(22,163,74,0.12)',  border: 'rgba(22,163,74,0.3)'  },
   { key: 'Career',        color: '#2563eb', bg: 'rgba(37,99,235,0.12)',  border: 'rgba(37,99,235,0.3)'  },
-  { key: 'Relationships', color: '#ec4899', bg: 'rgba(236,72,153,0.12)', border: 'rgba(236,72,153,0.3)' },
+  { key: 'Relationships', color: '#dc2626', bg: 'rgba(220,38,38,0.12)', border: 'rgba(220,38,38,0.3)' },
   { key: 'Fitness',       color: '#ea580c', bg: 'rgba(234,88,12,0.12)',  border: 'rgba(234,88,12,0.3)'  },
   { key: 'Trips',         color: '#0284c7', bg: 'rgba(2,132,199,0.12)',  border: 'rgba(2,132,199,0.3)'  },
 ]
