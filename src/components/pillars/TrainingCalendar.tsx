@@ -12,6 +12,7 @@ interface TrainingSession {
   title: string | null
   notes: string | null
   duration_min: number | null
+  start_time: string | null
   created_at: string
 }
 
@@ -94,7 +95,7 @@ function SessionDetail({
   onClose,
 }: {
   session: TrainingSession
-  onSave: (date: string, type: string, title: string, notes: string, duration: string, editId: string) => Promise<void>
+  onSave: (date: string, type: string, title: string, notes: string, duration: string, editId: string, startTime: string) => Promise<void>
   onDelete: (id: string) => Promise<void>
   onClose: () => void
 }) {
@@ -104,6 +105,7 @@ function SessionDetail({
     title: session.title ?? '',
     notes: session.notes ?? '',
     duration: session.duration_min ? String(session.duration_min) : '',
+    start_time: session.start_time ?? '',
   })
   const [saving, setSaving] = useState(false)
   const cfg = TYPE_CONFIG[form.type] ?? TYPE_CONFIG.OTHER
@@ -112,7 +114,7 @@ function SessionDetail({
 
   async function handleSave() {
     setSaving(true)
-    await onSave(session.session_date, form.type, form.title, form.notes, form.duration, session.id)
+    await onSave(session.session_date, form.type, form.title, form.notes, form.duration, session.id, form.start_time)
     setSaving(false)
     setEditing(false)
   }
@@ -132,9 +134,14 @@ function SessionDetail({
             <div className="rounded-xl p-4 space-y-2" style={{ background: cfg.bg, border: `1px solid ${cfg.color}30` }}>
               <div className="flex items-center gap-2">
                 <span className="text-lg font-bold font-['Space_Grotesk']" style={{ color: cfg.color }}>{session.workout_type}</span>
-                {session.duration_min && (
-                  <span className="text-sm ml-auto" style={{ color: cfg.color }}>{session.duration_min} min</span>
-                )}
+                <div className="ml-auto flex items-center gap-2">
+                  {session.start_time && (
+                    <span className="text-sm" style={{ color: cfg.color }}>{session.start_time}</span>
+                  )}
+                  {session.duration_min && (
+                    <span className="text-sm" style={{ color: cfg.color }}>{session.duration_min} min</span>
+                  )}
+                </div>
               </div>
               {session.title && (
                 <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{session.title}</p>
@@ -181,8 +188,12 @@ function SessionDetail({
               </div>
               <input type="text" placeholder="Title (optional)" value={form.title}
                 onChange={e => setForm(f => ({ ...f, title: e.target.value }))} className="tactical-input text-sm" />
-              <input type="number" placeholder="Duration (min)" value={form.duration}
-                onChange={e => setForm(f => ({ ...f, duration: e.target.value }))} className="tactical-input" />
+              <div className="flex gap-2">
+                <input type="time" value={form.start_time}
+                  onChange={e => setForm(f => ({ ...f, start_time: e.target.value }))} className="tactical-input flex-1" />
+                <input type="number" placeholder="Duration (min)" value={form.duration}
+                  onChange={e => setForm(f => ({ ...f, duration: e.target.value }))} className="tactical-input flex-1" />
+              </div>
               <textarea placeholder="Notes (optional)" value={form.notes} rows={2}
                 onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} className="tactical-input text-sm resize-none w-full" />
             </div>
@@ -213,17 +224,17 @@ function AddSessionPopover({
   onClose,
 }: {
   date: Date
-  onSave: (date: string, type: string, title: string, notes: string, duration: string) => Promise<void>
+  onSave: (date: string, type: string, title: string, notes: string, duration: string, startTime: string) => Promise<void>
   onClose: () => void
 }) {
-  const [form, setForm] = useState({ type: 'LIFT', title: '', notes: '', duration: '' })
+  const [form, setForm] = useState({ type: 'LIFT', title: '', notes: '', duration: '', start_time: '' })
   const [saving, setSaving] = useState(false)
   const cfg = TYPE_CONFIG[form.type] ?? TYPE_CONFIG.OTHER
   const label = date.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })
 
   async function handleSave() {
     setSaving(true)
-    await onSave(toISO(date), form.type, form.title, form.notes, form.duration)
+    await onSave(toISO(date), form.type, form.title, form.notes, form.duration, form.start_time)
     setSaving(false)
   }
 
@@ -249,8 +260,12 @@ function AddSessionPopover({
           </div>
           <input type="text" placeholder="Title (optional — e.g. Back & Bis, 5K easy)" value={form.title}
             onChange={e => setForm(f => ({ ...f, title: e.target.value }))} className="tactical-input text-sm" />
-          <input type="number" placeholder="Duration (min)" value={form.duration}
-            onChange={e => setForm(f => ({ ...f, duration: e.target.value }))} className="tactical-input" />
+          <div className="flex gap-2">
+            <input type="time" value={form.start_time}
+              onChange={e => setForm(f => ({ ...f, start_time: e.target.value }))} className="tactical-input flex-1" />
+            <input type="number" placeholder="Duration (min)" value={form.duration}
+              onChange={e => setForm(f => ({ ...f, duration: e.target.value }))} className="tactical-input flex-1" />
+          </div>
           <textarea placeholder="Notes (optional)" value={form.notes} rows={2}
             onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} className="tactical-input text-sm resize-none w-full" />
           <div className="flex gap-2 pt-1">
@@ -349,9 +364,9 @@ export default function TrainingCalendar({ accentColor = '#ea580c' }: { accentCo
     }
   }
 
-  async function saveSession(date: string, type: string, title: string, notes: string, duration: string, editId?: string) {
+  async function saveSession(date: string, type: string, title: string, notes: string, duration: string, editId?: string, startTime?: string) {
     if (!user || !isSupabaseConfigured) return
-    const payload = { user_id: user.id, session_date: date, workout_type: type, title: title.trim() || null, notes: notes.trim() || null, duration_min: duration ? Number(duration) : null }
+    const payload = { user_id: user.id, session_date: date, workout_type: type, title: title.trim() || null, notes: notes.trim() || null, duration_min: duration ? Number(duration) : null, start_time: startTime?.trim() || null }
     if (editId) {
       const { data } = await (supabase as any).from('training_sessions').update(payload).eq('id', editId).select().single()
       if (data) setSessions(prev => prev.map(s => s.id === editId ? data : s))
@@ -546,7 +561,13 @@ export default function TrainingCalendar({ accentColor = '#ea580c' }: { accentCo
                       >
                         <div className="text-[11px] font-bold" style={{ color: c.color }}>{s.workout_type}</div>
                         {s.title && <div className="text-[11px] font-medium leading-tight" style={{ color: 'var(--text-primary)' }}>{s.title}</div>}
-                        {s.duration_min && <div className="text-[10px]" style={{ color: 'var(--text-muted)' }}>{s.duration_min} min</div>}
+                        {(s.start_time || s.duration_min) && (
+                          <div className="text-[10px] flex items-center gap-1" style={{ color: 'var(--text-muted)' }}>
+                            {s.start_time && <span>{s.start_time}</span>}
+                            {s.start_time && s.duration_min && <span>·</span>}
+                            {s.duration_min && <span>{s.duration_min} min</span>}
+                          </div>
+                        )}
                         {s.notes && <div className="hidden sm:block text-[10px] leading-snug mt-0.5" style={{ color: 'var(--text-muted)' }}>{s.notes}</div>}
                       </button>
                     )
@@ -582,8 +603,8 @@ export default function TrainingCalendar({ accentColor = '#ea580c' }: { accentCo
         {selectedDay && (
           <AddSessionPopover
             date={selectedDay}
-            onSave={async (date, type, title, notes, duration) => {
-              await saveSession(date, type, title, notes, duration)
+            onSave={async (date, type, title, notes, duration, startTime) => {
+              await saveSession(date, type, title, notes, duration, undefined, startTime)
               setSelectedDay(null)
             }}
             onClose={() => setSelectedDay(null)}
@@ -592,8 +613,8 @@ export default function TrainingCalendar({ accentColor = '#ea580c' }: { accentCo
         {selectedSession && (
           <SessionDetail
             session={selectedSession}
-            onSave={async (date, type, title, notes, duration, editId) => {
-              await saveSession(date, type, title, notes, duration, editId)
+            onSave={async (date, type, title, notes, duration, editId, startTime) => {
+              await saveSession(date, type, title, notes, duration, editId, startTime)
               setSelectedSession(null)
             }}
             onDelete={async (id) => {

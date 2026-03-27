@@ -134,62 +134,10 @@ function saveCustomHabits(habits: HabitDef[]): void {
   localStorage.setItem(CUSTOM_KEY, JSON.stringify(habits))
 }
 
-/** Returns Monday of the ISO week containing `dateStr` (YYYY-MM-DD) */
-function getMondayOfWeek(dateStr: string): string {
-  const d = new Date(dateStr + 'T00:00:00')
-  const day = d.getDay() // 0=Sun..6=Sat
-  const diff = day === 0 ? -6 : 1 - day // shift to Monday
-  d.setDate(d.getDate() + diff)
-  return d.toISOString().slice(0, 10)
-}
-
-/** Returns all dates (Mon–Sun) for the ISO week containing `dateStr` */
-function getWeekDates(dateStr: string): string[] {
-  const monday = getMondayOfWeek(dateStr)
-  const m = new Date(monday + 'T00:00:00')
-  return Array.from({ length: 7 }, (_, i) => {
-    const d = new Date(m)
-    d.setDate(d.getDate() + i)
-    return d.toISOString().slice(0, 10)
-  })
-}
-
-/** For a weekly habit, check if it was completed anywhere in the same Mon-Sun week as `date` */
-function isWeeklyCompletedForDate(habitId: string, date: string): boolean {
-  const weekDates = getWeekDates(date)
-  return weekDates.some(d => {
-    const completions = getCompletions(d)
-    return !!completions[habitId]
-  })
-}
-
-/** For a monthly habit, check if it was completed anywhere in the same calendar month */
-function isMonthlyCompletedForDate(habitId: string, date: string): boolean {
-  const [year, month] = date.split('-')
-  // Scan all localStorage keys for this month
-  const prefix = `lockedin_hc_${year}-${month}`
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i)
-    if (key && key.startsWith(prefix)) {
-      try {
-        const data: Record<string, boolean> = JSON.parse(localStorage.getItem(key) || '{}')
-        if (data[habitId]) return true
-      } catch {
-        // ignore
-      }
-    }
-  }
-  return false
-}
 
 function isCompletedForDate(habit: HabitDef, date: string): boolean {
-  if (habit.frequency === 'daily') {
-    return !!getCompletions(date)[habit.id]
-  } else if (habit.frequency === 'weekly') {
-    return isWeeklyCompletedForDate(habit.id, date)
-  } else {
-    return isMonthlyCompletedForDate(habit.id, date)
-  }
+  // All habits reset daily — frequency is informational only
+  return !!getCompletions(date)[habit.id]
 }
 
 export default function useCustomHabits(pillar: string) {
@@ -216,55 +164,13 @@ export default function useCustomHabits(pillar: string) {
   }, [today, pillar, forceUpdate]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const toggle = useCallback((id: string): void => {
-    const allHabits = [...(DEFAULT_HABITS[pillar] || []), ...getCustomHabits().filter(h => h.pillar === pillar)]
-    const habit = allHabits.find(h => h.id === id)
-    if (!habit) return
-
-    if (habit.frequency === 'daily') {
-      const completions = getCompletions(today)
-      if (completions[id]) delete completions[id]
-      else completions[id] = true
-      setCompletions(today, completions)
-    } else if (habit.frequency === 'weekly') {
-      // Find which day this week it was done and remove it; otherwise mark today
-      const week = getWeekDates(today)
-      const doneDay = week.find(d => !!getCompletions(d)[id])
-      if (doneDay) {
-        const c = getCompletions(doneDay)
-        delete c[id]
-        setCompletions(doneDay, c)
-      } else {
-        const c = getCompletions(today)
-        c[id] = true
-        setCompletions(today, c)
-      }
-    } else {
-      // Monthly: find the day this month it was done and remove it; otherwise mark today
-      const [year, month] = today.split('-')
-      const prefix = `lockedin_hc_${year}-${month}`
-      let doneKey: string | null = null
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i)
-        if (key?.startsWith(prefix)) {
-          try {
-            const data: Record<string, boolean> = JSON.parse(localStorage.getItem(key) || '{}')
-            if (data[id]) { doneKey = key; break }
-          } catch { /* ignore */ }
-        }
-      }
-      if (doneKey) {
-        const data: Record<string, boolean> = JSON.parse(localStorage.getItem(doneKey) || '{}')
-        delete data[id]
-        localStorage.setItem(doneKey, JSON.stringify(data))
-      } else {
-        const c = getCompletions(today)
-        c[id] = true
-        setCompletions(today, c)
-      }
-    }
-
+    // All habits toggle today's entry only — resets every new day
+    const completions = getCompletions(today)
+    if (completions[id]) delete completions[id]
+    else completions[id] = true
+    setCompletions(today, completions)
     refresh()
-  }, [today, pillar, refresh])
+  }, [today, refresh])
 
   const getHistory = useCallback((id: string): DayRecord[] => {
     const records: DayRecord[] = []

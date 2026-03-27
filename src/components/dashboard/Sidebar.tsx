@@ -25,11 +25,11 @@ interface SidebarProps {
 const NAV_ITEMS: { key: PillarKey; label: string; icon: React.ElementType }[] = [
   { key: 'overview',      label: 'Overview',       icon: LayoutGrid },
   { key: 'god',           label: 'God',            icon: BookOpen   },
-  { key: 'finances',      label: 'Finances',       icon: DollarSign },
-  { key: 'relationships', label: 'Relationships',  icon: Heart      },
+  { key: 'finances',      label: 'Finances',         icon: DollarSign },
+  { key: 'career',        label: 'Career',           icon: Briefcase  },
+  { key: 'relationships', label: 'Relationships',    icon: Heart      },
   { key: 'fitness',       label: 'Health & Fitness', icon: Dumbbell   },
-  { key: 'trips',         label: 'Trips',          icon: Plane      },
-  { key: 'career',        label: 'Career',         icon: Briefcase  },
+  { key: 'trips',         label: 'Trips',            icon: Plane      },
 ]
 
 export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUpdateProfile, isOpen = false, onClose }: SidebarProps) {
