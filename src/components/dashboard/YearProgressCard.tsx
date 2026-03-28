@@ -78,25 +78,25 @@ export default function YearProgressCard({ name }: { name?: string }) {
         boxShadow: '0 4px 32px rgba(99,102,241,0.2), 0 1px 3px rgba(0,0,0,0.3)',
       }}
     >
-      <div className="px-6 py-5">
+      <div className="px-4 py-4 sm:px-6 sm:py-5">
 
         {/* ── Greeting ─────────────────────────────────────────── */}
         {name && (
           <div className="mb-4">
-            <p className="font-bold tracking-tight leading-none" style={{ color: '#ffffff', fontSize: 22 }}>
+            <p className="font-bold tracking-tight leading-none text-lg sm:text-xl" style={{ color: '#ffffff' }}>
               Time to lock in, {name}.
             </p>
           </div>
         )}
 
         {/* ── Year section ─────────────────────────────────────── */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4 sm:gap-6">
 
           {/* Ring */}
           <div className="relative shrink-0">
-            <ArcRing pct={yearPct} size={112} strokeWidth={7} color="#818cf8" trackColor="rgba(255,255,255,0.08)" />
+            <ArcRing pct={yearPct} size={96} strokeWidth={6} color="#818cf8" trackColor="rgba(255,255,255,0.08)" />
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-xl font-bold font-['Plus_Jakarta_Sans'] leading-none" style={{ color: '#e0e7ff' }}>
+              <span className="text-lg font-bold font-['Plus_Jakarta_Sans'] leading-none" style={{ color: '#e0e7ff' }}>
                 {yearPctDisplay}%
               </span>
               <span className="text-[9px] tracking-widest uppercase mt-0.5" style={{ color: '#6366f1' }}>elapsed</span>
@@ -110,21 +110,21 @@ export default function YearProgressCard({ name }: { name?: string }) {
                 {year}
               </span>
             </div>
-            <div className="flex items-end gap-4 mb-3">
+            <div className="flex items-end gap-3 sm:gap-4 mb-3">
               <div>
                 <motion.span
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 }}
                   className="font-['Plus_Jakarta_Sans'] font-bold leading-none"
-                  style={{ color: '#ffffff', fontSize: 42, letterSpacing: '-0.02em' }}
+                  style={{ color: '#ffffff', fontSize: 'clamp(28px, 8vw, 42px)', letterSpacing: '-0.02em' }}
                 >
                   {daysRemaining}
                 </motion.span>
                 <p className="text-xs mt-0.5 font-medium" style={{ color: '#94a3b8' }}>days remaining</p>
               </div>
               <div className="pb-1">
-                <span className="font-['Plus_Jakarta_Sans'] text-xl font-semibold" style={{ color: '#475569' }}>{daysElapsed}</span>
+                <span className="font-['Plus_Jakarta_Sans'] text-lg sm:text-xl font-semibold" style={{ color: '#475569' }}>{daysElapsed}</span>
                 <p className="text-[11px]" style={{ color: '#475569' }}>elapsed</p>
               </div>
             </div>
@@ -157,7 +157,7 @@ export default function YearProgressCard({ name }: { name?: string }) {
         <div className="my-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }} />
 
         {/* ── Month + Day row ───────────────────────────────────── */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4">
 
           {/* Month */}
           <div>

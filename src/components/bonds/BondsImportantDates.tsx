@@ -118,7 +118,7 @@ export default function BondsImportantDates({ dates, onAdd, onDelete }: Props) {
             <span className="text-[11px] font-bold shrink-0" style={{ color: d.days <= 7 ? ACCENT : 'var(--text-muted)' }}>
               {d.days === 0 ? 'Today!' : `${d.days}d`}
             </span>
-            <button onClick={() => onDelete(d.id)} className="opacity-0 group-hover:opacity-100 p-1 rounded transition-all shrink-0" style={{ color: 'var(--text-muted)' }}
+            <button onClick={() => onDelete(d.id)} className="opacity-40 sm:opacity-0 sm:group-hover:opacity-100 p-1 rounded transition-all shrink-0" style={{ color: 'var(--text-muted)' }}
               onMouseEnter={e => e.currentTarget.style.color = '#ef4444'} onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}>
               <Trash2 className="w-3 h-3" />
             </button>

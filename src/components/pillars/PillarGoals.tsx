@@ -227,7 +227,7 @@ export default function PillarGoals({
                       </button>
                       <button
                         onClick={() => deleteGoal(goal.id)}
-                        className="p-1 rounded opacity-0 group-hover:opacity-100 transition-all"
+                        className="p-1 rounded opacity-40 sm:opacity-0 sm:group-hover:opacity-100 transition-all"
                         style={{ color: 'var(--text-muted)' }}
                         onMouseEnter={e => e.currentTarget.style.color = '#ef4444'}
                         onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}

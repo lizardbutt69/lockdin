@@ -212,7 +212,7 @@ export default function SkillsTracker() {
                       <span className="flex-1 text-sm min-w-0 truncate" style={{ color: 'var(--text-secondary)' }}>{skill.name}</span>
                       <SkillDots level={skill.level} onChange={l => updateLevel(skill.id, l)} />
                       <span className="text-[10px] w-16 text-right" style={{ color: LEVEL_COLOR[skill.level] }}>{LEVEL_LABELS[skill.level]}</span>
-                      <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="flex items-center gap-0.5 opacity-40 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                         <button onClick={() => openEdit(skill)} className="p-0.5 rounded" style={{ color: 'var(--text-muted)' }}
                           onMouseEnter={e => e.currentTarget.style.color = ACCENT}
                           onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}>

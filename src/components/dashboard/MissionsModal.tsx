@@ -179,7 +179,7 @@ function MissionRow({
         +{mission.xp_value}
       </span>
 
-      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="flex items-center gap-1 opacity-40 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
         <button
           type="button"
           onClick={onEdit}
@@ -247,7 +247,7 @@ export default function MissionsModal({ onClose }: { onClose: () => void }) {
         className="w-full flex flex-col rounded-2xl overflow-hidden"
         style={{
           maxWidth: 680,
-          maxHeight: '90vh',
+          maxHeight: '92dvh',
           background: 'var(--bg-card)',
           border: '1px solid var(--border-default)',
           boxShadow: '0 25px 50px rgba(0,0,0,0.35)',

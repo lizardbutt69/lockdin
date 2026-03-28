@@ -278,10 +278,10 @@ function GoalRow({ goal, onToggle, onDelete, onUpdateNotes, onUpdateSubGoals, on
             </span>
           )}
 
-          {/* Pillar chip */}
+          {/* Pillar chip — hidden on small screens to avoid crowding */}
           {goal.category && (
             <span
-              className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
+              className="hidden sm:inline text-[10px] font-semibold px-2 py-0.5 rounded-full"
               style={{ color: pc.color, background: pc.bg, border: `1px solid ${pc.border}` }}
             >
               {goal.category}
@@ -303,7 +303,7 @@ function GoalRow({ goal, onToggle, onDelete, onUpdateNotes, onUpdateSubGoals, on
           {/* Delete */}
           <button
             onClick={() => onDelete(goal.id)}
-            className="p-1 rounded opacity-0 group-hover:opacity-100 transition-all"
+            className="p-1 rounded opacity-40 sm:opacity-0 sm:group-hover:opacity-100 transition-all"
             style={{ color: 'var(--text-muted)' }}
             onMouseEnter={e => e.currentTarget.style.color = '#ef4444'}
             onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}

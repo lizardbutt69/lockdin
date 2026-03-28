@@ -116,7 +116,7 @@ export default function BondsPartnerTab({ pulse, onSavePulse, bucketList, onAddB
                     : <Circle className="w-4 h-4" style={{ color: 'var(--border-default)' }} />}
                 </button>
                 <p className="flex-1 text-sm" style={{ color: item.is_completed ? 'var(--text-muted)' : 'var(--text-primary)', textDecoration: item.is_completed ? 'line-through' : 'none' }}>{item.title}</p>
-                <button onClick={() => onDeleteBucket(item.id)} className="opacity-0 group-hover:opacity-100 p-1 rounded transition-all shrink-0"
+                <button onClick={() => onDeleteBucket(item.id)} className="opacity-40 sm:opacity-0 sm:group-hover:opacity-100 p-1 rounded transition-all shrink-0"
                   style={{ color: 'var(--text-muted)' }} onMouseEnter={e => e.currentTarget.style.color = '#ef4444'} onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}>
                   <Trash2 className="w-3 h-3" />
                 </button>

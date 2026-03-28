@@ -108,7 +108,7 @@ export default function NotesCard() {
                   >
                     {note.content}
                   </span>
-                  <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                  <div className="flex gap-1 opacity-40 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shrink-0">
                     <button
                       onClick={() => updateNote(note.id, { is_archived: true })}
                       className="p-1 rounded transition-colors"

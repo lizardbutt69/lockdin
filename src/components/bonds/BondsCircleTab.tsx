@@ -146,7 +146,7 @@ export default function BondsCircleTab({ people, moments, onAddPerson, onDeleteP
                       Contacted
                     </button>
                     <button onClick={() => onDeletePerson(person.id)}
-                      className="opacity-0 group-hover:opacity-100 p-1 rounded transition-all"
+                      className="opacity-40 sm:opacity-0 sm:group-hover:opacity-100 p-1 rounded transition-all"
                       style={{ color: 'var(--text-muted)' }} onMouseEnter={e => e.currentTarget.style.color = '#ef4444'} onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}>
                       <Trash2 className="w-3 h-3" />
                     </button>
@@ -221,7 +221,7 @@ export default function BondsCircleTab({ people, moments, onAddPerson, onDeleteP
                       </span>
                     </div>
                   </div>
-                  <button onClick={() => onDeleteMoment(m.id)} className="opacity-0 group-hover:opacity-100 p-1 rounded transition-all shrink-0"
+                  <button onClick={() => onDeleteMoment(m.id)} className="opacity-40 sm:opacity-0 sm:group-hover:opacity-100 p-1 rounded transition-all shrink-0"
                     style={{ color: 'var(--text-muted)' }} onMouseEnter={e => e.currentTarget.style.color = '#ef4444'} onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}>
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>

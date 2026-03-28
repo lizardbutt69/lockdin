@@ -159,7 +159,7 @@ export default function BondsSelfTab({ checkIn, onSaveCheckIn }: Props) {
                 className="flex items-center gap-2 group px-3 py-2 rounded-lg" style={{ background: 'var(--bg-subtle)' }}>
                 <span className="text-sm" style={{ color: ACCENT }}>✦</span>
                 <p className="flex-1 text-sm italic leading-snug" style={{ color: 'var(--text-primary)' }}>{a}</p>
-                <button onClick={() => deleteAffirmation(i)} className="opacity-0 group-hover:opacity-100 p-1 rounded transition-all shrink-0"
+                <button onClick={() => deleteAffirmation(i)} className="opacity-40 sm:opacity-0 sm:group-hover:opacity-100 p-1 rounded transition-all shrink-0"
                   style={{ color: 'var(--text-muted)' }}
                   onMouseEnter={e => e.currentTarget.style.color = '#ef4444'}
                   onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}>

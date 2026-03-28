@@ -192,7 +192,7 @@ export default function PrayerColumn() {
                 {isCustom && (
                   <button
                     onClick={() => removeCustom(item)}
-                    className="opacity-0 group-hover:opacity-100 p-1 rounded transition-all"
+                    className="opacity-40 sm:opacity-0 sm:group-hover:opacity-100 p-1 rounded transition-all"
                     style={{ color: 'var(--border-default)' }}
                     onMouseEnter={e => e.currentTarget.style.color = '#ef4444'}
                     onMouseLeave={e => e.currentTarget.style.color = 'var(--border-default)'}

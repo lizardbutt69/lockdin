@@ -409,21 +409,38 @@ export default function TrainingCalendar({ accentColor = '#ea580c' }: { accentCo
       style={{ background: 'var(--bg-card)', border: '1px solid var(--border-default)', boxShadow: 'var(--shadow-card)' }}
     >
       {/* Header */}
-      <div className="px-4 py-3 border-b flex items-center justify-between gap-2" style={{ borderColor: 'var(--border-subtle)' }}>
-        <div className="flex items-center gap-2 min-w-0">
-          <h3 className="text-sm font-semibold font-['Plus_Jakarta_Sans'] uppercase tracking-wider shrink-0" style={{ color: 'var(--text-primary)' }}>
-            Training Plan
-          </h3>
-          {totalSessions > 0 && (
-            <p className="text-[10px] hidden sm:block truncate" style={{ color: 'var(--text-muted)' }}>
-              {totalSessions} sessions · {restDays} rest
-            </p>
-          )}
+      <div className="px-4 py-3 border-b flex flex-col sm:flex-row sm:items-center gap-2" style={{ borderColor: 'var(--border-subtle)' }}>
+        {/* Title row */}
+        <div className="flex items-center justify-between gap-2 min-w-0">
+          <div className="flex items-center gap-2 min-w-0">
+            <h3 className="text-sm font-semibold font-['Plus_Jakarta_Sans'] shrink-0" style={{ color: 'var(--text-primary)' }}>
+              Training Plan
+            </h3>
+            {totalSessions > 0 && (
+              <p className="text-[10px] hidden sm:block truncate" style={{ color: 'var(--text-muted)' }}>
+                {totalSessions} sessions · {restDays} rest
+              </p>
+            )}
+          </div>
+          {/* View toggle — visible inline on mobile next to title */}
+          <div className="flex rounded-lg overflow-hidden sm:hidden" style={{ border: '1px solid var(--border-default)' }}>
+            {(['month', 'week'] as const).map(v => (
+              <button
+                key={v}
+                onClick={() => setView(v)}
+                className="px-2.5 py-1 text-[11px] font-semibold capitalize transition-colors"
+                style={{
+                  background: view === v ? accentColor : 'var(--bg-subtle)',
+                  color: view === v ? '#fff' : 'var(--text-muted)',
+                }}
+              >{v}</button>
+            ))}
+          </div>
         </div>
 
-        <div className="flex items-center gap-1.5 shrink-0">
-          {/* View toggle */}
-          <div className="flex rounded-lg overflow-hidden" style={{ border: '1px solid var(--border-default)' }}>
+        <div className="flex items-center gap-1.5 sm:ml-auto shrink-0">
+          {/* View toggle — desktop only */}
+          <div className="hidden sm:flex rounded-lg overflow-hidden" style={{ border: '1px solid var(--border-default)' }}>
             {(['month', 'week'] as const).map(v => (
               <button
                 key={v}
@@ -441,7 +458,7 @@ export default function TrainingCalendar({ accentColor = '#ea580c' }: { accentCo
           <button onClick={prevPeriod} className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'var(--bg-subtle)', color: 'var(--text-muted)' }}>
             <ChevronLeft className="w-4 h-4" />
           </button>
-          <span className="text-xs font-semibold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)', minWidth: 110, textAlign: 'center' }}>
+          <span className="text-xs font-semibold font-['Plus_Jakarta_Sans'] text-center" style={{ color: 'var(--text-primary)', minWidth: 90 }}>
             {periodLabel}
           </span>
           <button onClick={nextPeriod} className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'var(--bg-subtle)', color: 'var(--text-muted)' }}>
@@ -515,7 +532,7 @@ export default function TrainingCalendar({ accentColor = '#ea580c' }: { accentCo
       {/* ── WEEK VIEW ── */}
       {view === 'week' && (
         <div className="overflow-x-auto">
-        <div style={{ minWidth: 560 }}>
+        <div style={{ minWidth: 380 }}>
         {/* DOW headers inside scroll so they move with content */}
         <div className="grid grid-cols-7 border-b" style={{ borderColor: 'var(--border-default)' }}>
           {DOW.map((d, i) => {
@@ -536,7 +553,7 @@ export default function TrainingCalendar({ accentColor = '#ea580c' }: { accentCo
             const daySessions = sessionMap.get(ds) ?? []
             return (
               <div key={ds}
-                className="min-h-64 p-2 flex flex-col gap-2 cursor-pointer transition-colors"
+                className="min-h-36 sm:min-h-64 p-1.5 sm:p-2 flex flex-col gap-1.5 sm:gap-2 cursor-pointer transition-colors"
                 style={{ background: isToday ? `${accentColor}12` : 'rgba(255,255,255,0.02)', borderRight: i < 6 ? `1px solid var(--border-default)` : 'none' }}
                 onClick={() => setSelectedDay(day)}
                 onMouseEnter={e => { e.currentTarget.style.background = `${accentColor}18` }}
@@ -557,21 +574,21 @@ export default function TrainingCalendar({ accentColor = '#ea580c' }: { accentCo
                     return (
                       <button key={s.id}
                         onClick={e => { e.stopPropagation(); setSelectedSession(s) }}
-                        className="rounded-lg p-2 text-left w-full space-y-0.5 transition-opacity"
+                        className="rounded-lg p-2 text-left w-full space-y-0.5 transition-opacity overflow-hidden"
                         style={{ background: c.bg, border: `1px solid ${c.color}30` }}
                         onMouseEnter={e => { e.currentTarget.style.opacity = '0.8' }}
                         onMouseLeave={e => { e.currentTarget.style.opacity = '1' }}
                       >
-                        <div className="text-[11px] font-bold" style={{ color: c.color }}>{s.workout_type}</div>
-                        {s.title && <div className="text-[11px] font-medium leading-tight" style={{ color: 'var(--text-primary)' }}>{s.title}</div>}
+                        <div className="text-[11px] font-bold truncate" style={{ color: c.color }}>{s.workout_type}</div>
+                        {s.title && <div className="text-[11px] font-medium leading-tight truncate" style={{ color: 'var(--text-primary)' }}>{s.title}</div>}
                         {(s.start_time || s.duration_min) && (
-                          <div className="text-[10px] flex items-center gap-1" style={{ color: 'var(--text-muted)' }}>
-                            {s.start_time && <span>{s.start_time}</span>}
-                            {s.start_time && s.duration_min && <span>·</span>}
-                            {s.duration_min && <span>{s.duration_min} min</span>}
+                          <div className="text-[10px] flex items-center gap-1 min-w-0 overflow-hidden" style={{ color: 'var(--text-muted)' }}>
+                            {s.start_time && <span className="shrink-0">{s.start_time}</span>}
+                            {s.start_time && s.duration_min && <span className="shrink-0">·</span>}
+                            {s.duration_min && <span className="shrink-0">{s.duration_min} min</span>}
                           </div>
                         )}
-                        {s.notes && <div className="hidden sm:block text-[10px] leading-snug mt-0.5" style={{ color: 'var(--text-muted)' }}>{s.notes}</div>}
+                        {s.notes && <div className="hidden sm:block text-[10px] leading-snug mt-0.5 truncate" style={{ color: 'var(--text-muted)' }}>{s.notes}</div>}
                       </button>
                     )
                   })}

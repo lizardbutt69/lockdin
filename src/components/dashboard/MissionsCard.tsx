@@ -38,7 +38,7 @@ export default function MissionsCard() {
         background: 'var(--bg-card)',
         border: '1px solid var(--border-default)',
         boxShadow: 'var(--shadow-card)',
-        maxHeight: 'calc(100vh - 180px)',
+        maxHeight: 'calc(100dvh - 160px)',
       }}
     >
       {/* Header */}
@@ -305,7 +305,7 @@ function MissionRow({
       {/* Delete */}
       <button
         onClick={onDelete}
-        className="opacity-0 group-hover:opacity-100 p-1 rounded transition-all"
+        className="opacity-40 sm:opacity-0 sm:group-hover:opacity-100 p-1 rounded transition-all"
         style={{ color: 'var(--text-muted)' }}
         onMouseEnter={e => e.currentTarget.style.color = '#ef4444'}
         onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}

@@ -100,7 +100,7 @@ export default function BondsCommunityTab({ groups, giving, onAddGroup, onToggle
                 <button onClick={() => onToggleGroup(g.id)} className="p-1 rounded transition-colors" style={{ color: g.is_active ? ACCENT : 'var(--text-muted)' }}>
                   {g.is_active ? <ToggleRight className="w-4 h-4" /> : <ToggleLeft className="w-4 h-4" />}
                 </button>
-                <button onClick={() => onDeleteGroup(g.id)} className="opacity-0 group-hover:opacity-100 p-1 rounded transition-all shrink-0"
+                <button onClick={() => onDeleteGroup(g.id)} className="opacity-40 sm:opacity-0 sm:group-hover:opacity-100 p-1 rounded transition-all shrink-0"
                   style={{ color: 'var(--text-muted)' }} onMouseEnter={e => e.currentTarget.style.color = '#ef4444'} onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}>
                   <Trash2 className="w-3 h-3" />
                 </button>
@@ -163,7 +163,7 @@ export default function BondsCommunityTab({ groups, giving, onAddGroup, onToggle
                       {new Date(g.given_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </p>
                   </div>
-                  <button onClick={() => onDeleteGiving(g.id)} className="opacity-0 group-hover:opacity-100 p-1 rounded transition-all shrink-0"
+                  <button onClick={() => onDeleteGiving(g.id)} className="opacity-40 sm:opacity-0 sm:group-hover:opacity-100 p-1 rounded transition-all shrink-0"
                     style={{ color: 'var(--text-muted)' }} onMouseEnter={e => e.currentTarget.style.color = '#ef4444'} onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}>
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>

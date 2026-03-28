@@ -231,7 +231,7 @@ function HabitRow({ habit, done, history, accentColor, muted, today, weekDates, 
       )}
 
       {/* Edit + Delete — visible on hover for all habits */}
-      <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+      <div className="flex items-center gap-0.5 opacity-40 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shrink-0">
         <button
           onClick={openEdit}
           className="p-0.5 rounded"
@@ -289,7 +289,7 @@ export default function PillarHabitTracker({ pillar, accentColor = '#22c55e', ac
       {/* Header */}
       <div className="px-4 py-3 border-b flex items-center justify-between" style={{ borderColor: 'var(--border-subtle)' }}>
         <div className="flex items-center gap-2">
-          <h3 className="text-sm font-semibold font-['Plus_Jakarta_Sans'] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>
+          <h3 className="text-sm font-semibold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>
             Habits
           </h3>
           <span

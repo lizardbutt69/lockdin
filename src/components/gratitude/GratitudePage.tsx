@@ -101,7 +101,7 @@ function EntryCard({ entry, onDelete }: { entry: GratitudeEntry; onDelete: (id: 
         <button
           type="button"
           onClick={() => onDelete(entry.id)}
-          className="opacity-0 group-hover:opacity-100 transition-opacity w-6 h-6 rounded-lg flex items-center justify-center"
+          className="opacity-40 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity w-6 h-6 rounded-lg flex items-center justify-center"
           style={{ color: 'var(--text-muted)' }}
           onMouseEnter={e => { e.currentTarget.style.color = '#ef4444'; e.currentTarget.style.background = '#fef2f2' }}
           onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'transparent' }}
@@ -195,7 +195,7 @@ export default function GratitudePage() {
         className="rounded-2xl p-5"
         style={{ background: 'var(--bg-card)', border: '1px solid var(--border-default)' }}
       >
-        <div className="flex items-start justify-between gap-4 flex-wrap">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
           <div className="flex items-center gap-3">
             <div
               className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
@@ -214,7 +214,7 @@ export default function GratitudePage() {
           </div>
 
           {/* Stats */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 flex-wrap">
             {CATEGORIES.map(c => (
               <div key={c.key} className="text-center">
                 <div className="text-lg font-bold font-['Plus_Jakarta_Sans']" style={{ color: c.color }}>

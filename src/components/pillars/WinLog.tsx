@@ -178,7 +178,7 @@ export default function WinLog() {
                 <button
                   type="button"
                   onClick={() => handleDelete(win.id)}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded shrink-0"
+                  className="opacity-40 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity p-1 rounded shrink-0"
                   style={{ color: 'var(--text-muted)' }}
                   onMouseEnter={e => e.currentTarget.style.color = '#ef4444'}
                   onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}
