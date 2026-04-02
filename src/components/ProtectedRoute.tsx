@@ -6,8 +6,8 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0a0e17] flex items-center justify-center">
-        <div className="font-['Plus_Jakarta_Sans'] text-[#00ff41] text-xl tracking-widest glow-green flicker">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg-primary)' }}>
+        <div className="font-['Plus_Jakarta_Sans'] text-base font-bold tracking-widest" style={{ color: 'var(--text-muted)' }}>
           LOCKD IN
         </div>
       </div>
