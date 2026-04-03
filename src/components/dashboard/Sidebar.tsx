@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { LayoutGrid, BookOpen, DollarSign, Heart, Dumbbell, Plane, LogOut, Flame, Zap, Target, Settings, Sparkles, Briefcase } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '../../contexts/AuthContext'
-import { getRankInfo } from '../../hooks/useProfile'
+import { getLevelInfo } from '../../hooks/useProfile'
 import SettingsPanel, { getAvatarColor } from './SettingsPanel'
 import PomodoroTimer from './PomodoroTimer'
 import type { Database } from '../../types/database'
@@ -48,13 +48,10 @@ export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUp
     window.addEventListener('lockedin_avatar_updated', handler)
     return () => window.removeEventListener('lockedin_avatar_updated', handler)
   }, [])
-  const rankInfo = profile ? getRankInfo(profile.total_xp) : null
+  const levelInfo = profile ? getLevelInfo(profile.total_xp) : { level: 1, xpForCurrentLevel: 0, xpNeeded: 1000, progress: 0 }
 
-  const level = profile?.level || 1
   const totalXP = profile?.total_xp || 0
-  const xpForLevel = level * 500
-  const prevLevelXP = ((level - 1) * level) / 2 * 500
-  const levelPct = Math.min(100, Math.round(((totalXP - prevLevelXP) / xpForLevel) * 100))
+  const levelPct = Math.round(levelInfo.progress * 100)
 
   const handleSignOut = async () => {
     await signOut()
@@ -223,7 +220,7 @@ export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUp
         {profile && (
           <div className="px-1">
             <div className="flex justify-between text-[11px] mb-1.5" style={{ color: 'var(--text-muted)' }}>
-              <span className="font-medium">{rankInfo?.rank} · Lv {level}</span>
+              <span className="font-medium">Level {levelInfo.level}</span>
               <span>{levelPct}%</span>
             </div>
             <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--border-default)' }}>

@@ -1,5 +1,5 @@
 import { Flame, Zap } from 'lucide-react'
-import { getRankInfo } from '../../hooks/useProfile'
+import { getLevelInfo } from '../../hooks/useProfile'
 import type { Database } from '../../types/database'
 
 type Profile = Database['public']['Tables']['profiles']['Row']
@@ -12,11 +12,8 @@ interface BottomBarProps {
 export default function BottomBar({ profile, todayXP }: BottomBarProps) {
   if (!profile) return null
 
-  const rankInfo = getRankInfo(profile.total_xp)
-  const xpForLevel = profile.level * 500
-  const prevLevelXP = ((profile.level - 1) * profile.level) / 2 * 500
-  const xpIntoLevel = profile.total_xp - prevLevelXP
-  const levelPct = Math.min(100, Math.round((xpIntoLevel / xpForLevel) * 100))
+  const levelInfo = getLevelInfo(profile.total_xp)
+  const levelPct = Math.round(levelInfo.progress * 100)
 
   return (
     <footer className="border-t px-4 py-3" style={{ borderColor: 'var(--border-default)', background: 'var(--bg-secondary)' }}>
@@ -51,10 +48,10 @@ export default function BottomBar({ profile, todayXP }: BottomBarProps) {
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-1">
             <span className="text-[11px] font-semibold" style={{ color: 'var(--text-secondary)' }}>
-              Lvl {profile.level} — {rankInfo?.rank}
+              Level {levelInfo.level}
             </span>
             <span className="text-[11px]" style={{ color: 'var(--text-muted)' }}>
-              {xpIntoLevel.toLocaleString()} / {xpForLevel.toLocaleString()} XP
+              {levelInfo.xpForCurrentLevel.toLocaleString()} / 1000 XP
             </span>
           </div>
           <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--bg-subtle)' }}>

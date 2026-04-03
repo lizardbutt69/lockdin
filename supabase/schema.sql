@@ -445,3 +445,35 @@ create table if not exists bonds_giving (
 );
 alter table bonds_giving enable row level security;
 create policy "bonds_giving_owner" on bonds_giving for all using (auth.uid() = user_id);
+
+-- XP Transactions (gamification tracking)
+create table if not exists xp_transactions (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references profiles(id) on delete cascade not null,
+  amount integer not null,
+  source text not null, -- 'habit', 'mission', 'goal', 'streak', etc.
+  reference_id uuid, -- habit_id, mission_id, goal_id, etc.
+  description text,
+  created_at timestamptz default now()
+);
+alter table xp_transactions enable row level security;
+create policy "Users can view own xp transactions" on xp_transactions
+  for select using (auth.uid() = user_id);
+
+-- XP insert policy (missing from original)
+create policy "Users can insert own xp transactions" on xp_transactions
+  for insert with check (auth.uid() = user_id);
+
+-- Fix reference_id column type to text (habit IDs are not UUIDs)
+alter table xp_transactions alter column reference_id type text using reference_id::text;
+
+-- Atomic XP increment RPC (prevents race conditions)
+create or replace function increment_profile_xp(p_user_id uuid, p_amount int)
+returns void
+language sql
+security definer
+as $$
+  update profiles set total_xp = total_xp + p_amount where id = p_user_id;
+$$;
+
+grant execute on function increment_profile_xp to authenticated;

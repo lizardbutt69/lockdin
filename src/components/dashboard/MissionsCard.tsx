@@ -3,6 +3,7 @@ import { Plus, Trash2, Zap, Trophy, AlertTriangle, ChevronDown, ChevronUp, Maxim
 import { motion, AnimatePresence } from 'framer-motion'
 import { useMissions, type Priority, MISSION_COMPLETE_BONUS } from '../../hooks/useMissions'
 import MissionsModal from './MissionsModal'
+import { useXP } from '../../contexts/XPContext'
 
 const PRIORITY_CONFIG = {
   critical: { label: 'Critical', color: '#dc2626', bg: '#fef2f2', border: '#fca5a5', dot: '🔴', xp: 50 },
@@ -14,11 +15,24 @@ const PRIORITY_ORDER: Priority[] = ['critical', 'high', 'standard']
 
 export default function MissionsCard() {
   const { missions, loading, incomplete, completed, overdue, allClear, addMission, toggleMission, deleteMission } = useMissions()
+  const { awardXP } = useXP()
   const [title, setTitle] = useState('')
   const [priority, setPriority] = useState<Priority>('high')
   const [showAdd, setShowAdd] = useState(false)
   const [showCompleted, setShowCompleted] = useState(false)
   const [showModal, setShowModal] = useState(false)
+
+  async function handleToggle(mission: ReturnType<typeof useMissions>['missions'][0]) {
+    const completing = !mission.completed
+    const isLastMission = completing && incomplete.length === 1
+    await toggleMission(mission.id)
+    if (completing) {
+      await awardXP(mission.xp_value, 'mission', { reference_id: mission.id, description: mission.title })
+      if (isLastMission) {
+        await awardXP(MISSION_COMPLETE_BONUS, 'mission_bonus', { description: 'Mission board cleared!' })
+      }
+    }
+  }
 
   async function handleAdd(e: React.FormEvent) {
     e.preventDefault()
@@ -184,7 +198,7 @@ export default function MissionsCard() {
                     <MissionRow
                       key={mission.id}
                       mission={mission}
-                      onToggle={() => toggleMission(mission.id)}
+                      onToggle={() => handleToggle(mission)}
                       onDelete={() => deleteMission(mission.id)}
                     />
                   ))}
@@ -218,7 +232,7 @@ export default function MissionsCard() {
                         <MissionRow
                           key={mission.id}
                           mission={mission}
-                          onToggle={() => toggleMission(mission.id)}
+                          onToggle={() => handleToggle(mission)}
                           onDelete={() => deleteMission(mission.id)}
                           dim
                         />

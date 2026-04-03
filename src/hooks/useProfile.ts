@@ -5,26 +5,18 @@ import type { Database } from '../types/database'
 
 type Profile = Database['public']['Tables']['profiles']['Row']
 
-export const RANKS = [
-  { min: 0,       max: 999,    rank: 'RECRUIT',    badge: '🔰' },
-  { min: 1000,    max: 4999,   rank: 'PRIVATE',    badge: '⚔️' },
-  { min: 5000,    max: 14999,  rank: 'CORPORAL',   badge: '🎖️' },
-  { min: 15000,   max: 29999,  rank: 'SERGEANT',   badge: '🏅' },
-  { min: 30000,   max: 59999,  rank: 'LIEUTENANT', badge: '⭐' },
-  { min: 60000,   max: 99999,  rank: 'CAPTAIN',    badge: '⭐⭐' },
-  { min: 100000,  max: 199999, rank: 'MAJOR',      badge: '🌟' },
-  { min: 200000,  max: 499999, rank: 'COLONEL',    badge: '🦅' },
-  { min: 500000,  max: Infinity, rank: 'COMMANDER', badge: '👑' },
-]
-
-export function getRankInfo(xp: number) {
-  return RANKS.find(r => xp >= r.min && xp <= r.max) || RANKS[0]
+export function getLevelInfo(xp: number) {
+  const level = Math.floor(xp / 1000) + 1
+  const xpForCurrentLevel = xp % 1000
+  const xpNeeded = 1000 - xpForCurrentLevel
+  const progress = xpForCurrentLevel / 1000
+  return { level, xpForCurrentLevel, xpNeeded, progress }
 }
 
 const DEMO_PROFILE: Profile = {
   id: 'demo-user',
   display_name: 'DANNY',
-  rank: 'RECRUIT',
+  rank: null,
   level: 1,
   total_xp: 0,
   current_streak: 0,
@@ -82,6 +74,21 @@ export function useProfile() {
   }, [user])
 
   useEffect(() => { fetchProfile() }, [fetchProfile])
+
+  // Keep profile.total_xp in sync when XP is awarded elsewhere
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const amount = (e as CustomEvent<{ amount: number }>).detail.amount
+      setProfile(prev => {
+        if (!prev) return prev
+        const updated = { ...prev, total_xp: prev.total_xp + amount }
+        localStorage.setItem(PROFILE_CACHE_KEY, JSON.stringify(updated))
+        return updated
+      })
+    }
+    window.addEventListener('lockedin_xp_awarded', handler)
+    return () => window.removeEventListener('lockedin_xp_awarded', handler)
+  }, [])
 
   async function updateProfile(updates: { display_name?: string; is_religious?: boolean; onboarding_completed?: boolean }) {
     if (!profile) return

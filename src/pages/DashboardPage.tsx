@@ -22,6 +22,7 @@ import OnboardingModal from '../components/dashboard/OnboardingModal'
 import { useDailyLog } from '../hooks/useDailyLog'
 import { useProfile } from '../hooks/useProfile'
 import { useAuth } from '../contexts/AuthContext'
+import { useXP } from '../contexts/XPContext'
 import { supabase } from '../lib/supabase'
 import type { Database } from '../types/database'
 
@@ -41,6 +42,7 @@ function startOfWeek() {
 export default function DashboardPage() {
   const { user } = useAuth()
   const { log, loading: logLoading, updateLog } = useDailyLog()
+  const { todayXP } = useXP()
   const { profile, loading: profileLoading, updateProfile } = useProfile()
   const [weeklyWorkouts, setWeeklyWorkouts] = useState(0)
   const [activePillar, setActivePillar] = useState<PillarKey>('overview')
@@ -154,7 +156,7 @@ export default function DashboardPage() {
           activePillar={activePillar}
           onSelect={handlePillarSelect}
           profile={profile}
-          todayXP={log?.xp_earned || 0}
+          todayXP={todayXP}
           onUpdateProfile={name => updateProfile({ display_name: name })}
           onToggleReligious={handleToggleReligious}
 

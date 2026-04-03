@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react'
 import { Target, Plus, CheckCircle2, Circle, ChevronDown, Trash2, X, AlertCircle } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGoals, type SubGoal } from '../../hooks/useGoals'
+import { useXP } from '../../contexts/XPContext'
+import { XP_VALUES } from '../../hooks/useXPSystem'
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
@@ -192,6 +194,14 @@ function GoalRow({ goal, onToggle, onDelete, onUpdateNotes, onUpdateSubGoals, on
   const subs = goal.sub_goals ?? []
   const subsDone = subs.filter(s => s.is_completed).length
   const [newSub, setNewSub] = useState('')
+  const { awardXP } = useXP()
+
+  function handleToggleGoal() {
+    if (!goal.is_completed) {
+      awardXP(XP_VALUES.goal_complete, 'goal_complete', { reference_id: goal.id, description: goal.title })
+    }
+    onToggle(goal.id)
+  }
 
   function addSub() {
     if (!newSub.trim()) return
@@ -200,6 +210,10 @@ function GoalRow({ goal, onToggle, onDelete, onUpdateNotes, onUpdateSubGoals, on
   }
 
   function toggleSub(subId: string) {
+    const sub = subs.find(s => s.id === subId)
+    if (sub && !sub.is_completed) {
+      awardXP(XP_VALUES.goal_subgoal, 'goal_subgoal', { description: sub.title })
+    }
     onUpdateSubGoals(goal.id, subs.map(s => s.id === subId ? { ...s, is_completed: !s.is_completed } : s))
   }
 
@@ -225,7 +239,7 @@ function GoalRow({ goal, onToggle, onDelete, onUpdateNotes, onUpdateSubGoals, on
       {/* Main row */}
       <div className="flex items-center gap-3 px-4 py-3 group">
         {/* Checkbox */}
-        <button onClick={() => onToggle(goal.id)} className="shrink-0 transition-colors">
+        <button onClick={handleToggleGoal} className="shrink-0 transition-colors">
           {goal.is_completed
             ? <CheckCircle2 className="w-4.5 h-4.5" style={{ color: '#16a34a' }} />
             : <Circle className="w-4.5 h-4.5" style={{ color: 'var(--border-default)' }} />}

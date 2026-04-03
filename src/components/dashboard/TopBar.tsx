@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Bell, Sun, Moon, LogOut, Menu, User, Settings, ChevronDown } from 'lucide-react'
-import { getRankInfo } from '../../hooks/useProfile'
+import { getLevelInfo } from '../../hooks/useProfile'
 import { useTheme } from '../../contexts/ThemeContext'
 import { useAuth } from '../../contexts/AuthContext'
 import { getAvatarColor } from './SettingsPanel'
@@ -49,7 +49,7 @@ function LiveDate() {
 export default function TopBar({ profile, activePillar = 'overview', onMenuToggle, onOpenSettings }: TopBarProps) {
   const { theme, toggle } = useTheme()
   const { signOut } = useAuth()
-  const rankInfo = profile ? getRankInfo(profile.total_xp) : null
+  const levelInfo = profile ? getLevelInfo(profile.total_xp) : { level: 1, xpForCurrentLevel: 0, xpNeeded: 1000, progress: 0 }
   const initials = profile?.display_name ? profile.display_name.slice(0, 2).toUpperCase() : 'OP'
   const avatarColor = getAvatarColor()
   const [photo, setPhoto] = useState<string | null>(() => localStorage.getItem(AVATAR_PHOTO_KEY))
@@ -158,7 +158,7 @@ export default function TopBar({ profile, activePillar = 'overview', onMenuToggl
                   {profile?.display_name || 'Operator'}
                 </div>
                 <div className="text-[11px]" style={{ color: 'var(--text-muted)' }}>
-                  {rankInfo?.rank ?? 'RECRUIT'} · Lv {profile?.level ?? 1}
+                  Level {levelInfo.level}
                 </div>
               </div>
               <div
@@ -194,7 +194,7 @@ export default function TopBar({ profile, activePillar = 'overview', onMenuToggl
                       {profile?.display_name || 'Operator'}
                     </div>
                     <div className="text-xs" style={{ color: 'var(--text-muted)' }}>
-                      {rankInfo?.rank ?? 'RECRUIT'} · Level {profile?.level ?? 1}
+                      Level {levelInfo.level}
                     </div>
                   </div>
                 </div>

@@ -43,7 +43,7 @@ export interface Database {
         Row: {
           id: string
           display_name: string | null
-          rank: string
+          rank: string | null
           level: number
           total_xp: number
           current_streak: number
@@ -55,7 +55,7 @@ export interface Database {
         Insert: {
           id: string
           display_name?: string | null
-          rank?: string
+          rank?: string | null
           level?: number
           total_xp?: number
           current_streak?: number
@@ -67,7 +67,7 @@ export interface Database {
         Update: {
           id?: string
           display_name?: string | null
-          rank?: string
+          rank?: string | null
           level?: number
           total_xp?: number
           current_streak?: number
@@ -540,6 +540,36 @@ export interface Database {
           reference?: string
           text?: string
           saved_at?: string
+        }
+        Relationships: []
+      }
+      xp_transactions: {
+        Row: {
+          id: string
+          user_id: string
+          amount: number
+          source: string
+          reference_id: string | null
+          description: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          amount: number
+          source: string
+          reference_id?: string | null
+          description?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          amount?: number
+          source?: string
+          reference_id?: string | null
+          description?: string | null
+          created_at?: string
         }
         Relationships: []
       }

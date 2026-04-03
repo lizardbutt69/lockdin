@@ -2,6 +2,8 @@ import { useRef, useState } from 'react'
 import { Flame, Plus, Trash2, ChevronDown, ChevronUp, Trophy, Pencil, Check, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import useCustomHabits, { type HabitDef, type DayRecord } from '../../hooks/useCustomHabits'
+import { useXP } from '../../contexts/XPContext'
+import { XP_VALUES } from '../../hooks/useXPSystem'
 
 interface PillarHabitTrackerProps {
   pillar: string
@@ -80,6 +82,10 @@ function HabitRow({ habit, done, history, accentColor, muted, today, weekDates, 
   const rank = getRank(total)
   const flame = streak > 0 ? flameStyle(streak) : null
   const historyMap = new Map(history.map(r => [r.date, r.completed]))
+
+  const xpAmount = habit.frequency === 'weekly' ? XP_VALUES.habit_weekly
+    : habit.frequency === 'monthly' ? XP_VALUES.habit_monthly
+    : XP_VALUES.habit_daily
 
   // XP pop animation
   const [popKey, setPopKey] = useState(0)
@@ -175,7 +181,7 @@ function HabitRow({ habit, done, history, accentColor, muted, today, weekDates, 
               className="absolute left-1/2 -translate-x-1/2 bottom-full pointer-events-none z-10"
             >
               <span className="text-[11px] font-bold whitespace-nowrap" style={{ color: accentColor, textShadow: `0 0 8px ${accentColor}` }}>
-                +10 XP
+                +{xpAmount} XP
               </span>
             </motion.div>
           )}
@@ -260,6 +266,7 @@ function HabitRow({ habit, done, history, accentColor, muted, today, weekDates, 
 export default function PillarHabitTracker({ pillar, accentColor = '#22c55e', accentMuted, compact = false }: PillarHabitTrackerProps) {
   const muted = accentMuted ?? `${accentColor}25`
   const { habits, isToday, toggle, addHabit, removeHabit, editHabit, getHistory } = useCustomHabits(pillar)
+  const { awardXP } = useXP()
   const [showForm, setShowForm] = useState(false)
   const [newName, setNewName] = useState('')
   const [newFreq, setNewFreq] = useState<'daily' | 'weekly' | 'monthly'>('daily')
@@ -269,6 +276,23 @@ export default function PillarHabitTracker({ pillar, accentColor = '#22c55e', ac
   const weekDates = getWeekDates()
   const completedToday = habits.filter(h => isToday(h.id)).length
   const allClear = habits.length > 0 && completedToday === habits.length
+
+  function handleHabitToggle(id: string) {
+    const habit = habits.find(h => h.id === id)
+    if (!habit) return
+    const wasDone = isToday(id)
+    const wouldClearAll = !wasDone && completedToday + 1 === habits.length
+    toggle(id)
+    if (!wasDone) {
+      const xp = habit.frequency === 'weekly' ? XP_VALUES.habit_weekly
+        : habit.frequency === 'monthly' ? XP_VALUES.habit_monthly
+        : XP_VALUES.habit_daily
+      awardXP(xp, 'habit', { reference_id: id, description: habit.name })
+      if (wouldClearAll) {
+        awardXP(XP_VALUES.perfect_day, 'perfect_day', { description: `${pillar} pillar cleared!` })
+      }
+    }
+  }
 
   function handleAdd(e: React.SyntheticEvent) {
     e.preventDefault()
@@ -359,7 +383,7 @@ export default function PillarHabitTracker({ pillar, accentColor = '#22c55e', ac
               today={today}
               weekDates={weekDates}
               compact={compact}
-              onToggle={toggle}
+              onToggle={handleHabitToggle}
               onRemove={removeHabit}
               onEdit={editHabit}
             />
