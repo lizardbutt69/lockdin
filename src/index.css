@@ -49,92 +49,246 @@
   --nav-gratitude-active-border: #fde68a;
 
   /* Radii */
-  --radius-card: 12px;
+  --radius-card: 14px;
   --radius-sm: 8px;
-  --radius-lg: 16px;
+  --radius-lg: 18px;
 
   /* Shadows */
   --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04);
   --shadow-card-hover: 0 2px 8px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
   --shadow-sidebar: 1px 0 0 #e5e7eb;
   --shadow-glow-green: 0 0 20px rgba(34, 197, 94, 0.15);
+
+  /* Glass (light mode — no-op) */
+  --glass-bg: #ffffff;
+  --glass-border: rgba(0, 0, 0, 0.06);
+  --glass-blur: 0px;
+  --glass-highlight: rgba(255,255,255,0);
 }
 
-/* ─── Dark theme — Apple/macOS inspired ──────────────── */
+/* ─────────────────────────────────────────────────────────────────────────────
+   DARK MODE — Glassmorphism Edition
+   Deep space base + frosted glass cards + pillar-tinted accents
+───────────────────────────────────────────────────────────────────────────── */
 [data-theme="dark"] {
-  /* macOS-style dark gray backgrounds */
-  --bg-primary:  #161618;
-  --bg-secondary: #1c1c1e;
-  --bg-card:     #1c1c1e;
-  --bg-sidebar:  rgba(20, 20, 22, 0.88);
-  --bg-input:    #141416;
-  --bg-subtle:   #242426;
+  /* ── Base backgrounds — deep, rich, not pure black ── */
+  --bg-primary:   #0d0f14;
+  --bg-secondary: rgba(18, 20, 28, 0.92);
+  --bg-card:      rgba(22, 25, 35, 0.72);
+  --bg-sidebar:   rgba(14, 16, 22, 0.90);
+  --bg-input:     rgba(255, 255, 255, 0.05);
+  --bg-subtle:    rgba(255, 255, 255, 0.04);
 
-  /* Hairline borders — barely there, like macOS */
-  --border-default: rgba(255, 255, 255, 0.08);
-  --border-subtle:  rgba(255, 255, 255, 0.04);
-  --border-glass-top: rgba(255, 255, 255, 0.10);
+  /* ── Borders — hairline glass edges ── */
+  --border-default:    rgba(255, 255, 255, 0.09);
+  --border-subtle:     rgba(255, 255, 255, 0.05);
+  --border-glass-top:  rgba(255, 255, 255, 0.14);
 
-  /* Text */
+  /* ── Text ── */
   --text-primary:   rgba(255, 255, 255, 0.95);
-  --text-secondary: rgba(255, 255, 255, 0.78);
-  --text-tertiary:  rgba(255, 255, 255, 0.58);
-  --text-muted:     rgba(255, 255, 255, 0.45);
+  --text-secondary: rgba(255, 255, 255, 0.72);
+  --text-tertiary:  rgba(255, 255, 255, 0.50);
+  --text-muted:     rgba(255, 255, 255, 0.35);
 
-  /* Deep layered shadows */
-  --shadow-card:       0 0 0 1px rgba(255,255,255,0.05), 0 4px 24px rgba(0,0,0,0.5);
-  --shadow-card-hover: 0 0 0 1px rgba(255,255,255,0.08), 0 8px 32px rgba(0,0,0,0.6);
-  --shadow-sidebar:    1px 0 0 rgba(255,255,255,0.05);
+  /* ── Shadows — deep layered glow ── */
+  --shadow-card:       0 0 0 1px rgba(255,255,255,0.07), 0 4px 24px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.06) inset;
+  --shadow-card-hover: 0 0 0 1px rgba(255,255,255,0.12), 0 8px 40px rgba(0,0,0,0.65), 0 1px 0 rgba(255,255,255,0.10) inset;
+  --shadow-sidebar:    1px 0 0 rgba(255,255,255,0.06);
 
-  /* Nav active states — dark */
-  --nav-active-bg: rgba(34, 197, 94, 0.10);
-  --nav-active-color: #4ade80;
-  --nav-active-icon: #4ade80;
-  --nav-active-border: rgba(34, 197, 94, 0.25);
-  --nav-hover-bg: rgba(255, 255, 255, 0.04);
-  --nav-gratitude-active-bg: rgba(245, 158, 11, 0.10);
-  --nav-gratitude-active-color: #fbbf24;
-  --nav-gratitude-hover-bg: rgba(245, 158, 11, 0.06);
-  --nav-gratitude-active-border: rgba(245, 158, 11, 0.25);
+  /* ── Nav active states ── */
+  --nav-active-bg:     rgba(74, 222, 128, 0.10);
+  --nav-active-color:  #4ade80;
+  --nav-active-icon:   #4ade80;
+  --nav-active-border: rgba(74, 222, 128, 0.22);
+  --nav-hover-bg:      rgba(255, 255, 255, 0.05);
+  --nav-gratitude-active-bg:     rgba(251, 191, 36, 0.10);
+  --nav-gratitude-active-color:  #fbbf24;
+  --nav-gratitude-hover-bg:      rgba(251, 191, 36, 0.06);
+  --nav-gratitude-active-border: rgba(251, 191, 36, 0.22);
+
+  /* ── Glass system ── */
+  --glass-bg:        rgba(18, 21, 32, 0.72);
+  --glass-border:    rgba(255, 255, 255, 0.10);
+  --glass-blur:      24px;
+  --glass-highlight: rgba(255, 255, 255, 0.08);
+
+  /* ── Pillar accent colors (dark-optimized) ── */
+  --pillar-god:           rgba(139, 92, 246, 0.12);
+  --pillar-god-glow:      rgba(139, 92, 246, 0.20);
+  --pillar-god-border:    rgba(139, 92, 246, 0.20);
+
+  --pillar-finances:      rgba(34, 197, 94, 0.10);
+  --pillar-finances-glow: rgba(34, 197, 94, 0.18);
+  --pillar-finances-border: rgba(34, 197, 94, 0.18);
+
+  --pillar-career:        rgba(59, 130, 246, 0.10);
+  --pillar-career-glow:   rgba(59, 130, 246, 0.18);
+  --pillar-career-border: rgba(59, 130, 246, 0.18);
+
+  --pillar-relationships: rgba(244, 63, 94, 0.10);
+  --pillar-relationships-glow:   rgba(244, 63, 94, 0.18);
+  --pillar-relationships-border: rgba(244, 63, 94, 0.18);
+
+  --pillar-fitness:       rgba(249, 115, 22, 0.10);
+  --pillar-fitness-glow:  rgba(249, 115, 22, 0.18);
+  --pillar-fitness-border: rgba(249, 115, 22, 0.18);
+
+  --pillar-trips:         rgba(99, 179, 237, 0.10);
+  --pillar-trips-glow:    rgba(99, 179, 237, 0.18);
+  --pillar-trips-border:  rgba(99, 179, 237, 0.18);
+
+  --pillar-gratitude:     rgba(251, 191, 36, 0.10);
+  --pillar-gratitude-glow:   rgba(251, 191, 36, 0.18);
+  --pillar-gratitude-border: rgba(251, 191, 36, 0.18);
 }
 
-/* Glass top highlight on dark cards */
+/* ── Dark mode global background — animated deep gradient ── */
+[data-theme="dark"] html,
+[data-theme="dark"] body,
+[data-theme="dark"] #root {
+  background: #0d0f14;
+}
+
+[data-theme="dark"] body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 60% at 15% 0%,   rgba(99, 102, 241, 0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 85% 10%,  rgba(139, 92, 246, 0.06) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 40% at 50% 100%, rgba(34, 197, 94, 0.05)  0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 90% 80%,  rgba(59, 130, 246, 0.05) 0%, transparent 55%);
+}
+
+/* ── Glass cards in dark mode ── */
 [data-theme="dark"] .card,
 [data-theme="dark"] .glass-card {
-  border-top-color: rgba(255, 255, 255, 0.10);
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.04) 0%,
-    transparent 60px
-  ), #1c1c1e;
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.8) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.8) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-top-color: var(--border-glass-top) !important;
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
 }
 
+/* Subtle top-edge shimmer on glass cards */
+[data-theme="dark"] .card::before,
+[data-theme="dark"] .glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.14) 40%, rgba(255,255,255,0.14) 60%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Sidebar glass ── */
+[data-theme="dark"] .sidebar-glass {
+  background: rgba(12, 14, 20, 0.88);
+  backdrop-filter: blur(24px) saturate(1.8);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  border-right: 1px solid rgba(255,255,255,0.07);
+}
+
+/* ── TopBar glass ── */
+[data-theme="dark"] header {
+  background: rgba(14, 16, 24, 0.85) !important;
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  border-bottom-color: rgba(255,255,255,0.07) !important;
+}
+
+
+/* ── Modals / popups in dark mode ── */
+[data-theme="dark"] .glass-modal {
+  background: rgba(15, 18, 28, 0.82) !important;
+  backdrop-filter: blur(32px) saturate(1.8) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(1.8) !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 32px 64px rgba(0,0,0,0.7), 0 1px 0 rgba(255,255,255,0.08) inset;
+}
+
+/* ── Toggle buttons ── */
+[data-theme="dark"] .toggle-btn {
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.08);
+  color: var(--text-secondary);
+}
 [data-theme="dark"] .toggle-btn:hover {
-  border-color: rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.07);
   color: var(--text-primary);
 }
-
 [data-theme="dark"] .toggle-btn.active {
-  border-color: rgba(34,197,94,0.3);
-  background: rgba(34,197,94,0.08);
+  border-color: rgba(74,222,128,0.35);
+  background: rgba(74,222,128,0.10);
   color: #4ade80;
 }
 
+/* ── Scrollbar ── */
 [data-theme="dark"] ::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.10);
 }
-
 [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.18);
 }
 
-/* Sidebar frosted glass */
-[data-theme="dark"] .sidebar-glass {
-  background: rgba(10, 10, 10, 0.85);
-  backdrop-filter: blur(20px) saturate(1.8);
-  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+/* ── Inputs in dark mode ── */
+[data-theme="dark"] .tactical-input {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.09);
+  color: var(--text-primary);
 }
+[data-theme="dark"] .tactical-input:focus {
+  border-color: rgba(74,222,128,0.45);
+  box-shadow: 0 0 0 3px rgba(74,222,128,0.08);
+  background: rgba(255,255,255,0.07);
+}
+[data-theme="dark"] .tactical-input::placeholder {
+  color: rgba(255,255,255,0.25);
+}
+
+/* ── Select dropdowns ── */
+[data-theme="dark"] select.tactical-input {
+  background: rgba(22,25,38,0.85);
+}
+[data-theme="dark"] select.tactical-input option {
+  background: #1a1d2a;
+  color: rgba(255,255,255,0.9);
+}
+
+/* ── Stat tiles / metric boxes ── */
+[data-theme="dark"] .metric-tile {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  backdrop-filter: blur(8px);
+}
+
+/* ── Hover card lift ── */
+[data-theme="dark"] .card-hover:hover,
+[data-theme="dark"] .glass-card-hover:hover {
+  box-shadow: var(--shadow-card-hover);
+  border-color: rgba(255,255,255,0.14);
+  transform: translateY(-1px);
+  transition: all 0.2s ease;
+}
+
+/* ── Glow accents ── */
+[data-theme="dark"] .glow-green {
+  color: #4ade80;
+  text-shadow: 0 0 20px rgba(74,222,128,0.4);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   BASE STYLES (shared light + dark)
+───────────────────────────────────────────────────────────────────────────── */
 
 * {
   box-sizing: border-box;
@@ -152,13 +306,13 @@ html, body, #root {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ─── Cards ─────────────────────────────────────────── */
+/* ─── Cards ─────────────────────────────────────────────────────────────────── */
 .card {
   background: var(--bg-card);
   border-radius: var(--radius-card);
   border: 1px solid var(--border-default);
   box-shadow: var(--shadow-card);
-  transition: box-shadow 0.2s, border-color 0.2s;
+  transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
 }
 
 .card-hover:hover {
@@ -172,7 +326,7 @@ html, body, #root {
   border-radius: var(--radius-card);
   border: 1px solid var(--border-default);
   box-shadow: var(--shadow-card);
-  transition: box-shadow 0.2s, border-color 0.2s;
+  transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
 }
 
 .glass-card-hover:hover {
@@ -180,7 +334,7 @@ html, body, #root {
   border-color: rgba(255,255,255,0.12);
 }
 
-/* ─── Sidebar nav active accent ──────────────────────── */
+/* ─── Sidebar nav active accent ──────────────────────────────────────────────── */
 .nav-active::before {
   content: '';
   position: absolute;
@@ -192,7 +346,7 @@ html, body, #root {
   border-radius: 0 2px 2px 0;
 }
 
-/* ─── Status pulse animations ────────────────────────── */
+/* ─── Status pulse animations ─────────────────────────────────────────────────── */
 @keyframes pulse-green {
   0%, 100% { box-shadow: 0 0 3px rgba(34, 197, 94, 0.6); }
   50%       { box-shadow: 0 0 7px rgba(34, 197, 94, 0.9); }
@@ -210,17 +364,17 @@ html, body, #root {
 .status-pulse-amber { animation: pulse-amber 1.5s ease-in-out infinite; }
 .status-pulse-red   { animation: pulse-red 1s ease-in-out infinite; }
 
-/* ─── XP bar ─────────────────────────────────────────── */
+/* ─── XP bar ──────────────────────────────────────────────────────────────────── */
 @keyframes xp-fill { from { width: 0%; } }
 .xp-bar-fill { animation: xp-fill 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
 
-/* ─── Scrollbar ──────────────────────────────────────── */
+/* ─── Scrollbar ───────────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
 
-/* ─── Form inputs ────────────────────────────────────── */
+/* ─── Form inputs ─────────────────────────────────────────────────────────────── */
 .tactical-input {
   background: var(--bg-input);
   border: 1px solid var(--border-default);
@@ -233,7 +387,7 @@ html, body, #root {
   padding-left: 10px;
   padding-right: 10px;
   outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
   width: 100%;
 }
 .tactical-input:focus {
@@ -244,7 +398,7 @@ html, body, #root {
   color: var(--text-muted);
 }
 
-/* ─── Toggle button ──────────────────────────────────── */
+/* ─── Toggle button ───────────────────────────────────────────────────────────── */
 .toggle-btn {
   display: flex;
   align-items: center;
@@ -272,13 +426,13 @@ html, body, #root {
   color: #15803d;
 }
 
-/* ─── Glow (subtle, for accents only) ───────────────── */
+/* ─── Glow (subtle, for accents only) ────────────────────────────────────────── */
 .glow-green {
   text-shadow: none;
   color: #16a34a;
 }
 
-/* ─── Subtle grid overlay (very faint, optional) ────── */
+/* ─── Subtle grid overlay (very faint, optional) ─────────────────────────────── */
 .tactical-grid {
   background-image: none;
 }

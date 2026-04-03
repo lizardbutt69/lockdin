@@ -56,8 +56,7 @@ export default function GratitudeQuickAdd() {
 
   return (
     <div
-      className="rounded-xl p-4 space-y-3"
-      style={{ background: 'var(--bg-card)', border: '1px solid var(--border-default)', boxShadow: 'var(--shadow-card)' }}
+      className="card p-4 space-y-3"
     >
       {/* Header */}
       <div className="flex items-center gap-2">

@@ -77,7 +77,7 @@ export default function BondsSelfTab({ checkIn, onSaveCheckIn }: Props) {
   return (
     <div className="space-y-4">
       {/* Daily Check-in */}
-      <div className="rounded-xl overflow-hidden" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-default)', boxShadow: 'var(--shadow-card)' }}>
+      <div className="card overflow-hidden">
         <div className="px-4 py-3 flex items-center gap-2" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
           <div className="w-6 h-6 rounded-md flex items-center justify-center" style={{ background: `${ACCENT}15`, border: `1px solid ${ACCENT}30` }}>
             <Brain className="w-3 h-3" style={{ color: ACCENT }} />
@@ -124,7 +124,7 @@ export default function BondsSelfTab({ checkIn, onSaveCheckIn }: Props) {
       </div>
 
       {/* How am I showing up */}
-      <div className="rounded-xl overflow-hidden" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-default)', boxShadow: 'var(--shadow-card)' }}>
+      <div className="card overflow-hidden">
         <div className="px-4 py-3 flex items-center gap-2" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
           <Sparkles className="w-3.5 h-3.5" style={{ color: ACCENT }} />
           <span className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>How am I showing up?</span>
@@ -144,7 +144,7 @@ export default function BondsSelfTab({ checkIn, onSaveCheckIn }: Props) {
       </div>
 
       {/* Affirmations */}
-      <div className="rounded-xl overflow-hidden" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-default)', boxShadow: 'var(--shadow-card)' }}>
+      <div className="card overflow-hidden">
         <div className="px-4 py-3 flex items-center justify-between" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
           <div className="flex items-center gap-2">
             <span className="text-base">💪</span>

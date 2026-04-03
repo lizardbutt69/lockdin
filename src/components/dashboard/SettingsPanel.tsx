@@ -239,7 +239,7 @@ export default function SettingsPanel({ onClose, displayName, isReligious = true
                 onKeyDown={e => e.key === 'Enter' && saveName()}
                 placeholder="Display name"
                 className="flex-1 px-3 py-2 rounded-lg text-sm outline-none"
-                style={{ border: '1px solid #e5e7eb', background: '#f9fafb', color: 'var(--text-primary)' }}
+                style={{ border: '1px solid var(--border-default)', background: 'var(--bg-input)', color: 'var(--text-primary)' }}
               />
               <button
                 onClick={saveName}
@@ -313,7 +313,7 @@ export default function SettingsPanel({ onClose, displayName, isReligious = true
                 onChange={e => setApiKey(e.target.value)}
                 placeholder="sk-ant-..."
                 className="w-full px-3 py-2 pr-10 rounded-lg text-sm outline-none"
-                style={{ border: '1px solid #e5e7eb', background: '#f9fafb', color: 'var(--text-primary)' }}
+                style={{ border: '1px solid var(--border-default)', background: 'var(--bg-input)', color: 'var(--text-primary)' }}
               />
               <button
                 onClick={() => setShowKey(v => !v)}
@@ -332,7 +332,7 @@ export default function SettingsPanel({ onClose, displayName, isReligious = true
                 {keySaved ? <><Check className="w-3 h-3" />Saved</> : 'Save Key'}
               </button>
               {apiKey && (
-                <button onClick={removeApiKey} className="px-3 py-1.5 rounded-lg text-xs" style={{ border: '1px solid #e5e7eb', color: 'var(--text-muted)' }}>
+                <button onClick={removeApiKey} className="px-3 py-1.5 rounded-lg text-xs" style={{ border: '1px solid var(--border-default)', color: 'var(--text-muted)' }}>
                   Remove
                 </button>
               )}
@@ -362,7 +362,7 @@ export default function SettingsPanel({ onClose, displayName, isReligious = true
                 onChange={e => { if (/^\d*$/.test(e.target.value)) setPinInput(e.target.value) }}
                 placeholder="New PIN (4 digits)"
                 className="w-full px-3 py-2 rounded-lg text-sm outline-none"
-                style={{ border: '1px solid #e5e7eb', background: '#f9fafb', color: 'var(--text-primary)' }}
+                style={{ border: '1px solid var(--border-default)', background: 'var(--bg-input)', color: 'var(--text-primary)' }}
               />
               <input
                 type="password" inputMode="numeric" maxLength={4}
@@ -370,7 +370,7 @@ export default function SettingsPanel({ onClose, displayName, isReligious = true
                 onChange={e => { if (/^\d*$/.test(e.target.value)) setPinConfirm(e.target.value) }}
                 placeholder="Confirm PIN"
                 className="w-full px-3 py-2 rounded-lg text-sm outline-none"
-                style={{ border: '1px solid #e5e7eb', background: '#f9fafb', color: 'var(--text-primary)' }}
+                style={{ border: '1px solid var(--border-default)', background: 'var(--bg-input)', color: 'var(--text-primary)' }}
               />
             </div>
             {pinMsg && (

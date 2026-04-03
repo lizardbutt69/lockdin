@@ -14,19 +14,21 @@ interface TopBarProps {
   profile: Profile | null
   activePillar?: PillarKey
   onMenuToggle?: () => void
-  onOpenSettings?: () => void
+  onUpdateProfile?: (name: string) => Promise<void>
+  onToggleReligious?: (isReligious: boolean) => Promise<void>
+  isReligious?: boolean
 }
 
 const PAGE_TITLES: Record<PillarKey, string> = {
-  overview:      'Overview',
-  god:           'God',
-  finances:      'Finances',
+  overview: 'Overview',
+  god: 'God',
+  finances: 'Finances',
   relationships: 'Relationships',
-  fitness:       'Health & Fitness',
-  trips:         'Trips',
-  gratitude:     'Gratitude',
-  career:        'Career',
-  goals:         'Goals',
+  fitness: 'Health & Fitness',
+  trips: 'Trips',
+  gratitude: 'Gratitude',
+  career: 'Career',
+  goals: 'Goals',
 }
 
 const AVATAR_PHOTO_KEY = 'lockedin_avatar_photo'
@@ -38,8 +40,8 @@ function LiveDate() {
     return () => clearInterval(t)
   }, [])
   const pad = (n: number) => n.toString().padStart(2, '0')
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   return (
     <span className="text-sm" style={{ color: 'var(--text-muted)' }}>
       {days[now.getDay()]}, {months[now.getMonth()]} {now.getDate()} · {pad(now.getHours())}:{pad(now.getMinutes())}
@@ -47,7 +49,7 @@ function LiveDate() {
   )
 }
 
-export default function TopBar({ profile, activePillar = 'overview', onMenuToggle, onOpenSettings }: TopBarProps) {
+export default function TopBar({ profile, activePillar = 'overview', onMenuToggle, onUpdateProfile, onToggleReligious, isReligious }: TopBarProps) {
   const { theme, toggle } = useTheme()
   const { signOut } = useAuth()
   const levelInfo = profile ? getLevelInfo(profile.total_xp) : { level: 1, xpForCurrentLevel: 0, xpNeeded: 1000, progress: 0 }
@@ -133,7 +135,7 @@ export default function TopBar({ profile, activePillar = 'overview', onMenuToggl
         <button
           onClick={() => setShowProfilePopup(true)}
           className="flex items-center gap-2 p-1 rounded-lg transition-colors cursor-pointer"
-          style={{ 
+          style={{
             background: 'transparent',
             border: '1px solid transparent',
           }}
@@ -165,7 +167,10 @@ export default function TopBar({ profile, activePillar = 'overview', onMenuToggl
           profile={profile}
           isOpen={showProfilePopup}
           onClose={() => setShowProfilePopup(false)}
-          onOpenSettings={onOpenSettings}
+          displayName={profile?.display_name || undefined}
+          isReligious={isReligious}
+          onSaveName={onUpdateProfile}
+          onToggleReligious={onToggleReligious}
         />
       </div>
     </header>

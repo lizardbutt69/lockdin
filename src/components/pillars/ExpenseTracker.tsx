@@ -58,7 +58,7 @@ export default function ExpenseTracker() {
   const deltaSign = delta > 0 ? 'up' : delta < 0 ? 'down' : 'flat'
 
   return (
-    <div className="rounded-xl overflow-hidden" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-default)', boxShadow: 'var(--shadow-card)' }}>
+    <div className="card overflow-hidden">
 
       {/* Header */}
       <div className="px-4 py-3 flex items-center justify-between" style={{ borderBottom: '1px solid var(--border-subtle)' }}>

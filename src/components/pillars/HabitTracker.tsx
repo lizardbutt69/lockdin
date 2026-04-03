@@ -33,8 +33,7 @@ export default function HabitTracker({ records, habits, loading }: HabitTrackerP
 
   return (
     <div
-      className="rounded-xl overflow-hidden"
-      style={{ background: 'var(--bg-card)', border: '1px solid var(--border-default)', boxShadow: 'var(--shadow-card)' }}
+      className="card overflow-hidden"
     >
       <div className="px-4 py-3">
         <div className="flex items-center justify-between mb-3">

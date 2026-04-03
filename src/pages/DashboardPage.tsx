@@ -47,7 +47,6 @@ export default function DashboardPage() {
   const [weeklyWorkouts, setWeeklyWorkouts] = useState(0)
   const [activePillar, setActivePillar] = useState<PillarKey>('overview')
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [showTopBarSettings, setShowTopBarSettings] = useState(false)
   const [showOnboarding, setShowOnboarding] = useState(() => {
     // Check both profile and localStorage for onboarding status
     // This runs only once on mount
@@ -125,7 +124,9 @@ export default function DashboardPage() {
   const isReligious = profile?.is_religious ?? true
 
   const pillarMap: Record<Exclude<PillarKey, 'overview'>, React.ReactElement> = {
-    god:           isReligious ? <GodPillar log={log} onUpdate={handleUpdate} /> : <div className="p-8 text-center" style={{ color: 'var(--text-muted)' }}>Religious content is disabled. Enable it in Settings.</div>,
+    god:           isReligious
+      ? <GodPillar log={log} onUpdate={handleUpdate} />
+      : <div className="p-8 text-center" style={{ color: 'var(--text-muted)' }}>Religious content is disabled. Enable it in Settings.</div>,
     finances:      <FinancesPillar log={log} onUpdate={handleUpdate} />,
     relationships: <BondsPillar />,
     fitness:       <FitnessPillar log={log} onUpdate={handleUpdate} weeklyWorkouts={weeklyWorkouts} />,
@@ -140,7 +141,14 @@ export default function DashboardPage() {
       className="h-screen flex flex-col overflow-hidden"
       style={{ background: 'var(--bg-primary)' }}
     >
-      <TopBar profile={profile} activePillar={activePillar} onMenuToggle={() => setSidebarOpen(o => !o)} onOpenSettings={() => setShowTopBarSettings(true)} />
+      <TopBar
+        profile={profile}
+        activePillar={activePillar}
+        onMenuToggle={() => setSidebarOpen(o => !o)}
+        isReligious={profile?.is_religious ?? true}
+        onUpdateProfile={name => updateProfile({ display_name: name })}
+        onToggleReligious={handleToggleReligious}
+      />
 
       <div className="flex flex-1 min-h-0 relative">
         {/* Mobile backdrop */}
@@ -160,9 +168,8 @@ export default function DashboardPage() {
           onUpdateProfile={name => updateProfile({ display_name: name })}
           onToggleReligious={handleToggleReligious}
 
-          showTopBarSettings={showTopBarSettings}
           isOpen={sidebarOpen}
-          onClose={() => { setSidebarOpen(false); setShowTopBarSettings(false) }}
+          onClose={() => setSidebarOpen(false)}
         />
 
         {/* Onboarding Modal - Centered on screen */}

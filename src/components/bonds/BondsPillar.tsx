@@ -43,7 +43,7 @@ export default function BondsPillar() {
           />
 
           {/* Partner / Circle / Community tabs */}
-          <div className="rounded-xl overflow-hidden" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-default)', boxShadow: 'var(--shadow-card)' }}>
+          <div className="card overflow-hidden">
             <div className="flex" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
               {TABS.map(tab => (
                 <button

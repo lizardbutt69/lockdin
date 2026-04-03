@@ -79,12 +79,7 @@ export default function JournalCard() {
   return (
     <>
       <div
-        className="w-full rounded-xl overflow-hidden cursor-pointer transition-all duration-200"
-        style={{
-          background: 'var(--bg-card)',
-          border: '1px solid var(--border-default)',
-          boxShadow: 'var(--shadow-card)',
-        }}
+        className="w-full card overflow-hidden cursor-pointer transition-all duration-200"
         onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.06)')}
         onMouseLeave={e => (e.currentTarget.style.boxShadow = 'var(--shadow-card)')}
         onClick={!showPinEntry ? open : undefined}

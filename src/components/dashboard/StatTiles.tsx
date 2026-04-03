@@ -124,7 +124,7 @@ export default function StatTiles({ log, weeklyWorkouts, activePillar, onSelect 
             onClick={() => onSelect(isActive ? 'overview' : tile.key)}
             className="relative flex flex-col items-start gap-2 p-3 text-left transition-all duration-200 rounded-xl"
             style={{
-              background: isActive ? tile.bgColor : '#ffffff',
+              background: isActive ? tile.bgColor : 'var(--bg-card)',
               border: `1px solid ${isActive ? tile.borderColor : 'var(--border-default)'}`,
               boxShadow: isActive
                 ? `0 0 0 3px ${tile.color}12, var(--shadow-card)`

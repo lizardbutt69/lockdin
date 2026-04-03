@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LayoutGrid, BookOpen, DollarSign, Heart, Dumbbell, Plane, LogOut, Flame, Zap, Target, Sparkles, Briefcase } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useAuth } from '../../contexts/AuthContext'
 import { getLevelInfo } from '../../hooks/useProfile'
 import ProfileXPPopup from './ProfileXPPopup'
-import SettingsPanel, { getAvatarColor } from './SettingsPanel'
+import { getAvatarColor } from './SettingsPanel'
 import PomodoroTimer from './PomodoroTimer'
 import type { Database } from '../../types/database'
 
@@ -20,7 +20,6 @@ interface SidebarProps {
   todayXP: number
   onUpdateProfile?: (name: string) => Promise<void>
   onToggleReligious?: (isReligious: boolean) => Promise<void>
-  showTopBarSettings?: boolean
   isOpen?: boolean
   onClose?: () => void
 }
@@ -35,11 +34,10 @@ const NAV_ITEMS: { key: PillarKey; label: string; icon: React.ElementType }[] = 
   { key: 'trips',         label: 'Trips',            icon: Plane      },
 ]
 
-export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUpdateProfile, onToggleReligious, showTopBarSettings = false, isOpen = false, onClose }: SidebarProps) {
+export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUpdateProfile, onToggleReligious, isOpen = false, onClose }: SidebarProps) {
   const { signOut } = useAuth()
   const navigate = useNavigate()
   const [showProfilePopup, setShowProfilePopup] = useState(false)
-  const [showSettings, setShowSettings] = useState(false)
   const [photo, setPhoto] = useState<string | null>(() => localStorage.getItem('lockedin_avatar_photo'))
   const avatarColor = getAvatarColor()
   const isReligious = profile?.is_religious ?? true
@@ -50,6 +48,7 @@ export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUp
     window.addEventListener('lockedin_avatar_updated', handler)
     return () => window.removeEventListener('lockedin_avatar_updated', handler)
   }, [])
+
   const levelInfo = profile ? getLevelInfo(profile.total_xp) : { level: 1, xpForCurrentLevel: 0, xpNeeded: 1000, progress: 0 }
 
   const totalXP = profile?.total_xp || 0
@@ -242,7 +241,7 @@ export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUp
         <div
           className="flex items-center gap-2.5 px-1 py-1 rounded-lg cursor-pointer transition-colors"
           onClick={() => setShowProfilePopup(true)}
-          onMouseEnter={e => e.currentTarget.style.background = '#f9fafb'}
+          onMouseEnter={e => e.currentTarget.style.background = 'var(--nav-hover-bg)'}
           onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
           title="View Profile & XP"
         >
@@ -279,23 +278,13 @@ export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUp
         profile={profile}
         isOpen={showProfilePopup}
         onClose={() => setShowProfilePopup(false)}
-        onOpenSettings={() => { setShowSettings(true) }}
-        onSignOut={handleSignOut}
+        initialTab="progress"
+        displayName={profile?.display_name || undefined}
+        isReligious={profile?.is_religious ?? true}
+        onSaveName={onUpdateProfile}
+        onToggleReligious={onToggleReligious}
       />
     )}
-
-    {/* Settings Panel */}
-    <AnimatePresence>
-      {(showSettings || showTopBarSettings) && (
-        <SettingsPanel
-          onClose={() => { setShowSettings(false) }}
-          displayName={profile?.display_name || undefined}
-          isReligious={profile?.is_religious ?? true}
-          onSaveName={onUpdateProfile}
-          onToggleReligious={onToggleReligious}
-        />
-      )}
-    </AnimatePresence>
     </>
   )
 }

@@ -47,11 +47,8 @@ export default function MissionsCard() {
   return (
     <>
     <div
-      className="rounded-xl overflow-hidden flex flex-col"
+      className="card overflow-hidden flex flex-col"
       style={{
-        background: 'var(--bg-card)',
-        border: '1px solid var(--border-default)',
-        boxShadow: 'var(--shadow-card)',
         maxHeight: 'calc(100dvh - 160px)',
       }}
     >

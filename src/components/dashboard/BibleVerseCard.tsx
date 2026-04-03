@@ -14,12 +14,7 @@ export default function BibleVerseCard() {
 
   return (
     <div
-      className="rounded-xl overflow-hidden"
-      style={{
-        background: 'var(--bg-card)',
-        border: '1px solid var(--border-default)',
-        boxShadow: 'var(--shadow-card)',
-      }}
+      className="card overflow-hidden"
     >
       {/* Title bar */}
       <div className="px-3 py-2 flex items-center justify-between" style={{ borderBottom: '1px solid var(--border-subtle)' }}>

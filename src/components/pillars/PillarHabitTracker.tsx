@@ -307,8 +307,7 @@ export default function PillarHabitTracker({ pillar, accentColor = '#22c55e', ac
 
   return (
     <div
-      className="rounded-xl overflow-hidden"
-      style={{ background: 'var(--bg-card)', border: '1px solid var(--border-default)', boxShadow: 'var(--shadow-card)' }}
+      className="card overflow-hidden"
     >
       {/* Header */}
       <div className="px-4 py-3 border-b flex items-center justify-between" style={{ borderColor: 'var(--border-subtle)' }}>

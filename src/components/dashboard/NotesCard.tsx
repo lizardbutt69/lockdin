@@ -18,12 +18,7 @@ export default function NotesCard() {
 
   return (
     <div
-      className="w-full rounded-xl overflow-hidden"
-      style={{
-        background: 'var(--bg-card)',
-        border: '1px solid var(--border-default)',
-        boxShadow: 'var(--shadow-card)',
-      }}
+      className="w-full card overflow-hidden"
     >
       {/* Top accent */}
       <div className="h-0.5 w-full" style={{ background: 'linear-gradient(90deg, #f59e0b, #d97706)' }} />

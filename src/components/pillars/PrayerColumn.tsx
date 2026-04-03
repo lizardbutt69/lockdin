@@ -110,12 +110,7 @@ export default function PrayerColumn() {
 
   return (
     <div
-      className="rounded-xl overflow-hidden flex flex-col h-full"
-      style={{
-        background: 'var(--bg-card)',
-        border: '1px solid var(--border-default)',
-        boxShadow: 'var(--shadow-card)',
-      }}
+      className="card overflow-hidden flex flex-col h-full"
     >
       {/* Header */}
       <div className="px-4 py-3.5 border-b shrink-0" style={{ borderColor: 'var(--border-subtle)' }}>

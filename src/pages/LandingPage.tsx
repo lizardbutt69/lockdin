@@ -20,14 +20,17 @@ import {
   Bell,
   Menu,
   X,
+  Sparkles,
+  Flame,
+  Heart,
+  Plane,
 } from 'lucide-react'
 
 export default function LandingPage() {
   const navigate = useNavigate()
   const { user } = useAuth()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [previewImgError, setPreviewImgError] = useState(false)
-  const { scrollYProgress } = useScroll()
+const { scrollYProgress } = useScroll()
   const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0])
   const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.95])
 
@@ -342,50 +345,139 @@ export default function LandingPage() {
             <div
               className="relative rounded-2xl overflow-hidden shadow-2xl"
               style={{
-                background: '#ffffff',
+                background: '#f4f6f9',
                 border: '1px solid rgba(22,163,74,0.15)',
                 boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.15)',
               }}
             >
               {/* Browser chrome */}
-              <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-100">
+              <div className="flex items-center gap-2 px-4 py-2.5 border-b" style={{ background: '#ffffff', borderColor: '#e5e7eb' }}>
                 <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
                 <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
                 <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
+                <div className="ml-3 flex-1 h-5 rounded-md" style={{ background: '#f3f4f6', maxWidth: 160 }} />
               </div>
-              {/* Preview image */}
-              <div className="relative">
-                {previewImgError ? (
-                  <div
-                    className="flex items-center justify-center p-8 min-h-[400px]"
-                    style={{ background: 'linear-gradient(135deg, #f4f6f9 0%, #e5e7eb 100%)' }}
-                  >
-                    <div className="text-center space-y-3">
+
+              {/* Mock dashboard layout */}
+              <div className="flex" style={{ minHeight: 400 }}>
+                {/* Sidebar */}
+                <div className="w-14 shrink-0 flex flex-col items-center py-4 gap-3" style={{ background: '#ffffff', borderRight: '1px solid #e5e7eb' }}>
+                  <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'rgba(22,163,74,0.1)' }}>
+                    <Target className="w-3.5 h-3.5" style={{ color: '#16a34a' }} />
+                  </div>
+                  <div className="mt-2 flex flex-col gap-2.5 items-center">
+                    {[
+                      { icon: BarChart3, color: '#16a34a', active: true },
+                      { icon: BookOpen, color: '#7c3aed' },
+                      { icon: DollarSign, color: '#16a34a' },
+                      { icon: Briefcase, color: '#2563eb' },
+                      { icon: Heart, color: '#dc2626' },
+                      { icon: Dumbbell, color: '#ea580c' },
+                      { icon: Plane, color: '#0284c7' },
+                      { icon: Sparkles, color: '#f59e0b' },
+                    ].map(({ icon: Icon, color, active }, i) => (
+                      <div key={i} className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: active ? `${color}15` : 'transparent', border: active ? `1px solid ${color}30` : '1px solid transparent' }}>
+                        <Icon className="w-3 h-3" style={{ color: active ? color : '#9ca3af' }} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Main content */}
+                <div className="flex-1 p-3 space-y-2 overflow-hidden">
+                  {/* Top bar */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold" style={{ color: '#111827' }}>Overview</span>
+                    <div className="flex items-center gap-1.5">
+                      <Flame className="w-3 h-3" style={{ color: '#f59e0b' }} />
+                      <span className="text-[10px] font-semibold" style={{ color: '#b45309' }}>47d</span>
+                      <Zap className="w-3 h-3 ml-1" style={{ color: '#16a34a' }} />
+                      <span className="text-[10px] font-semibold" style={{ color: '#15803d' }}>+240 XP</span>
+                    </div>
+                  </div>
+
+                  {/* Year progress */}
+                  <div className="rounded-lg p-2.5" style={{ background: 'linear-gradient(135deg, #111827 0%, #1f2937 100%)', border: '1px solid #374151' }}>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-[9px] font-semibold tracking-wider" style={{ color: 'rgba(255,255,255,0.5)' }}>2025 — YEAR PROGRESS</span>
+                      <span className="text-[10px] font-bold" style={{ color: '#4ade80' }}>73%</span>
+                    </div>
+                    <div className="h-1.5 rounded-full" style={{ background: 'rgba(255,255,255,0.1)' }}>
+                      <div className="h-full rounded-full" style={{ width: '73%', background: 'linear-gradient(90deg, #4ade80, #16a34a)' }} />
+                    </div>
+                    <p className="text-[9px] mt-1.5" style={{ color: 'rgba(255,255,255,0.35)' }}>95 days left — don't waste them.</p>
+                  </div>
+
+                  {/* Two column layout */}
+                  <div className="grid grid-cols-2 gap-2">
+                    {/* Missions */}
+                    <div className="rounded-lg p-2.5" style={{ background: '#ffffff', border: '1px solid #e5e7eb' }}>
+                      <p className="text-[9px] font-semibold mb-2" style={{ color: '#6b7280' }}>TODAY'S MISSIONS</p>
+                      <div className="space-y-1.5">
+                        {[
+                          { label: 'Morning workout', done: true },
+                          { label: 'Read 20 pages', done: true },
+                          { label: 'Cold outreach ×3', done: false },
+                          { label: 'Evening prayer', done: false },
+                        ].map(({ label, done }) => (
+                          <div key={label} className="flex items-center gap-1.5">
+                            <div className="w-3 h-3 rounded flex items-center justify-center shrink-0" style={{ background: done ? '#16a34a' : '#f3f4f6', border: `1px solid ${done ? '#16a34a' : '#d1d5db'}` }}>
+                              {done && <CheckCircle2 className="w-2 h-2 text-white" />}
+                            </div>
+                            <span className="text-[9px]" style={{ color: done ? '#374151' : '#9ca3af', textDecoration: done ? 'line-through' : 'none' }}>{label}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Pillar status */}
+                    <div className="rounded-lg p-2.5" style={{ background: '#ffffff', border: '1px solid #e5e7eb' }}>
+                      <p className="text-[9px] font-semibold mb-2" style={{ color: '#6b7280' }}>PILLARS</p>
+                      <div className="space-y-1.5">
+                        {[
+                          { icon: BookOpen, label: 'Faith', pct: 85, color: '#7c3aed' },
+                          { icon: DollarSign, label: 'Finances', pct: 62, color: '#16a34a' },
+                          { icon: Briefcase, label: 'Career', pct: 74, color: '#2563eb' },
+                          { icon: Dumbbell, label: 'Fitness', pct: 90, color: '#ea580c' },
+                        ].map(({ icon: Icon, label, pct, color }) => (
+                          <div key={label} className="flex items-center gap-1.5">
+                            <Icon className="w-2.5 h-2.5 shrink-0" style={{ color }} />
+                            <div className="flex-1 h-1.5 rounded-full" style={{ background: '#f3f4f6' }}>
+                              <div className="h-full rounded-full" style={{ width: `${pct}%`, background: color }} />
+                            </div>
+                            <span className="text-[8px] font-semibold w-5 text-right" style={{ color }}>{pct}%</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Goals */}
+                  <div className="rounded-lg p-2.5" style={{ background: '#ffffff', border: '1px solid #e5e7eb' }}>
+                    <p className="text-[9px] font-semibold mb-1.5" style={{ color: '#6b7280' }}>ACTIVE GOALS</p>
+                    <div className="flex gap-2">
                       {[
-                        { color: '#7c3aed', label: 'RELIGION/SPIRITUALITY' },
-                        { color: '#16a34a', label: 'FINANCES' },
-                        { color: '#2563eb', label: 'CAREER' },
-                        { color: '#10b981', label: 'HEALTH' },
-                      ].map(({ color, label }) => (
-                        <div
-                          key={label}
-                          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg mx-1"
-                          style={{ background: `${color}1a`, border: `1px solid ${color}33` }}
-                        >
-                          <div className="w-3 h-3 rounded-full" style={{ background: color }} />
-                          <span className="text-xs font-semibold" style={{ color }}>{label}</span>
+                        { label: 'Run a marathon', pct: 40, color: '#ea580c' },
+                        { label: 'Save $10k', pct: 62, color: '#16a34a' },
+                        { label: 'Launch side project', pct: 25, color: '#2563eb' },
+                      ].map(({ label, pct, color }) => (
+                        <div key={label} className="flex-1 rounded-md p-1.5" style={{ background: `${color}0d`, border: `1px solid ${color}25` }}>
+                          <p className="text-[8px] font-medium mb-1" style={{ color: '#374151' }}>{label}</p>
+                          <div className="h-1 rounded-full mb-0.5" style={{ background: '#e5e7eb' }}>
+                            <div className="h-full rounded-full" style={{ width: `${pct}%`, background: color }} />
+                          </div>
+                          <p className="text-[8px] font-semibold" style={{ color }}>{pct}%</p>
                         </div>
                       ))}
                     </div>
                   </div>
-                ) : (
-                  <img
-                    src="/dashboard-preview.png"
-                    alt="Dashboard Preview"
-                    className="w-full h-auto"
-                    onError={() => setPreviewImgError(true)}
-                  />
-                )}
+
+                  {/* Quote */}
+                  <div className="rounded-lg px-2.5 py-2" style={{ background: '#fafafa', border: '1px solid #e5e7eb' }}>
+                    <p className="text-[9px] italic" style={{ color: '#6b7280' }}>"Iron sharpens iron, and one man sharpens another."</p>
+                    <p className="text-[8px] font-semibold mt-0.5" style={{ color: '#16a34a' }}>— Proverbs 27:17</p>
+                  </div>
+                </div>
               </div>
             </div>
 

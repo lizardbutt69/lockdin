@@ -405,8 +405,7 @@ export default function TrainingCalendar({ accentColor = '#ea580c' }: { accentCo
 
   return (
     <div
-      className="rounded-xl overflow-hidden"
-      style={{ background: 'var(--bg-card)', border: '1px solid var(--border-default)', boxShadow: 'var(--shadow-card)' }}
+      className="card overflow-hidden"
     >
       {/* Header */}
       <div className="px-4 py-3 border-b flex flex-col sm:flex-row sm:items-center gap-2" style={{ borderColor: 'var(--border-subtle)' }}>
