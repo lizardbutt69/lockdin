@@ -19,7 +19,6 @@ interface SidebarProps {
   todayXP: number
   onUpdateProfile?: (name: string) => Promise<void>
   onToggleReligious?: (isReligious: boolean) => Promise<void>
-  onCompleteOnboarding?: () => Promise<void>
   showTopBarSettings?: boolean
   isOpen?: boolean
   onClose?: () => void
@@ -35,7 +34,7 @@ const NAV_ITEMS: { key: PillarKey; label: string; icon: React.ElementType }[] = 
   { key: 'trips',         label: 'Trips',            icon: Plane      },
 ]
 
-export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUpdateProfile, onToggleReligious, onCompleteOnboarding, showTopBarSettings = false, isOpen = false, onClose }: SidebarProps) {
+export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUpdateProfile, onToggleReligious, showTopBarSettings = false, isOpen = false, onClose }: SidebarProps) {
   const { signOut } = useAuth()
   const navigate = useNavigate()
   const [showSettings, setShowSettings] = useState(false)

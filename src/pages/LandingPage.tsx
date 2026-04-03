@@ -10,7 +10,6 @@ import {
   Dumbbell,
   DollarSign,
   Briefcase,
-  Heart,
   MapPin,
   BookOpen,
   Calendar,

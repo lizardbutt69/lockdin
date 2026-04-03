@@ -157,7 +157,7 @@ export default function DashboardPage() {
           todayXP={log?.xp_earned || 0}
           onUpdateProfile={name => updateProfile({ display_name: name })}
           onToggleReligious={handleToggleReligious}
-          onCompleteOnboarding={handleCompleteOnboarding}
+
           showTopBarSettings={showTopBarSettings}
           isOpen={sidebarOpen}
           onClose={() => { setSidebarOpen(false); setShowTopBarSettings(false) }}

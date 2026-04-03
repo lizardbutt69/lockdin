@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Target, Heart, Dumbbell, DollarSign, BookOpen, Plane, Sparkles, Briefcase } from 'lucide-react'
+import { Target, Heart, Dumbbell, DollarSign, BookOpen, Plane, Sparkles, Briefcase } from 'lucide-react'
 import type { Database } from '../../types/database'
 
 type Profile = Database['public']['Tables']['profiles']['Row']
