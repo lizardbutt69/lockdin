@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { LayoutGrid, BookOpen, DollarSign, Heart, Dumbbell, Plane, LogOut, Flame, Zap, Target, Settings, Sparkles, Briefcase } from 'lucide-react'
+import { LayoutGrid, BookOpen, DollarSign, Heart, Dumbbell, Plane, LogOut, Flame, Zap, Target, Sparkles, Briefcase } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '../../contexts/AuthContext'
 import { getLevelInfo } from '../../hooks/useProfile'
+import ProfileXPPopup from './ProfileXPPopup'
 import SettingsPanel, { getAvatarColor } from './SettingsPanel'
 import PomodoroTimer from './PomodoroTimer'
 import type { Database } from '../../types/database'
@@ -37,6 +38,7 @@ const NAV_ITEMS: { key: PillarKey; label: string; icon: React.ElementType }[] = 
 export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUpdateProfile, onToggleReligious, showTopBarSettings = false, isOpen = false, onClose }: SidebarProps) {
   const { signOut } = useAuth()
   const navigate = useNavigate()
+  const [showProfilePopup, setShowProfilePopup] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
   const [photo, setPhoto] = useState<string | null>(() => localStorage.getItem('lockedin_avatar_photo'))
   const avatarColor = getAvatarColor()
@@ -63,6 +65,7 @@ export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUp
     : 'OP'
 
   return (
+    <>
     <aside
       className={`sidebar-glass flex flex-col w-64 md:w-56 lg:w-60 shrink-0 h-full
         fixed md:static inset-y-0 left-0 z-30
@@ -235,13 +238,13 @@ export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUp
           </div>
         )}
 
-        {/* User row */}
+        {/* User row - Click to open profile popup */}
         <div
           className="flex items-center gap-2.5 px-1 py-1 rounded-lg cursor-pointer transition-colors"
-          onClick={() => setShowSettings(true)}
+          onClick={() => setShowProfilePopup(true)}
           onMouseEnter={e => e.currentTarget.style.background = '#f9fafb'}
           onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-          title="Settings"
+          title="View Profile & XP"
         >
           <div
             className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 overflow-hidden"
@@ -257,7 +260,6 @@ export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUp
               {totalXP.toLocaleString()} XP total
             </div>
           </div>
-          <Settings className="w-3.5 h-3.5 shrink-0" style={{ color: '#9ca3af' }} />
           <button
             onClick={e => { e.stopPropagation(); handleSignOut() }}
             className="p-1.5 rounded-lg transition-all"
@@ -269,19 +271,31 @@ export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUp
             <LogOut className="w-3.5 h-3.5" />
           </button>
         </div>
-
-        <AnimatePresence>
-          {(showSettings || showTopBarSettings) && (
-            <SettingsPanel
-              onClose={() => { setShowSettings(false) }}
-              displayName={profile?.display_name || undefined}
-              isReligious={profile?.is_religious ?? true}
-              onSaveName={onUpdateProfile}
-              onToggleReligious={onToggleReligious}
-            />
-          )}
-        </AnimatePresence>
       </div>
     </aside>
+    {/* Profile XP Popup - Rendered at root level */}
+    {showProfilePopup && (
+      <ProfileXPPopup
+        profile={profile}
+        isOpen={showProfilePopup}
+        onClose={() => setShowProfilePopup(false)}
+        onOpenSettings={() => { setShowSettings(true) }}
+        onSignOut={handleSignOut}
+      />
+    )}
+
+    {/* Settings Panel */}
+    <AnimatePresence>
+      {(showSettings || showTopBarSettings) && (
+        <SettingsPanel
+          onClose={() => { setShowSettings(false) }}
+          displayName={profile?.display_name || undefined}
+          isReligious={profile?.is_religious ?? true}
+          onSaveName={onUpdateProfile}
+          onToggleReligious={onToggleReligious}
+        />
+      )}
+    </AnimatePresence>
+    </>
   )
 }
