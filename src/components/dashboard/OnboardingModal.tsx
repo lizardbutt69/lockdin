@@ -47,11 +47,11 @@ export default function OnboardingModal({ profile, onComplete }: OnboardingModal
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.95, opacity: 0 }}
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          className="relative w-full max-w-lg rounded-2xl overflow-hidden"
-          style={{ background: 'var(--bg-card)', border: '1px solid var(--border-default)', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' }}
+          className="relative w-full max-w-lg rounded-2xl flex flex-col"
+          style={{ background: 'var(--bg-card)', border: '1px solid var(--border-default)', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', maxHeight: '90vh' }}
         >
           {/* Header */}
-          <div className="relative px-6 py-5" style={{ background: 'linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)' }}>
+          <div className="relative px-6 py-5 shrink-0" style={{ background: 'linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)' }}>
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-xl font-bold text-white font-['Plus_Jakarta_Sans']">
@@ -82,7 +82,7 @@ export default function OnboardingModal({ profile, onComplete }: OnboardingModal
           </div>
 
           {/* Content */}
-          <div className="p-6">
+          <div className="p-6 overflow-y-auto flex-1">
             {step === 0 && (
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
@@ -233,7 +233,7 @@ export default function OnboardingModal({ profile, onComplete }: OnboardingModal
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-between px-6 py-4" style={{ borderTop: '1px solid var(--border-subtle)' }}>
+          <div className="flex items-center justify-between px-6 py-4 shrink-0" style={{ borderTop: '1px solid var(--border-subtle)' }}>
             {step > 0 ? (
               <button
                 onClick={() => setStep(step - 1)}
