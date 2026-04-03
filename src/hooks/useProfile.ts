@@ -29,6 +29,8 @@ const DEMO_PROFILE: Profile = {
   total_xp: 0,
   current_streak: 0,
   longest_streak: 0,
+  is_religious: true,
+  onboarding_completed: false,
   created_at: new Date().toISOString(),
 }
 
@@ -81,8 +83,16 @@ export function useProfile() {
 
   useEffect(() => { fetchProfile() }, [fetchProfile])
 
-  async function updateProfile(updates: { display_name?: string }) {
-    if (!user || !isSupabaseConfigured || !profile) return
+  async function updateProfile(updates: { display_name?: string; is_religious?: boolean; onboarding_completed?: boolean }) {
+    if (!profile) return
+
+    // Optimistic update — UI responds immediately
+    const optimistic = { ...profile, ...updates }
+    setProfile(optimistic)
+    localStorage.setItem(PROFILE_CACHE_KEY, JSON.stringify(optimistic))
+
+    if (!user || !isSupabaseConfigured) return
+
     const { data } = await supabase
       .from('profiles')
       .update(updates)

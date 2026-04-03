@@ -5,6 +5,7 @@ import PillarGoals from './PillarGoals'
 import PillarHabitTracker from './PillarHabitTracker'
 import SavingsGoals from './SavingsGoals'
 import DebtTracker from './DebtTracker'
+import ExpenseTracker from './ExpenseTracker'
 import { supabase, isSupabaseConfigured } from '../../lib/supabase'
 import { useAuth } from '../../contexts/AuthContext'
 import type { Database } from '../../types/database'
@@ -216,6 +217,7 @@ export default function FinancesPillar({ log }: FinancesPillarProps) {
       </div>
 
       <SavingsGoals hidden={false} />
+      <ExpenseTracker />
       <DebtTracker />
       </div>{/* end col-span-2 */}
 

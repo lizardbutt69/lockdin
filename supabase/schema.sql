@@ -12,6 +12,8 @@ create table if not exists profiles (
   total_xp integer default 0,
   current_streak integer default 0,
   longest_streak integer default 0,
+  is_religious boolean default true,
+  onboarding_completed boolean default false,
   created_at timestamptz default now()
 );
 
@@ -301,6 +303,35 @@ drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();
+
+-- Monthly expenses
+create table if not exists monthly_expenses (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) on delete cascade not null,
+  amount numeric(10,2) not null,
+  category text not null,
+  description text,
+  expense_date date not null,
+  created_at timestamptz default now()
+);
+alter table monthly_expenses enable row level security;
+create policy "Users can manage own expenses" on monthly_expenses
+  for all using (auth.uid() = user_id);
+
+-- Yearly goals
+create table if not exists yearly_goals (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) on delete cascade not null,
+  pillar text not null,
+  goal_text text not null,
+  is_completed boolean default false,
+  notes text,
+  sub_goals jsonb default '[]'::jsonb,
+  created_at timestamptz default now()
+);
+alter table yearly_goals enable row level security;
+create policy "Users can manage own yearly goals" on yearly_goals
+  for all using (auth.uid() = user_id);
 
 -- ============================================================
 -- Goals: notes + sub-goals (run once to migrate)

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { X, Key, Eye, EyeOff, Check, Lock, User, Camera, Trash2 } from 'lucide-react'
+import { X, Key, Eye, EyeOff, Check, Lock, User, Camera, Trash2, BookOpen } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useJournalLock } from '../../contexts/JournalLockContext'
 
@@ -26,10 +26,12 @@ export function getAvatarColor() {
 interface SettingsPanelProps {
   onClose: () => void
   displayName?: string
+  isReligious?: boolean
   onSaveName?: (name: string) => Promise<void>
+  onToggleReligious?: (isReligious: boolean) => Promise<void>
 }
 
-export default function SettingsPanel({ onClose, displayName, onSaveName }: SettingsPanelProps) {
+export default function SettingsPanel({ onClose, displayName, isReligious = true, onSaveName, onToggleReligious }: SettingsPanelProps) {
   const { hasPIN, setPin, removePin } = useJournalLock()
 
   // Profile
@@ -38,6 +40,7 @@ export default function SettingsPanel({ onClose, displayName, onSaveName }: Sett
   const [avatarColorId, setAvatarColorId] = useState(localStorage.getItem(AVATAR_COLOR_KEY) || 'green')
   const [photo, setPhoto] = useState<string | null>(() => localStorage.getItem(AVATAR_PHOTO_KEY))
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [religiousSavedValue, setReligiousSavedValue] = useState<boolean | null>(null)
 
   // API Key
   const [apiKey, setApiKey] = useState('')
@@ -111,6 +114,12 @@ export default function SettingsPanel({ onClose, displayName, onSaveName }: Sett
     setPinInput(''); setPinConfirm('')
     setPinMsg('PIN removed')
     setTimeout(() => setPinMsg(''), 2000)
+  }
+
+  async function handleToggleReligious(newValue: boolean) {
+    await onToggleReligious?.(newValue)
+    setReligiousSavedValue(newValue)
+    setTimeout(() => setReligiousSavedValue(null), 2000)
   }
 
   const avatarColor = AVATAR_COLORS.find(c => c.id === avatarColorId) || AVATAR_COLORS[0]
@@ -238,6 +247,50 @@ export default function SettingsPanel({ onClose, displayName, onSaveName }: Sett
                 style={{ background: nameSaved ? '#16a34a' : '#2563eb' }}
               >
                 {nameSaved ? <><Check className="w-3 h-3" />Saved</> : 'Save'}
+              </button>
+            </div>
+          </section>
+
+          {/* ── Religious Preference ── */}
+          <div style={{ borderTop: '1px solid var(--border-subtle)' }} />
+
+          <section>
+            <div className="flex items-center gap-2 mb-3">
+              <BookOpen className="w-4 h-4" style={{ color: '#7c3aed' }} />
+              <h3 className="text-sm font-semibold font-['Plus_Jakarta_Sans']" style={{ color: 'var(--text-primary)' }}>Religious Content</h3>
+              {isReligious && (
+                <span className="text-[10px] font-medium px-1.5 py-0.5 rounded" style={{ background: '#faf5ff', color: '#7c3aed', border: '1px solid #e9d5ff' }}>
+                  Enabled
+                </span>
+              )}
+            </div>
+            <p className="text-xs mb-3" style={{ color: 'var(--text-muted)' }}>
+              {isReligious
+                ? 'God pillar, Bible verses, and faith-based content are visible.'
+                : 'Religious content is hidden. Enable to see the God pillar and Bible verses.'}
+            </p>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => handleToggleReligious(true)}
+                className={`flex-1 py-2 rounded-lg text-xs font-medium transition-all ${isReligious ? 'ring-2 ring-[#7c3aed] ring-offset-1' : ''}`}
+                style={{
+                  background: isReligious ? '#7c3aed' : 'var(--bg-input)',
+                  color: isReligious ? '#fff' : 'var(--text-secondary)',
+                  border: '1px solid var(--border-default)',
+                }}
+              >
+                {religiousSavedValue === true ? <><Check className="w-3 h-3 inline mr-1" />Saved</> : 'Enabled'}
+              </button>
+              <button
+                onClick={() => handleToggleReligious(false)}
+                className={`flex-1 py-2 rounded-lg text-xs font-medium transition-all ${!isReligious ? 'ring-2 ring-[#7c3aed] ring-offset-1' : ''}`}
+                style={{
+                  background: !isReligious ? '#7c3aed' : 'var(--bg-input)',
+                  color: !isReligious ? '#fff' : 'var(--text-secondary)',
+                  border: '1px solid var(--border-default)',
+                }}
+              >
+                {religiousSavedValue === false ? <><Check className="w-3 h-3 inline mr-1" />Saved</> : 'Disabled'}
               </button>
             </div>
           </section>

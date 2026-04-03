@@ -18,6 +18,9 @@ interface SidebarProps {
   profile: Profile | null
   todayXP: number
   onUpdateProfile?: (name: string) => Promise<void>
+  onToggleReligious?: (isReligious: boolean) => Promise<void>
+  onCompleteOnboarding?: () => Promise<void>
+  showTopBarSettings?: boolean
   isOpen?: boolean
   onClose?: () => void
 }
@@ -32,12 +35,13 @@ const NAV_ITEMS: { key: PillarKey; label: string; icon: React.ElementType }[] = 
   { key: 'trips',         label: 'Trips',            icon: Plane      },
 ]
 
-export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUpdateProfile, isOpen = false, onClose }: SidebarProps) {
+export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUpdateProfile, onToggleReligious, onCompleteOnboarding, showTopBarSettings = false, isOpen = false, onClose }: SidebarProps) {
   const { signOut } = useAuth()
   const navigate = useNavigate()
   const [showSettings, setShowSettings] = useState(false)
   const [photo, setPhoto] = useState<string | null>(() => localStorage.getItem('lockedin_avatar_photo'))
   const avatarColor = getAvatarColor()
+  const isReligious = profile?.is_religious ?? true
 
   // sync photo when updated from settings
   useEffect(() => {
@@ -97,6 +101,8 @@ export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUp
           Pillars
         </div>
         {NAV_ITEMS.map(({ key, label, icon: Icon }) => {
+          // Skip God nav item if user is not religious
+          if (key === 'god' && !isReligious) return null
           const isActive = activePillar === key
           return (
             <button
@@ -269,11 +275,13 @@ export default function Sidebar({ activePillar, onSelect, profile, todayXP, onUp
         </div>
 
         <AnimatePresence>
-          {showSettings && (
+          {(showSettings || showTopBarSettings) && (
             <SettingsPanel
-              onClose={() => setShowSettings(false)}
+              onClose={() => { setShowSettings(false) }}
               displayName={profile?.display_name || undefined}
+              isReligious={profile?.is_religious ?? true}
               onSaveName={onUpdateProfile}
+              onToggleReligious={onToggleReligious}
             />
           )}
         </AnimatePresence>

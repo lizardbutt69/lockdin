@@ -9,6 +9,36 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      monthly_expenses: {
+        Row: {
+          id: string
+          user_id: string
+          amount: number
+          category: string
+          description: string | null
+          expense_date: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          amount: number
+          category: string
+          description?: string | null
+          expense_date: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          amount?: number
+          category?: string
+          description?: string | null
+          expense_date?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           id: string
@@ -18,6 +48,8 @@ export interface Database {
           total_xp: number
           current_streak: number
           longest_streak: number
+          is_religious: boolean
+          onboarding_completed: boolean
           created_at: string
         }
         Insert: {
@@ -28,6 +60,8 @@ export interface Database {
           total_xp?: number
           current_streak?: number
           longest_streak?: number
+          is_religious?: boolean
+          onboarding_completed?: boolean
           created_at?: string
         }
         Update: {
@@ -38,6 +72,8 @@ export interface Database {
           total_xp?: number
           current_streak?: number
           longest_streak?: number
+          is_religious?: boolean
+          onboarding_completed?: boolean
           created_at?: string
         }
         Relationships: []

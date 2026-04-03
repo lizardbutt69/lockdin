@@ -4,6 +4,7 @@ import { JournalLockProvider } from './contexts/JournalLockContext'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { NotesProvider } from './contexts/NotesContext'
 import ProtectedRoute from './components/ProtectedRoute'
+import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
 import DashboardPage from './pages/DashboardPage'
 
@@ -15,6 +16,7 @@ export default function App() {
         <NotesProvider>
         <JournalLockProvider>
           <Routes>
+            <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route
               path="/dashboard"
@@ -24,7 +26,7 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </JournalLockProvider>
         </NotesProvider>
